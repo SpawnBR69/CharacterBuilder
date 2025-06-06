@@ -9,8 +9,8 @@ import jsPDF from 'jspdf';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  character: Partial<Character> = {};
-  currentStep = 1;
+  character: Partial<Character> = { name: '' }; // Inicializa com nome vazio
+  currentStep = 0; // Começa no passo 0
 
   // Opções para seleção
   races: Race[] = [];
@@ -59,6 +59,9 @@ export class AppComponent implements OnInit {
 
   // Funções de Navegação
   nextStep() {
+    if (this.currentStep === 0) {
+      this.characterService.updateCharacter({ name: this.character.name });
+    }
     if (this.currentStep === 3) {
         const finalScores = { ...this.assignedScores };
         this.characterService.updateCharacter({ abilityScores: finalScores });
@@ -71,10 +74,6 @@ export class AppComponent implements OnInit {
     this.currentStep++;
   }
   prevStep() { this.currentStep--; }
-
-  // Funções de Seleção ... (sem alterações)
-  selectClass(cls: Class) { this.selectedClass = cls; this.characterService.updateCharacter({ class: cls }); }
-  selectBackground(bg: Background) { this.selectedBackground = bg; this.characterService.updateCharacter({ background: bg }); }
 
   onRaceSelected(event: Event) {
     const selectElement = event.target as HTMLSelectElement;
@@ -108,6 +107,20 @@ export class AppComponent implements OnInit {
       // Atualiza o personagem no serviço com a sub-raça
       this.characterService.updateCharacter({ subrace: this.selectedSubrace });
     }
+  }
+
+  onClassSelected(event: Event) {
+    const selectElement = event.target as HTMLSelectElement;
+    const className = selectElement.value;
+    this.selectedClass = this.classes.find(c => c.name === className);
+    this.characterService.updateCharacter({ class: this.selectedClass });
+  }
+
+  onBackgroundSelected(event: Event) {
+    const selectElement = event.target as HTMLSelectElement;
+    const backgroundName = selectElement.value;
+    this.selectedBackground = this.backgrounds.find(b => b.name === backgroundName);
+    this.characterService.updateCharacter({ background: this.selectedBackground });
   }
 
   // Lógica de Valores de Habilidade
