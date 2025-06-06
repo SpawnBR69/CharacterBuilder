@@ -119,51 +119,33 @@ export class AppComponent implements OnInit {
   }
   prevStep() { this.currentStep--; }
 
-  onRaceSelected(event: Event) {
-    const selectElement = event.target as HTMLSelectElement;
-    const raceName = selectElement.value;
-    
-    // Encontra a raça completa pelo nome e reseta as seleções
-    this.selectedRace = this.races.find(r => r.name === raceName);
+  onRaceSelected(event: { value: Race }) {
+    this.selectedRace = event.value;
     this.selectedSubrace = undefined;
     
-    // Atualiza o personagem no serviço
     if (this.selectedRace) {
-      // Se a raça não tem sub-raças, a seleção está completa
       if (!this.selectedRace.subraces || this.selectedRace.subraces.length === 0) {
         this.characterService.updateCharacter({ race: this.selectedRace, subrace: undefined });
       } else {
-        // Se tem sub-raças, atualiza a raça principal mas aguarda a seleção da sub-raça
         this.characterService.updateCharacter({ race: this.selectedRace, subrace: undefined });
       }
     } else {
-      // Se a seleção for limpa ("-- Escolha uma Raça --")
       this.characterService.updateCharacter({ race: undefined, subrace: undefined });
     }
   }
 
-  onSubraceSelected(event: Event) {
-    const selectElement = event.target as HTMLSelectElement;
-    const subraceName = selectElement.value;
-
-    if (this.selectedRace?.subraces) {
-      this.selectedSubrace = this.selectedRace.subraces.find(sr => sr.name === subraceName);
-      // Atualiza o personagem no serviço com a sub-raça
-      this.characterService.updateCharacter({ subrace: this.selectedSubrace });
-    }
+  onSubraceSelected(event: { value: SubRace }) {
+    this.selectedSubrace = event.value;
+    this.characterService.updateCharacter({ subrace: this.selectedSubrace });
   }
 
-  onClassSelected(event: Event) {
-    const selectElement = event.target as HTMLSelectElement;
-    const className = selectElement.value;
-    this.selectedClass = this.classes.find(c => c.name === className);
+  onClassSelected(event: { value: Class }) {
+    this.selectedClass = event.value;
     this.characterService.updateCharacter({ class: this.selectedClass });
   }
 
-  onBackgroundSelected(event: Event) {
-    const selectElement = event.target as HTMLSelectElement;
-    const backgroundName = selectElement.value;
-    this.selectedBackground = this.backgrounds.find(b => b.name === backgroundName);
+  onBackgroundSelected(event: { value: Background }) {
+    this.selectedBackground = event.value;
     this.characterService.updateCharacter({ background: this.selectedBackground });
   }
 
@@ -339,7 +321,7 @@ export class AppComponent implements OnInit {
 
         this.character = importedChar;
         
-        // Popula as propriedades de seleção para consistência da UI, embora não sejam mais usadas para cálculo
+        // Popula as propriedades de seleção para consistência da UI
         this.selectedRace = this.races.find(r => r.name === importedChar.race?.name);
         this.selectedSubrace = this.selectedRace?.subraces?.find(sr => sr.name === importedChar.subrace?.name);
         this.selectedClass = this.classes.find(c => c.name === importedChar.class?.name);

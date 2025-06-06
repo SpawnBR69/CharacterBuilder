@@ -1,9 +1,8 @@
-body {
-  font-family: 'Inter', sans-serif; /* Exemplo de fonte, similar ao Tailwind padrão */
-  background-color: #f9fafb; /* Cinza claro, similar ao bg-gray-50 */
-  color: #1f2937; /* Cinza escuro, similar ao text-gray-800 */
+:host ::ng-deep .p-card {
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
-.container {
-  max-width: 900px; /* Limita a largura para melhor leitura */
+:host ::ng-deep .p-card .p-card-title {
+    color: #b91c1c; /* text-red-700 */
 }
