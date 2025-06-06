@@ -59,7 +59,7 @@ export class AppComponent implements OnInit {
       name: '',
       level: 1,
       abilityScores: { strength: 0, dexterity: 0, constitution: 0, intelligence: 0, wisdom: 0, charisma: 0 },
-      proficiencyBonus: 2, // Para nível 1
+      proficiencyBonus: 2,
       skills: this.initializeSkills(),
       savingThrows: this.initializeSavingThrows(),
       equipment: [],
@@ -93,11 +93,11 @@ export class AppComponent implements OnInit {
     });
     return savingThrows;
   }
-
+  
   initializeAbilityScores() {
     this.assignedScores = { strength: 0, dexterity: 0, constitution: 0, intelligence: 0, wisdom: 0, charisma: 0 };
     this.abilityScorePool = [];
-    this.rolledScores = []; // Limpa as rolagens anteriores
+    this.rolledScores = [];
 
     if (this.abilityScoreMethod === 'pointbuy') {
       this.assignedScores = { strength: 8, dexterity: 8, constitution: 8, intelligence: 8, wisdom: 8, charisma: 8 };
@@ -112,14 +112,8 @@ export class AppComponent implements OnInit {
     if (this.currentStep === 0) {
       this.characterService.updateCharacter({ name: this.character.name });
     }
-    if (this.currentStep === 3) {
-        const finalScores = { ...this.assignedScores };
-        this.characterService.updateCharacter({ abilityScores: finalScores });
-    }
     if (this.currentStep === 5) { 
-        const startingEquipment = this.characterService.getStartingEquipment(this.character.class?.name, this.character.background?.name);
-        this.character.equipment = startingEquipment;
-        this.characterService.updateCharacter({ equipment: startingEquipment });
+        this.compileCharacterData();
     }
     this.currentStep++;
   }
@@ -240,24 +234,34 @@ export class AppComponent implements OnInit {
     }
   }
 
+  // --- Lógica de Compilação e Cálculo ---
+
   getFinalAbilityScore(ability: keyof AbilityScores): number {
     let score = this.assignedScores[ability] || 0;
-    if (this.character?.race?.abilityScoreIncrease?.[ability]) { score += this.character.race.abilityScoreIncrease[ability]!; }
-    if (this.character?.subrace?.abilityScoreIncrease?.[ability]) { score += this.character.subrace.abilityScoreIncrease[ability]!; }
+    if (this.selectedRace?.abilityScoreIncrease?.[ability]) { score += this.selectedRace.abilityScoreIncrease[ability]!; }
+    if (this.selectedSubrace?.abilityScoreIncrease?.[ability]) { score += this.selectedSubrace.abilityScoreIncrease[ability]!; }
     return score;
   }
 
   getAbilityModifier(score: number): number {
     return Math.floor((score - 10) / 2);
   }
+  
+  getModifierString(value: number | undefined): string {
+    if (value === undefined) return '+0';
+    return value >= 0 ? `+${value}` : `${value}`;
+  }
 
-  getAbilityModifierString(score: number): string {
-    const mod = this.getAbilityModifier(score);
-    return mod >= 0 ? `+${mod}` : `${mod}`;
+  getSkillModifierValue(skill: Skill): number {
+    if (!this.character.abilityScores || !this.character.proficiencyBonus) return 0;
+    const modifier = this.getAbilityModifier(this.character.abilityScores[skill.ability]);
+    const proficiencyBonus = skill.proficient ? this.character.proficiencyBonus : 0;
+    return modifier + proficiencyBonus;
   }
 
   compileCharacterData() {
     const finalCharacter: Character = this.createEmptyCharacter() as Character;
+    
     finalCharacter.name = this.character.name || 'Sem Nome';
     finalCharacter.race = this.selectedRace;
     finalCharacter.subrace = this.selectedSubrace;
@@ -266,12 +270,10 @@ export class AppComponent implements OnInit {
     finalCharacter.level = 1;
     finalCharacter.proficiencyBonus = 2;
 
-    // 1. Finaliza os Ability Scores
     this.abilityKeys.forEach(key => {
       finalCharacter.abilityScores[key] = this.getFinalAbilityScore(key);
     });
 
-    // 2. Calcula Saving Throws
     this.abilityKeys.forEach(key => {
       const modifier = this.getAbilityModifier(finalCharacter.abilityScores[key]);
       const isProficient = finalCharacter.class?.savingThrowProficiencies.includes(key) || false;
@@ -281,16 +283,13 @@ export class AppComponent implements OnInit {
       };
     });
 
-    // 3. Calcula Perícias (Skills)
     const backgroundSkills = finalCharacter.background?.skillProficiencies || [];
-    // (Adicionar lógica para escolher perícias da classe aqui no futuro)
     for (const skillName in finalCharacter.skills) {
-        if(backgroundSkills.includes(skillName)) {
+        if (backgroundSkills.includes(skillName)) {
             finalCharacter.skills[skillName].proficient = true;
         }
     }
 
-    // 4. Calcula HP, AC e Iniciativa
     const conModifier = this.getAbilityModifier(finalCharacter.abilityScores.constitution);
     const dexModifier = this.getAbilityModifier(finalCharacter.abilityScores.dexterity);
     finalCharacter.hitPoints = {
@@ -298,10 +297,9 @@ export class AppComponent implements OnInit {
       current: (finalCharacter.class?.hitDie || 0) + conModifier,
       temporary: 0
     };
-    finalCharacter.armorClass = 10 + dexModifier; // Base, sem armadura
+    finalCharacter.armorClass = 10 + dexModifier;
     finalCharacter.initiative = dexModifier;
     
-    // 5. Compila Equipamentos e Traços
     finalCharacter.equipment = this.characterService.getStartingEquipment(finalCharacter.class?.name, finalCharacter.background?.name);
     finalCharacter.traits = [
       ...(finalCharacter.race?.traits || []),
@@ -309,23 +307,22 @@ export class AppComponent implements OnInit {
       ...(finalCharacter.background?.feature ? [finalCharacter.background.feature.name] : [])
     ];
     
-    // Atualiza o personagem principal
     this.character = finalCharacter;
   }
   
   // --- Funções de Importação/Exportação ---
-
-  downloadJson() {
-    this.compileCharacterData(); // Garante que os dados estão atualizados
-    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(this.character, null, 2));
-    const downloadAnchorNode = document.createElement('a');
-    downloadAnchorNode.setAttribute("href", dataStr);
-    downloadAnchorNode.setAttribute("download", `${this.character.name?.replace(/\s+/g, '_') || 'personagem'}.json`);
-    document.body.appendChild(downloadAnchorNode);
-    downloadAnchorNode.click();
-    downloadAnchorNode.remove();
+  downloadJson() { 
+      if (this.currentStep < 6) {
+        this.compileCharacterData(); 
+      }
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(this.character, null, 2));
+      const downloadAnchorNode = document.createElement('a');
+      downloadAnchorNode.setAttribute("href", dataStr);
+      downloadAnchorNode.setAttribute("download", `${(this.character.name || 'personagem').replace(/\s+/g, '_')}.json`);
+      document.body.appendChild(downloadAnchorNode);
+      downloadAnchorNode.click();
+      downloadAnchorNode.remove();
   }
-  
   handleFileUpload(event: Event) {
     const input = event.target as HTMLInputElement;
     if (!input.files?.length) return;
@@ -335,25 +332,26 @@ export class AppComponent implements OnInit {
     
     reader.onload = (e) => {
       try {
-        const json = JSON.parse(e.target?.result as string);
-        // Validação simples do JSON importado
-        if (json.name && json.abilityScores) {
-          this.character = json;
-          this.selectedRace = json.race;
-          this.selectedSubrace = json.subrace;
-          this.selectedClass = json.class;
-          this.selectedBackground = json.background;
-          this.assignedScores = json.abilityScores; // Pode precisar de mais lógica se o método de criação for diferente
-          this.currentStep = 6; // Pula para o resumo
-        } else {
-          alert('Arquivo JSON inválido ou não corresponde ao formato de personagem.');
+        const importedChar = JSON.parse(e.target?.result as string) as Character;
+        if (!importedChar.name || !importedChar.class || !importedChar.race || !importedChar.background || !importedChar.abilityScores) {
+          throw new Error('Arquivo JSON incompleto ou em formato incorreto.');
         }
+
+        this.character = importedChar;
+        
+        // Popula as propriedades de seleção para consistência da UI, embora não sejam mais usadas para cálculo
+        this.selectedRace = this.races.find(r => r.name === importedChar.race?.name);
+        this.selectedSubrace = this.selectedRace?.subraces?.find(sr => sr.name === importedChar.subrace?.name);
+        this.selectedClass = this.classes.find(c => c.name === importedChar.class?.name);
+        this.selectedBackground = this.backgrounds.find(b => b.name === importedChar.background?.name);
+        
+        this.currentStep = 6;
+
       } catch (error) {
-        console.error("Erro ao ler o JSON:", error);
-        alert("Ocorreu um erro ao ler o arquivo. Verifique se é um JSON válido.");
+        console.error("Erro ao importar JSON:", error);
+        alert("Ocorreu um erro ao ler o arquivo. Verifique se é um JSON válido e completo.");
       }
     };
-    
     reader.readAsText(file);
   }
   

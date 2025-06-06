@@ -230,29 +230,29 @@
     </button>
   </div>
 
-   <!-- Passo 5: Equipamento (Simplificado) -->
-  <div *ngIf="currentStep === 5">
-    <h2 class="text-2xl font-semibold mb-4 text-red-600">Passo 5: Equipamento</h2>
-    <p class="mb-2">Seu equipamento inicial é determinado pela sua classe e antecedente.</p>
-    <p class="mb-4 text-sm text-gray-600">(Em uma aplicação completa, aqui haveria opções de escolha baseadas nas regras do Livro do Jogador).</p>
-    <div>
-        <h3 class="text-lg font-semibold text-red-700">Equipamento Sugerido:</h3>
-        <ul class="list-disc list-inside mt-2">
-            <!-- Acessar characterService que agora é público -->
-            <li *ngFor="let item of characterService.getStartingEquipment(character.class?.name, character.background?.name)">
-                {{ item }}
-            </li>
-        </ul>
+  <!-- Passo 5: Equipamento -->
+    <div *ngIf="currentStep === 5">
+      <h2 class="text-2xl font-semibold mb-4 text-red-600">Passo 5: Equipamento</h2>
+      <p class="mb-2">Seu equipamento inicial é determinado pela sua classe e antecedente.</p>
+      <p class="mb-4 text-sm text-gray-600">(Em uma aplicação completa, aqui haveria opções de escolha baseadas nas regras do Livro do Jogador).</p>
+      <div>
+          <h3 class="text-lg font-semibold text-red-700">Equipamento Sugerido:</h3>
+          <!-- Corrigido para usar selectedClass e selectedBackground -->
+          <ul class="list-disc list-inside mt-2">
+              <li *ngFor="let item of characterService.getStartingEquipment(selectedClass?.name, selectedBackground?.name)">
+                  {{ item }}
+              </li>
+          </ul>
+      </div>
+      <button (click)="prevStep()" class="mt-6 mr-2 bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg shadow">Anterior</button>
+      <button (click)="nextStep()" class="mt-6 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg shadow">
+        Ver Resumo
+      </button>
     </div>
-    <button (click)="prevStep()" class="mt-6 mr-2 bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg shadow">Anterior</button>
-    <button (click)="nextStep()"
-            class="mt-6 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg shadow">
-      Ver Resumo
-    </button>
   </div>
 
   <!-- Passo 6: Resumo do Personagem -->
-  <div *ngIf="currentStep === 6">
+  <div *ngIf="currentStep === 6 && character.name">
     <h2 class="text-2xl font-semibold mb-4 text-red-600">Ficha de Personagem</h2>
     <div class="bg-white p-6 rounded-lg shadow-lg space-y-4">
       
@@ -269,7 +269,7 @@
       <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 text-center">
         <div *ngFor="let ability of abilityKeys" class="p-2 border rounded-lg">
           <div class="text-sm font-bold text-red-700 uppercase">{{ ability.slice(0,3) }}</div>
-          <div class="text-2xl font-bold">{{ getAbilityModifierString(character.abilityScores![ability]) }}</div>
+          <div class="text-2xl font-bold">{{ getModifierString(getAbilityModifier(character.abilityScores![ability])) }}</div>
           <div class="text-sm text-gray-600">{{ character.abilityScores![ability] }}</div>
         </div>
       </div>
@@ -279,24 +279,24 @@
         <div class="md:col-span-1 space-y-4">
           <div>
             <h4 class="font-bold text-red-700 border-b mb-2">Testes de Resistência</h4>
-            <ul>
+            <ul *ngIf="character.savingThrows">
               <li *ngFor="let key of abilityKeys" class="flex items-center">
                 <span class="inline-block w-4 h-4 mr-2 border rounded-full flex items-center justify-center text-xs">
                   <span *ngIf="character.savingThrows![key].proficient" class="w-2 h-2 bg-gray-800 rounded-full"></span>
                 </span>
-                <span class="font-semibold mr-1">{{ (character.savingThrows![key].value >= 0 ? '+' : '') + character.savingThrows![key].value }}</span>
+                <span class="font-semibold mr-1">{{ getModifierString(character.savingThrows![key].value) }}</span>
                 <span class="text-gray-600 capitalize">{{ key }}</span>
               </li>
             </ul>
           </div>
           <div>
             <h4 class="font-bold text-red-700 border-b mb-2">Perícias</h4>
-            <ul>
+            <ul *ngIf="character.skills">
                 <li *ngFor="let skill of character.skills | keyvalue" class="flex items-center text-sm">
                     <span class="inline-block w-4 h-4 mr-2 border rounded-full flex items-center justify-center text-xs">
                         <span *ngIf="skill.value.proficient" class="w-2 h-2 bg-gray-800 rounded-full"></span>
                     </span>
-                    <span class="font-semibold mr-1">{{ (getAbilityModifier(character.abilityScores![skill.value.ability]) + (skill.value.proficient ? character.proficiencyBonus! : 0) >= 0 ? '+' : '') + (getAbilityModifier(character.abilityScores![skill.value.ability]) + (skill.value.proficient ? character.proficiencyBonus! : 0)) }}</span>
+                    <span class="font-semibold mr-1">{{ getModifierString(getSkillModifierValue(skill.value)) }}</span>
                     <span class="text-gray-600">{{ skill.key }} <span class="text-gray-400">({{skill.value.ability.slice(0,3)}})</span></span>
                 </li>
             </ul>
@@ -307,7 +307,7 @@
         <div class="md:col-span-2 space-y-4">
             <div class="grid grid-cols-3 gap-2 text-center">
               <div class="p-2 border rounded-lg"><strong class="block text-red-700">Classe de Armadura</strong><span class="text-xl">{{ character.armorClass }}</span></div>
-              <div class="p-2 border rounded-lg"><strong class="block text-red-700">Iniciativa</strong><span class="text-xl">{{ (character.initiative! >= 0 ? '+' : '') + character.initiative }}</span></div>
+              <div class="p-2 border rounded-lg"><strong class="block text-red-700">Iniciativa</strong><span class="text-xl">{{ getModifierString(character.initiative) }}</span></div>
               <div class="p-2 border rounded-lg"><strong class="block text-red-700">Deslocamento</strong><span class="text-xl">{{ character.race?.speed }} m</span></div>
             </div>
             <div class="p-2 border rounded-lg">
@@ -323,12 +323,11 @@
         </div>
       </div>
       
-       <!-- Equipamento -->
-       <div>
+        <!-- Equipamento -->
+        <div>
             <h4 class="font-bold text-red-700 border-b mb-2">Equipamento</h4>
             <p class="text-sm text-gray-600">{{ character.equipment?.join(', ') }}</p>
-       </div>
-    </div>
+        </div>
     
     <!-- Botões de Ação Final -->
     <div class="mt-8 flex justify-between">
