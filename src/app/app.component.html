@@ -256,7 +256,7 @@
                                         <input type="radio" [checked]="character.savingThrows![key].proficient" disabled
                                             class="w-4 h-4 border-2 border-gray-500 rounded-full checked:bg-gray-800 checked:border-gray-800">
                                     </div>
-                                    <span class="w-10 text-right font-semibold">{{
+                                    <span class="w-10 text-left font-semibold">{{
                                         getModifierString(character.savingThrows![key].value) }}</span>
                                     <span class="w-32 text-left text-gray-600 capitalize truncate">{{ key }}</span>
                                 </li>
@@ -273,10 +273,11 @@
                                         <input type="radio" [checked]="skill.value.proficient" disabled
                                             class="w-4 h-4 border-2 border-gray-500 rounded-full checked:bg-gray-800 checked:border-gray-800">
                                     </div>
-                                    <span class="w-10 text-right font-semibold">{{
+                                    <span class="w-10 text-left font-semibold">{{
                                         getModifierString(getSkillModifierValue(skill.value)) }}</span>
-                                    <span class="w-32 text-left text-gray-600 truncate">{{ skill.key }} <span
-                                            class="text-gray-400">({{ skill.value.ability.slice(0, 3) }})</span></span>
+                                    <span class="text-gray-600">{{ skill.key }} 
+                                        </span>
+                                        <span class="text-gray-400">({{ skill.value.ability.slice(0, 3) }})</span>
                                 </li>
                             </ul>
                         </div>
