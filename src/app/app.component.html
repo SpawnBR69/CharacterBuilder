@@ -2,7 +2,7 @@
 <div class="character-creator-container p-4 md:p-8 bg-gray-100 min-h-screen">
   <div class="max-w-4xl mx-auto">
     
-    <div class="text-center mb-8">
+    <div *ngIf="currentStep < 6" class="text-center mb-8">
         <h1 class="text-4xl font-bold text-red-700">Criador de Personagens D&D 5e</h1>
         <p class="text-lg text-gray-600">Construa seu herói passo a passo</p>
     </div>
@@ -23,10 +23,10 @@
       </ng-template>
     </p-card>
 
-  <!-- Outros Passos -->
+    <!-- Passos 1 a 5 -->
     <div *ngIf="currentStep > 0 && currentStep < 6">
         <p-card>
-            <!-- Título dinâmico do Card -->
+            <!-- Título do Card -->
             <ng-template pTemplate="title">
               <span *ngIf="currentStep === 1">Passo 1: Escolha sua Raça</span>
               <span *ngIf="currentStep === 2">Passo 2: Escolha sua Classe</span>
@@ -35,139 +35,112 @@
               <span *ngIf="currentStep === 5">Passo 5: Equipamento Inicial</span>
             </ng-template>
 
-            <!-- Conteúdo de cada passo -->
+            <!-- Conteúdo do Passo 1 -->
             <div *ngIf="currentStep === 1">
               <div class="field mb-4">
-                <label class="block mb-2">Raça</label>
-                <p-dropdown [options]="races" [(ngModel)]="selectedRace" optionLabel="name" placeholder="-- Escolha uma Raça --" [showClear]="true" (onChange)="onRaceSelected($event)" styleClass="w-full"></p-dropdown>
+                <label class="block mb-2 font-semibold">Raça</label>
+                <p-dropdown [options]="races" [(ngModel)]="selectedRace" (onChange)="onRaceChange()" optionLabel="name" placeholder="-- Escolha uma Raça --" [showClear]="true" styleClass="w-full"></p-dropdown>
               </div>
-              <div *ngIf="selectedRace?.subraces?.length" class="field mb-4">
-                <label class="block mb-2">Sub-raça</label>
-                <p-dropdown [options]="selectedRace.subraces" [(ngModel)]="selectedSubrace" optionLabel="name" placeholder="-- Escolha uma Sub-raça --" [showClear]="true" (onChange)="onSubraceSelected($event)" styleClass="w-full"></p-dropdown>
-              </div>
+              
+              <!-- CORREÇÃO APLICADA AQUI -->
+              <ng-container *ngIf="selectedRace as race">
+                <div class="mt-4 p-4 border rounded-lg bg-gray-50 text-sm space-y-2">
+                  <p class="italic">{{ race.description }}</p>
+                  <p><strong class="font-semibold text-red-700">Aumento de Atributo:</strong> 
+                    <span *ngFor="let inc of race.abilityScoreIncrease | keyvalue; let last = last">{{ inc.key | titlecase }} +{{ inc.value }}{{ last ? '' : ', ' }}</span>
+                  </p>
+                  <p><strong class="font-semibold text-red-700">Deslocamento:</strong> {{ race.speed }}m</p>
+                  <p *ngIf="race.languages?.length"><strong class="font-semibold text-red-700">Idiomas:</strong> {{ race.languages?.join(', ') }}</p>
+                  <div *ngIf="race.traits?.length">
+                      <strong class="font-semibold text-red-700">Traços Raciais:</strong>
+                      <ul class="list-disc list-inside ml-4"><li *ngFor="let trait of race.traits">{{ trait }}</li></ul>
+                  </div>
+                </div>
+                
+                <div *ngIf="race.subraces && race.subraces.length > 0" class="field my-4">
+                  <label class="block mb-2 font-semibold">Sub-raça</label>
+                  <p-dropdown [options]="race.subraces" [(ngModel)]="selectedSubrace" optionLabel="name" placeholder="-- Escolha uma Sub-raça --" [showClear]="true" styleClass="w-full"></p-dropdown>
+                </div>
+                <div *ngIf="selectedSubrace as subrace" class="mt-4 p-4 border rounded-lg bg-gray-50 text-sm space-y-2">
+                  <p class="italic">{{ subrace.description }}</p>
+                  <p *ngIf="subrace.abilityScoreIncrease"><strong class="font-semibold text-red-700">Aumento Adicional:</strong> 
+                     <span *ngFor="let inc of subrace.abilityScoreIncrease | keyvalue; let last = last">{{ inc.key | titlecase }} +{{ inc.value }}{{ last ? '' : ', ' }}</span>
+                  </p>
+                  <div *ngIf="subrace.traits?.length">
+                      <strong class="font-semibold text-red-700">Traços de Sub-raça:</strong>
+                      <ul class="list-disc list-inside ml-4"><li *ngFor="let trait of subrace.traits">{{ trait }}</li></ul>
+                  </div>
+                </div>
+              </ng-container>
             </div>
 
+            <!-- Conteúdo do Passo 2 -->
             <div *ngIf="currentStep === 2">
               <div class="field mb-4">
-                <label class="block mb-2">Classe</label>
-                <p-dropdown [options]="classes" [(ngModel)]="selectedClass" optionLabel="name" placeholder="-- Escolha uma Classe --" [showClear]="true" (onChange)="onClassSelected($event)" styleClass="w-full"></p-dropdown>
+                <label class="block mb-2 font-semibold">Classe</label>
+                <p-dropdown [options]="classes" [(ngModel)]="selectedClass" optionLabel="name" placeholder="-- Escolha uma Classe --" [showClear]="true" styleClass="w-full"></p-dropdown>
+              </div>
+              <div *ngIf="selectedClass as sClass" class="mt-4 p-4 border rounded-lg bg-gray-50 text-sm space-y-2">
+                <p class="italic">{{ sClass.description }}</p>
+                <p><strong class="font-semibold text-red-700">Dado de Vida:</strong> d{{ sClass.hitDie }}</p>
+                <p><strong class="font-semibold text-red-700">Habilidade Primária:</strong> {{ sClass.primaryAbility.join(', ') }}</p>
+                <p><strong class="font-semibold text-red-700">Resistências:</strong> <span *ngFor="let prof of sClass.savingThrowProficiencies; let last = last">{{ prof | titlecase }}{{ last ? '' : ', ' }}</span></p>
+                <div>
+                  <strong class="font-semibold text-red-700">Proficiências:</strong>
+                  <ul class="list-disc list-inside ml-4"><li *ngFor="let prof of sClass.armorAndWeaponProficiencies">{{ prof }}</li></ul>
+                </div>
               </div>
             </div>
-
-            <div *ngIf="currentStep === 4">
-                <div class="field mb-4">
-                    <label class="block mb-2">Antecedente</label>
-                    <p-dropdown [options]="backgrounds" [(ngModel)]="selectedBackground" optionLabel="name" placeholder="-- Escolha um Antecedente --" [showClear]="true" (onChange)="onBackgroundSelected($event)" styleClass="w-full"></p-dropdown>
+            
+            <!-- Conteúdo do Passo 3 -->
+            <div *ngIf="currentStep === 3">
+                <div class="field text-center mb-4">
+                    <label class="block mb-2 font-semibold">Método de Atribuição</label>
+                    <p-selectButton [options]="abilityMethodOptions" [(ngModel)]="abilityScoreMethod" (onChange)="initializeAbilityScores()" optionLabel="label" optionValue="value"></p-selectButton>
+                </div>
+                <div *ngIf="abilityScoreMethod === 'pointbuy'">
+                    <p class="font-semibold text-center mb-2">Pontos Restantes: <span [class.text-red-500]="pointBuyPoints < 0">{{ pointBuyPoints }}</span></p>
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                        <div *ngFor="let ability of abilityKeys" class="field mb-2 text-center">
+                            <label class="font-semibold capitalize text-red-700 block mb-1">{{ ability }}</label>
+                            <p-inputNumber [(ngModel)]="assignedScores[ability]" (onValueChange)="recalculatePointBuyPoints()" [min]="8" [max]="15" [showButtons]="true"></p-inputNumber>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="abilityScoreMethod === 'standard' || abilityScoreMethod === 'roll'">
+                    <div class="mb-4 flex items-center justify-center gap-4">
+                        <button *ngIf="abilityScoreMethod === 'roll'" pButton pRipple label="Rolar Dados" icon="pi pi-bolt" (click)="onRollScores()"></button>
+                        <p *ngIf="abilityScorePool.length > 0">Valores: <strong class="text-blue-600">{{ abilityScorePool.join(', ') }}</strong></p>
+                        <button *ngIf="abilityScorePool.length > 0" pButton pRipple label="Limpar" icon="pi pi-refresh" class="p-button-secondary" (click)="resetScoreAssignments()"></button>
+                    </div>
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                        <div *ngFor="let ability of abilityKeys" class="field mb-2">
+                            <label class="font-semibold capitalize text-red-700 block mb-1">{{ ability }}</label>
+                            <p-dropdown [options]="getAvailableScoresFor(ability)" [(ngModel)]="assignedScores[ability]" placeholder="Escolha" [showClear]="true" styleClass="w-full"></p-dropdown>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Passo 3: Valores de Habilidade -->
-            <div *ngIf="currentStep === 3">
-              <h2 class="text-2xl font-semibold mb-4 text-red-600">Passo 3: Determine os Valores de Habilidade</h2>
-              <div class="mb-4">
-                <label class="mr-2">Método:</label>
-                <select [(ngModel)]="abilityScoreMethod" (ngModelChange)="initializeAbilityScores()" class="p-2 border rounded-lg shadow-sm">
-                  <option value="standard">Valores Padrão</option>
-                  <option value="roll">Rolar Dados (4d6kh3)</option>
-                  <option value="pointbuy">Compra por Pontos</option>
-                </select>
-              </div>
-
-            <!-- Info para Roll e Standard -->
-            <div *ngIf="abilityScoreMethod === 'roll'" class="mb-4 flex items-center gap-4">
-              <button (click)="onRollScores()" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg shadow">Rolar Dados</button>
-              <button *ngIf="abilityScorePool.length > 0" (click)="resetScoreAssignments()" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg shadow">Limpar Seleções</button>
-            </div>
-            <div *ngIf="abilityScoreMethod === 'standard'" class="mb-4 flex items-center gap-4">
-              <p>Use os valores: {{ standardArray.join(', ') }}.</p>
-              <button (click)="resetScoreAssignments()" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg shadow">Limpar Seleções</button>
-            </div>
-            
-            <!-- Info para Point Buy -->
-            <div *ngIf="abilityScoreMethod === 'pointbuy'" class="mb-4">
-                <p class="font-semibold">Pontos Restantes: <span [class.text-red-500]="pointBuyPoints < 0">{{ pointBuyPoints }}</span></p>
-                <p class="text-xs text-gray-600">Custos: 8 (0), 9 (1), 10 (2), 11 (3), 12 (4), 13 (5), 14 (7), 15 (9).</p>
-            </div>
-
-            <!-- Inputs de Habilidade -->
-            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                <!-- UI para Point Buy -->
-                <ng-container *ngIf="abilityScoreMethod === 'pointbuy'">
-                    <div *ngFor="let ability of abilityKeys" class="mb-2">
-                        <label class="font-semibold capitalize text-red-700">{{ ability.charAt(0).toUpperCase() + ability.slice(1) }}:</label>
-                        <input type="number"
-                              [(ngModel)]="assignedScores[ability]"
-                              (ngModelChange)="recalculatePointBuyPoints()"
-                              min="8" max="15"
-                              class="w-full p-2 border rounded-lg shadow-sm mt-1">
+            <!-- Conteúdo do Passo 4 -->
+            <div *ngIf="currentStep === 4">
+                <div class="field mb-4">
+                    <label class="block mb-2 font-semibold">Antecedente</label>
+                    <p-dropdown [options]="backgrounds" [(ngModel)]="selectedBackground" optionLabel="name" placeholder="-- Escolha um Antecedente --" [showClear]="true" styleClass="w-full"></p-dropdown>
+                </div>
+                <div *ngIf="selectedBackground as bg" class="mt-4 p-4 border rounded-lg bg-gray-50 text-sm space-y-2">
+                    <p class="italic">{{ bg.description }}</p>
+                    <p><strong class="font-semibold text-red-700">Perícias:</strong> {{ bg.skillProficiencies.join(', ') }}</p>
+                    <p *ngIf="bg.toolProficiencies"><strong class="font-semibold text-red-700">Ferramentas:</strong> {{ bg.toolProficiencies.join(', ') }}</p>
+                    <p *ngIf="bg.languages"><strong class="font-semibold text-red-700">Idiomas:</strong> {{ bg.languages.join(', ') }}</p>
+                    <div>
+                        <strong class="font-semibold text-red-700">Característica - {{ bg.feature.name }}:</strong>
+                        <p class="italic ml-4">{{ bg.feature.description }}</p>
                     </div>
-                </ng-container>
-
-                <!-- UI para Standard/Roll -->
-                <ng-container *ngIf="abilityScoreMethod === 'standard' || abilityScoreMethod === 'roll'">
-                    <div *ngFor="let ability of abilityKeys" class="mb-2">
-                        <label class="font-semibold capitalize text-red-700">{{ ability.charAt(0).toUpperCase() + ability.slice(1) }}:</label>
-                        <select [(ngModel)]="assignedScores[ability]" class="w-full p-2 border rounded-lg shadow-sm mt-1 bg-white">
-                            <option [ngValue]="0" disabled>Escolha...</option>
-                            <option *ngFor="let score of getAvailableScoresFor(ability)" [ngValue]="score">
-                                {{ score }}
-                            </option>
-                        </select>
-                    </div>
-                </ng-container>
+                </div>
             </div>
 
-            <!-- Validação e Navegação -->
-            <div *ngIf="abilityScoreMethod === 'pointbuy' && pointBuyPoints !== 0" class="mt-2 text-red-500 font-semibold">
-                Você deve usar exatamente 27 pontos. Pontos restantes: {{ pointBuyPoints }}.
-            </div>
-            <div *ngIf="(abilityScoreMethod === 'standard' || abilityScoreMethod === 'roll') && isNextStepInStep3Disabled && abilityScorePool.length > 0" class="mt-2 text-red-500 font-semibold">
-                Por favor, atribua um valor para cada habilidade.
-            </div>
-
-            <button (click)="prevStep()" class="mt-6 mr-2 bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg shadow">Anterior</button>
-            <button (click)="nextStep()" [disabled]="isNextStepInStep3Disabled"
-                    class="mt-6 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg shadow disabled:opacity-50">
-              Próximo
-            </button>
-          </div>
-
-  <!-- Passo 4: Antecedente -->
-  <div *ngIf="currentStep === 4">
-    <h2 class="text-2xl font-semibold mb-4 text-red-600">Passo 4: Escolha seu Antecedente</h2>
-    <div class="mb-4">
-      <label for="background-select" class="block text-lg font-medium text-gray-700">Antecedente</label>
-      <select id="background-select" (change)="onBackgroundSelected($event)" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm rounded-md bg-white">
-        <option value="">-- Escolha um Antecedente --</option>
-        <option *ngFor="let bg of backgrounds" [value]="bg.name">
-          {{ bg.name }}
-        </option>
-      </select>
-    </div>
-
-    <!-- Container para exibir detalhes do antecedente selecionado -->
-    <div *ngIf="selectedBackground" class="mt-4 p-4 border rounded-lg bg-gray-50">
-      <h3 class="text-xl font-bold text-red-800">{{ selectedBackground.name }}</h3>
-      <p class="mt-2 text-sm text-gray-700">{{ selectedBackground.description }}</p>
-       <div class="mt-3">
-        <p><strong class="font-semibold">Proficiência em Perícias:</strong> {{ selectedBackground.skillProficiencies.join(', ') }}</p>
-        <p *ngIf="selectedBackground.toolProficiencies && selectedBackground.toolProficiencies.length > 0">
-          <strong class="font-semibold">Proficiência com Ferramentas:</strong> {{ selectedBackground.toolProficiencies.join(', ') }}
-        </p>
-         <p *ngIf="selectedBackground.languages && selectedBackground.languages.length > 0">
-          <strong class="font-semibold">Idiomas:</strong> {{ selectedBackground.languages.join(', ') }}
-        </p>
-      </div>
-    </div>
-
-    <button (click)="prevStep()" class="mt-6 mr-2 bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg shadow">Anterior</button>
-    <button (click)="nextStep()" [disabled]="!selectedBackground"
-            class="mt-6 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg shadow disabled:opacity-50">
-      Próximo
-    </button>
-  </div>
-
-            <!-- Passo 5: Equipamento -->
+            <!-- Conteúdo do Passo 5 -->
             <div *ngIf="currentStep === 5">
                 <h4 class="font-bold">Equipamento Sugerido:</h4>
                 <ul class="list-disc list-inside mt-2">
@@ -176,29 +149,94 @@
                     </li>
                 </ul>
             </div>
+
             <!-- Footer com Navegação -->
             <ng-template pTemplate="footer">
               <div class="flex justify-between">
                 <button pButton pRipple label="Anterior" icon="pi pi-arrow-left" (click)="prevStep()" class="p-button-secondary"></button>
-                <button pButton pRipple label="Próximo" icon="pi pi-arrow-right" iconPos="right" (click)="nextStep()" [disabled]="(currentStep === 1 && (!selectedRace || (selectedRace.subraces?.length && !selectedSubrace))) || (currentStep === 2 && !selectedClass) || (currentStep === 4 && !selectedBackground)"></button>
+                <button pButton pRipple label="Próximo" icon="pi pi-arrow-right" iconPos="right" (click)="nextStep()" [disabled]="(currentStep === 1 && (!selectedRace || (selectedRace.subraces && selectedRace.subraces.length > 0 && !selectedSubrace))) || (currentStep === 2 && !selectedClass) || (currentStep === 3 && isNextStepInStep3Disabled) || (currentStep === 4 && !selectedBackground)"></button>
               </div>
             </ng-template>
         </p-card>
     </div>
 
-  <!-- Passo 6: Resumo do Personagem -->
-    <p-card *ngIf="currentStep === 6 && character.name" header="Ficha de Personagem">
-        <!-- O conteúdo do resumo aqui -->
-        <div class="bg-white rounded-lg space-y-4">
-            <!-- (Código do resumo omitido para brevidade, permanece o mesmo) -->
-        </div>
-        <ng-template pTemplate="footer">
-            <div class="flex justify-between">
-              <button pButton pRipple label="Voltar ao Início" icon="pi pi-replay" (click)="resetToInitialState()" class="p-button-secondary"></button>
-              <button pButton pRipple label="Exportar JSON" icon="pi pi-download" (click)="downloadJson()" class="p-button-success"></button>
-            </div>
-        </ng-template>
-    </p-card>
+    <!-- Passo 6: Resumo do Personagem -->
+    <div *ngIf="currentStep === 6 && character.name">
+        <p-card>
+            <ng-template pTemplate="title">
+                <div class="text-center text-4xl font-serif text-red-800">{{ character.name }}</div>
+            </ng-template>
+            <ng-template pTemplate="subtitle">
+                <div class="text-center text-lg text-gray-600">
+                    {{ character.race?.name }} {{ character.subrace ? '(' + character.subrace.name + ')' : '' }} | {{ character.class?.name }} Nível {{ character.level }}
+                </div>
+            </ng-template>
 
+            <!-- Atributos e Modificadores -->
+            <div class="grid grid-cols-3 md:grid-cols-6 gap-2 md:gap-4 text-center mb-6">
+                <div *ngFor="let ability of abilityKeys" class="p-2 border rounded-lg bg-gray-50 flex flex-col justify-center items-center h-28">
+                    <div class="text-sm font-bold text-red-700 uppercase">{{ ability.slice(0,3) }}</div>
+                    <div class="text-4xl font-bold">{{ getModifierString(getAbilityModifier(character.abilityScores![ability])) }}</div>
+                    <div class="text-md text-gray-600">{{ character.abilityScores![ability] }}</div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Coluna Esquerda: Testes de Resistência e Perícias -->
+                <div class="md:col-span-1 space-y-6">
+                    <div>
+                        <h4 class="font-bold text-red-700 border-b-2 border-red-200 pb-1 mb-2">Testes de Resistência</h4>
+                        <ul *ngIf="character.savingThrows" class="space-y-2">
+                            <li *ngFor="let key of abilityKeys" class="flex items-center">
+                                <span class="inline-block w-4 h-4 mr-3 border-2 rounded-full flex items-center justify-center text-xs" [ngClass]="{'bg-gray-800': character.savingThrows![key].proficient}"></span>
+                                <span class="font-semibold mr-2 w-10 text-right">{{ getModifierString(character.savingThrows![key].value) }}</span>
+                                <span class="text-gray-600 capitalize">{{ key }}</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-red-700 border-b-2 border-red-200 pb-1 mb-2">Perícias</h4>
+                        <ul *ngIf="character.skills" class="space-y-1.5">
+                            <li *ngFor="let skill of character.skills | keyvalue" class="flex items-center text-sm">
+                                <span class="inline-block w-4 h-4 mr-3 border-2 rounded-full flex items-center justify-center text-xs" [ngClass]="{'bg-gray-800': skill.value.proficient}"></span>
+                                <span class="font-semibold mr-2 w-10 text-right">{{ getModifierString(getSkillModifierValue(skill.value)) }}</span>
+                                <span class="text-gray-600">{{ skill.key }} <span class="text-gray-400">({{skill.value.ability.slice(0,3)}})</span></span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Coluna Central e Direita: Combate, Traços e Equipamento -->
+                <div class="md:col-span-2 space-y-6">
+                    <div class="grid grid-cols-3 gap-4 text-center">
+                        <div class="p-2 border rounded-lg bg-gray-50 flex flex-col justify-center items-center h-28"><strong class="block text-red-700">Classe de Armadura</strong><span class="text-3xl font-bold">{{ character.armorClass }}</span></div>
+                        <div class="p-2 border rounded-lg bg-gray-50 flex flex-col justify-center items-center h-28"><strong class="block text-red-700">Iniciativa</strong><span class="text-3xl font-bold">{{ getModifierString(character.initiative) }}</span></div>
+                        <div class="p-2 border rounded-lg bg-gray-50 flex flex-col justify-center items-center h-28"><strong class="block text-red-700">Deslocamento</strong><span class="text-3xl font-bold">{{ character.race?.speed }} m</span></div>
+                    </div>
+                    <div class="p-3 border rounded-lg bg-gray-50">
+                        <strong class="block text-red-700 text-center">Pontos de Vida</strong>
+                        <div class="text-center text-3xl font-bold">{{character.hitPoints?.current}} / {{character.hitPoints?.max}}</div>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-red-700 border-b-2 border-red-200 pb-1 mb-2">Traços e Características</h4>
+                        <ul class="list-disc list-inside text-sm text-gray-700 space-y-2 pl-2">
+                            <li *ngFor="let trait of character.traits">{{ trait }}</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-red-700 border-b-2 border-red-200 pb-1 mb-2">Equipamento</h4>
+                        <p class="text-sm text-gray-600">{{ character.equipment?.join(', ') }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <ng-template pTemplate="footer">
+                <div class="flex justify-between mt-6">
+                  <button pButton pRipple label="Voltar ao Início" icon="pi pi-replay" (click)="resetToInitialState()" class="p-button-secondary"></button>
+                  <button pButton pRipple label="Exportar JSON" icon="pi pi-download" (click)="downloadJson()" class="p-button-success"></button>
+                </div>
+            </ng-template>
+        </p-card>
+    </div>
   </div>
 </div>

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CharacterCreationService } from './service/character-creation.service';
 import { Race, Class, Background, AbilityScores, Character, SubRace, Skill } from './model/character.model';
-import jsPDF from 'jspdf';
 
 @Component({
   selector: 'app-root',
@@ -33,8 +32,16 @@ export class AppComponent implements OnInit {
   
   abilityKeys: (keyof AbilityScores)[] = ['strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma'];
 
+  // Opções para o SelectButton do método de habilidade
+  abilityMethodOptions: any[];
 
-  constructor(public characterService: CharacterCreationService) {} 
+  constructor(public characterService: CharacterCreationService) {
+    this.abilityMethodOptions = [
+      { label: 'Valores Padrão', value: 'standard' },
+      { label: 'Rolar Dados', value: 'roll' },
+      { label: 'Compra por Pontos', value: 'pointbuy' }
+    ];
+  } 
 
   ngOnInit() {
     this.resetToInitialState();
@@ -109,12 +116,7 @@ export class AppComponent implements OnInit {
 
   // Funções de Navegação
   nextStep() {
-    if (this.currentStep === 0) {
-      this.characterService.updateCharacter({ name: this.character.name });
-    }
-    if (this.currentStep === 5) { 
-        this.compileCharacterData();
-    }
+    if (this.currentStep === 5) { this.compileCharacterData(); }
     this.currentStep++;
   }
   prevStep() { this.currentStep--; }
@@ -132,6 +134,10 @@ export class AppComponent implements OnInit {
     } else {
       this.characterService.updateCharacter({ race: undefined, subrace: undefined });
     }
+  }
+  
+  onRaceChange() {
+    this.selectedSubrace = undefined;
   }
 
   onSubraceSelected(event: { value: SubRace }) {

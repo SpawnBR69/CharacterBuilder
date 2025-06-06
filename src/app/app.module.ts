@@ -1,19 +1,22 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms'; // Necessário para ngModel
+import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { AppComponent } from './app.component';
+import { CharacterCreationService } from './service/character-creation.service';
+
+// Importações dos Módulos PrimeNG
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { DropdownModule } from 'primeng/dropdown';
-
-import { AppComponent } from './app.component';
-import { CharacterCreationService } from './service/character-creation.service'; // Importe o serviço
+import { SelectButtonModule } from 'primeng/selectbutton';
+import { InputNumberModule } from 'primeng/inputnumber';
 
 @NgModule({
   declarations: [
     AppComponent
-    // Adicionar outros componentes aqui se fossem separados
   ],
   imports: [
     BrowserModule,
@@ -23,9 +26,11 @@ import { CharacterCreationService } from './service/character-creation.service';
     ButtonModule,
     InputTextModule,
     DropdownModule,
+    SelectButtonModule,
+    InputNumberModule
   ],
   providers: [
-    CharacterCreationService // Adicione o serviço aos providers
+    CharacterCreationService
   ],
   bootstrap: [AppComponent]
 })
