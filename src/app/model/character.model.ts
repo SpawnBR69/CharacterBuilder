@@ -7,34 +7,38 @@ export interface AbilityScores {
   charisma: number;
 }
 
+export interface Skill {
+  name: string;
+  ability: keyof AbilityScores;
+  proficient: boolean;
+}
+
 export interface Race {
   name: string;
   description: string;
-  abilityScoreIncrease?: Partial<AbilityScores>; // Ex: { strength: 2, constitution: 1 }
+  abilityScoreIncrease?: Partial<AbilityScores>; 
   ageDescription?: string;
   alignmentDescription?: string;
   size?: string;
   speed?: number;
-  traits?: string[]; // Lista de nomes de características
+  traits?: string[]; 
   languages?: string[];
   subraces?: SubRace[];
-  sourceBook?: string; // Ex: "Livro do Jogador", "Guia de Volo"
+  sourceBook?: string; 
 }
 
-export interface SubRace extends Omit<Race, 'subraces'> {
-  // Herda de Race, mas não pode ter subraces aninhadas
+export interface SubRace extends Omit<Race, 'subraces' | 'sourceBook'> {
 }
 
 export interface Class {
   name: string;
   description: string;
-  hitDie: number; // Ex: 10 para d10
+  hitDie: number;
   primaryAbility: string[];
-  savingThrowProficiencies: string[];
+  savingThrowProficiencies: (keyof AbilityScores)[]; // Tipagem forte
   armorAndWeaponProficiencies: string[];
-  startingEquipmentOptions: string[]; // Descrições das opções
-  sourceBook?: string;
-  // Adicionar mais características de classe conforme necessário
+  startingEquipmentOptions: string[];
+  sourceBook: string;
 }
 
 export interface Background {
@@ -45,20 +49,31 @@ export interface Background {
   languages?: string[];
   equipment: string[];
   feature: { name: string; description: string };
-  suggestedCharacteristics?: any; // Detalhar mais tarde
+  suggestedCharacteristics?: any;
   sourceBook: string;
 }
 
 export interface Character {
   name: string;
+  level: number;
   race?: Race;
   subrace?: SubRace;
   class?: Class;
-  level: number;
-  abilityScores: AbilityScores;
   background?: Background;
-  alignment?: string;
-  skills: { [skillName: string]: boolean }; // Proficiências em perícias
+  alignment?: string; // Adicionar seleção de alinhamento em um passo futuro
+  
+  // Atributos Calculados e Detalhes
+  abilityScores: AbilityScores;
+  proficiencyBonus: number;
+  savingThrows: { [key in keyof AbilityScores]: { proficient: boolean; value: number } };
+  skills: { [key: string]: Skill };
+  
+  // Combate
+  armorClass: number;
+  initiative: number;
+  hitPoints: { max: number; current: number; temporary: number };
+
+  // Outros
   equipment: string[];
-  // Adicionar outros campos como HP, AC, etc.
+  traits: string[]; // Combinação de traços raciais, de classe, etc.
 }

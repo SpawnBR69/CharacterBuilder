@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CharacterCreationService } from './service/character-creation.service';
-import { Race, Class, Background, AbilityScores, Character, SubRace } from './model/character.model';
+import { Race, Class, Background, AbilityScores, Character, SubRace, Skill } from './model/character.model';
 import jsPDF from 'jspdf';
 
 @Component({
@@ -37,11 +37,61 @@ export class AppComponent implements OnInit {
   constructor(public characterService: CharacterCreationService) {} 
 
   ngOnInit() {
-    this.characterService.currentCharacter.subscribe(char => this.character = char);
+    this.resetToInitialState();
+  }
+
+  resetToInitialState() {
+    this.currentStep = 0;
+    this.character = this.createEmptyCharacter();
+    this.selectedRace = undefined;
+    this.selectedSubrace = undefined;
+    this.selectedClass = undefined;
+    this.selectedBackground = undefined;
+
     this.races = this.characterService.getRaces();
     this.classes = this.characterService.getClasses();
     this.backgrounds = this.characterService.getBackgrounds();
     this.initializeAbilityScores();
+  }
+
+  createEmptyCharacter(): Partial<Character> {
+    return {
+      name: '',
+      level: 1,
+      abilityScores: { strength: 0, dexterity: 0, constitution: 0, intelligence: 0, wisdom: 0, charisma: 0 },
+      proficiencyBonus: 2, // Para nível 1
+      skills: this.initializeSkills(),
+      savingThrows: this.initializeSavingThrows(),
+      equipment: [],
+      traits: [],
+    };
+  }
+
+  initializeSkills(): { [key: string]: Skill } {
+    const allSkills: { name: string; ability: keyof AbilityScores }[] = [
+      { name: 'Acrobacia', ability: 'dexterity' }, { name: 'Adestrar Animais', ability: 'wisdom' },
+      { name: 'Arcanismo', ability: 'intelligence' }, { name: 'Atletismo', ability: 'strength' },
+      { name: 'Enganação', ability: 'charisma' }, { name: 'Furtividade', ability: 'dexterity' },
+      { name: 'História', ability: 'intelligence' }, { name: 'Intimidação', ability: 'charisma' },
+      { name: 'Intuição', ability: 'wisdom' }, { name: 'Investigação', ability: 'intelligence' },
+      { name: 'Medicina', ability: 'wisdom' }, { name: 'Natureza', ability: 'intelligence' },
+      { name: 'Percepção', ability: 'wisdom' }, { name: 'Atuação', ability: 'charisma' },
+      { name: 'Persuasão', ability: 'charisma' }, { name: 'Prestidigitação', ability: 'dexterity' },
+      { name: 'Religião', ability: 'intelligence' }, { name: 'Sobrevivência', ability: 'wisdom' }
+    ];
+    const skills: { [key: string]: Skill } = {};
+    allSkills.forEach(s => {
+      skills[s.name] = { ...s, proficient: false };
+    });
+    return skills;
+  }
+
+  initializeSavingThrows(): Character['savingThrows'] {
+    const savingThrows: any = {};
+    this.abilityKeys.forEach(key => {
+      savingThrows[key] = { proficient: false, value: 0 };
+    });
+    return savingThrows;
   }
 
   initializeAbilityScores() {
@@ -191,22 +241,120 @@ export class AppComponent implements OnInit {
   }
 
   getFinalAbilityScore(ability: keyof AbilityScores): number {
-    let score = this.assignedScores[ability] || 0; 
-    
-    if (this.character?.race?.abilityScoreIncrease?.[ability]) {
-        score += this.character.race.abilityScoreIncrease[ability]!;
-    }
-    
-    if (this.character?.subrace?.abilityScoreIncrease?.[ability]) {
-        score += this.character.subrace.abilityScoreIncrease[ability]!;
-    }
+    let score = this.assignedScores[ability] || 0;
+    if (this.character?.race?.abilityScoreIncrease?.[ability]) { score += this.character.race.abilityScoreIncrease[ability]!; }
+    if (this.character?.subrace?.abilityScoreIncrease?.[ability]) { score += this.character.subrace.abilityScoreIncrease[ability]!; }
     return score;
   }
 
-  getAbilityModifier(score: number | undefined): string {
-    if (score === undefined) return '+0';
-    const mod = Math.floor((score - 10) / 2);
+  getAbilityModifier(score: number): number {
+    return Math.floor((score - 10) / 2);
+  }
+
+  getAbilityModifierString(score: number): string {
+    const mod = this.getAbilityModifier(score);
     return mod >= 0 ? `+${mod}` : `${mod}`;
+  }
+
+  compileCharacterData() {
+    const finalCharacter: Character = this.createEmptyCharacter() as Character;
+    finalCharacter.name = this.character.name || 'Sem Nome';
+    finalCharacter.race = this.selectedRace;
+    finalCharacter.subrace = this.selectedSubrace;
+    finalCharacter.class = this.selectedClass;
+    finalCharacter.background = this.selectedBackground;
+    finalCharacter.level = 1;
+    finalCharacter.proficiencyBonus = 2;
+
+    // 1. Finaliza os Ability Scores
+    this.abilityKeys.forEach(key => {
+      finalCharacter.abilityScores[key] = this.getFinalAbilityScore(key);
+    });
+
+    // 2. Calcula Saving Throws
+    this.abilityKeys.forEach(key => {
+      const modifier = this.getAbilityModifier(finalCharacter.abilityScores[key]);
+      const isProficient = finalCharacter.class?.savingThrowProficiencies.includes(key) || false;
+      finalCharacter.savingThrows[key] = {
+        proficient: isProficient,
+        value: modifier + (isProficient ? finalCharacter.proficiencyBonus : 0)
+      };
+    });
+
+    // 3. Calcula Perícias (Skills)
+    const backgroundSkills = finalCharacter.background?.skillProficiencies || [];
+    // (Adicionar lógica para escolher perícias da classe aqui no futuro)
+    for (const skillName in finalCharacter.skills) {
+        if(backgroundSkills.includes(skillName)) {
+            finalCharacter.skills[skillName].proficient = true;
+        }
+    }
+
+    // 4. Calcula HP, AC e Iniciativa
+    const conModifier = this.getAbilityModifier(finalCharacter.abilityScores.constitution);
+    const dexModifier = this.getAbilityModifier(finalCharacter.abilityScores.dexterity);
+    finalCharacter.hitPoints = {
+      max: (finalCharacter.class?.hitDie || 0) + conModifier,
+      current: (finalCharacter.class?.hitDie || 0) + conModifier,
+      temporary: 0
+    };
+    finalCharacter.armorClass = 10 + dexModifier; // Base, sem armadura
+    finalCharacter.initiative = dexModifier;
+    
+    // 5. Compila Equipamentos e Traços
+    finalCharacter.equipment = this.characterService.getStartingEquipment(finalCharacter.class?.name, finalCharacter.background?.name);
+    finalCharacter.traits = [
+      ...(finalCharacter.race?.traits || []),
+      ...(finalCharacter.subrace?.traits || []),
+      ...(finalCharacter.background?.feature ? [finalCharacter.background.feature.name] : [])
+    ];
+    
+    // Atualiza o personagem principal
+    this.character = finalCharacter;
+  }
+  
+  // --- Funções de Importação/Exportação ---
+
+  downloadJson() {
+    this.compileCharacterData(); // Garante que os dados estão atualizados
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(this.character, null, 2));
+    const downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute("href", dataStr);
+    downloadAnchorNode.setAttribute("download", `${this.character.name?.replace(/\s+/g, '_') || 'personagem'}.json`);
+    document.body.appendChild(downloadAnchorNode);
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
+  }
+  
+  handleFileUpload(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (!input.files?.length) return;
+    
+    const file = input.files[0];
+    const reader = new FileReader();
+    
+    reader.onload = (e) => {
+      try {
+        const json = JSON.parse(e.target?.result as string);
+        // Validação simples do JSON importado
+        if (json.name && json.abilityScores) {
+          this.character = json;
+          this.selectedRace = json.race;
+          this.selectedSubrace = json.subrace;
+          this.selectedClass = json.class;
+          this.selectedBackground = json.background;
+          this.assignedScores = json.abilityScores; // Pode precisar de mais lógica se o método de criação for diferente
+          this.currentStep = 6; // Pula para o resumo
+        } else {
+          alert('Arquivo JSON inválido ou não corresponde ao formato de personagem.');
+        }
+      } catch (error) {
+        console.error("Erro ao ler o JSON:", error);
+        alert("Ocorreu um erro ao ler o arquivo. Verifique se é um JSON válido.");
+      }
+    };
+    
+    reader.readAsText(file);
   }
   
   exportToPdf() {

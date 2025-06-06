@@ -3,15 +3,22 @@
 
   <!-- Passo 0: Nome do Personagem -->
   <div *ngIf="currentStep === 0">
-    <h2 class="text-2xl font-semibold mb-4 text-red-600">Passo 0: Nome do Personagem</h2>
+    <h2 class="text-2xl font-semibold mb-4 text-red-600">Passo 0: Comece sua Jornada</h2>
     <div class="mb-4">
       <label for="character-name" class="block text-lg font-medium text-gray-700">Qual o nome do seu personagem?</label>
       <input type="text" id="character-name" [(ngModel)]="character.name" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm rounded-md">
     </div>
-    <button (click)="nextStep()" [disabled]="!character.name || character.name.trim() === ''"
-            class="mt-6 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg shadow disabled:opacity-50">
-      Próximo
-    </button>
+    <div class="flex items-center gap-4 mt-8">
+        <button (click)="nextStep()" [disabled]="!character.name || character.name.trim() === ''"
+                class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg shadow disabled:opacity-50">
+          Criar Novo Personagem
+        </button>
+        <span class="text-gray-500">ou</span>
+        <label for="import-json" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg shadow cursor-pointer">
+          Importar JSON
+        </label>
+        <input type="file" id="import-json" (change)="handleFileUpload($event)" class="hidden" accept=".json">
+    </div>
   </div>
 
   <!-- Passo 1: Raça -->
@@ -246,28 +253,87 @@
 
   <!-- Passo 6: Resumo do Personagem -->
   <div *ngIf="currentStep === 6">
-    <h2 class="text-2xl font-semibold mb-4 text-red-600">Resumo do Personagem</h2>
-    <div class="bg-white p-6 rounded-lg shadow-lg">
-      <p class="mb-2"><strong class="text-red-700">Nome:</strong> {{ character.name || 'Ainda não definido' }}</p>
-      <p class="mb-2"><strong class="text-red-700">Raça:</strong> {{ character.race?.name }} {{ character.subrace ? '(' + character.subrace.name + ')' : '' }}</p>
-      <p class="mb-2"><strong class="text-red-700">Classe:</strong> {{ character.class?.name }} | <strong class="text-red-700">Nível:</strong> {{ character.level }}</p>
-      <p class="mb-2"><strong class="text-red-700">Antecedente:</strong> {{ character.background?.name }}</p>
+    <h2 class="text-2xl font-semibold mb-4 text-red-600">Ficha de Personagem</h2>
+    <div class="bg-white p-6 rounded-lg shadow-lg space-y-4">
+      
+      <!-- Informações Básicas -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 border-b pb-4">
+        <div><strong class="block text-red-700">Nome:</strong> {{ character.name }}</div>
+        <div><strong class="block text-red-700">Classe & Nível:</strong> {{ character.class?.name }} {{ character.level }}</div>
+        <div><strong class="block text-red-700">Antecedente:</strong> {{ character.background?.name }}</div>
+        <div><strong class="block text-red-700">Raça:</strong> {{ character.race?.name }} {{ character.subrace ? '(' + character.subrace.name + ')' : '' }}</div>
+        <div><strong class="block text-red-700">Alinhamento:</strong> {{ character.alignment || 'Não definido' }}</div>
+      </div>
 
-      <h3 class="text-xl font-semibold mt-4 mb-2 text-red-700">Valores de Habilidade Finais (com bônus racial):</h3>
-      <ul class="list-disc list-inside mb-2">
-        <!-- Iterar com abilityKeys para garantir consistência e tipagem -->
-        <li *ngFor="let ability of abilityKeys">
-            <span class="capitalize">{{ability}}:</span> {{ getFinalAbilityScore(ability) }} ({{ getAbilityModifier(getFinalAbilityScore(ability)) }})
-        </li>
-      </ul>
-       <h3 class="text-xl font-semibold mt-4 mb-2 text-red-700">Equipamento Inicial:</h3>
-        <ul class="list-disc list-inside mb-2">
-            <li *ngFor="let item of character.equipment">{{ item }}</li>
-        </ul>
-      <!-- Adicionar mais detalhes como Perícias, PV, CA, etc. -->
+      <!-- Atributos e Modificadores -->
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 text-center">
+        <div *ngFor="let ability of abilityKeys" class="p-2 border rounded-lg">
+          <div class="text-sm font-bold text-red-700 uppercase">{{ ability.slice(0,3) }}</div>
+          <div class="text-2xl font-bold">{{ getAbilityModifierString(character.abilityScores![ability]) }}</div>
+          <div class="text-sm text-gray-600">{{ character.abilityScores![ability] }}</div>
+        </div>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <!-- Coluna Esquerda: Testes de Resistência e Perícias -->
+        <div class="md:col-span-1 space-y-4">
+          <div>
+            <h4 class="font-bold text-red-700 border-b mb-2">Testes de Resistência</h4>
+            <ul>
+              <li *ngFor="let key of abilityKeys" class="flex items-center">
+                <span class="inline-block w-4 h-4 mr-2 border rounded-full flex items-center justify-center text-xs">
+                  <span *ngIf="character.savingThrows![key].proficient" class="w-2 h-2 bg-gray-800 rounded-full"></span>
+                </span>
+                <span class="font-semibold mr-1">{{ (character.savingThrows![key].value >= 0 ? '+' : '') + character.savingThrows![key].value }}</span>
+                <span class="text-gray-600 capitalize">{{ key }}</span>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-bold text-red-700 border-b mb-2">Perícias</h4>
+            <ul>
+                <li *ngFor="let skill of character.skills | keyvalue" class="flex items-center text-sm">
+                    <span class="inline-block w-4 h-4 mr-2 border rounded-full flex items-center justify-center text-xs">
+                        <span *ngIf="skill.value.proficient" class="w-2 h-2 bg-gray-800 rounded-full"></span>
+                    </span>
+                    <span class="font-semibold mr-1">{{ (getAbilityModifier(character.abilityScores![skill.value.ability]) + (skill.value.proficient ? character.proficiencyBonus! : 0) >= 0 ? '+' : '') + (getAbilityModifier(character.abilityScores![skill.value.ability]) + (skill.value.proficient ? character.proficiencyBonus! : 0)) }}</span>
+                    <span class="text-gray-600">{{ skill.key }} <span class="text-gray-400">({{skill.value.ability.slice(0,3)}})</span></span>
+                </li>
+            </ul>
+          </div>
+        </div>
+        
+        <!-- Coluna Central: Combate e Traços -->
+        <div class="md:col-span-2 space-y-4">
+            <div class="grid grid-cols-3 gap-2 text-center">
+              <div class="p-2 border rounded-lg"><strong class="block text-red-700">Classe de Armadura</strong><span class="text-xl">{{ character.armorClass }}</span></div>
+              <div class="p-2 border rounded-lg"><strong class="block text-red-700">Iniciativa</strong><span class="text-xl">{{ (character.initiative! >= 0 ? '+' : '') + character.initiative }}</span></div>
+              <div class="p-2 border rounded-lg"><strong class="block text-red-700">Deslocamento</strong><span class="text-xl">{{ character.race?.speed }} m</span></div>
+            </div>
+            <div class="p-2 border rounded-lg">
+                <strong class="block text-red-700 text-center">Pontos de Vida</strong>
+                <div class="text-center text-xl">{{character.hitPoints?.current}} / {{character.hitPoints?.max}}</div>
+            </div>
+             <div>
+                <h4 class="font-bold text-red-700 border-b mb-2">Traços e Características</h4>
+                <ul class="list-disc list-inside text-sm text-gray-700 space-y-1">
+                    <li *ngFor="let trait of character.traits">{{ trait }}</li>
+                </ul>
+            </div>
+        </div>
+      </div>
+      
+       <!-- Equipamento -->
+       <div>
+            <h4 class="font-bold text-red-700 border-b mb-2">Equipamento</h4>
+            <p class="text-sm text-gray-600">{{ character.equipment?.join(', ') }}</p>
+       </div>
     </div>
-    <button (click)="prevStep()" class="mt-6 mr-2 bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg shadow">Anterior</button>
-    <button (click)="exportToPdf()" class="mt-6 bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg shadow">Exportar para PDF (Conceitual)</button>
+    
+    <!-- Botões de Ação Final -->
+    <div class="mt-8 flex justify-between">
+      <button (click)="resetToInitialState()" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg shadow">Voltar ao Início</button>
+      <button (click)="downloadJson()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg shadow">Exportar para JSON</button>
+    </div>
   </div>
-
 </div>

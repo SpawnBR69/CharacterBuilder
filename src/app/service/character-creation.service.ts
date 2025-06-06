@@ -322,14 +322,14 @@ export class CharacterCreationService {
   }
 
   getClasses(): Class[] {
-    // Todas as classes base do Livro do Jogador
+    // Todas as classes base do Livro do Jogador com a tipagem correta para savingThrowProficiencies
     return [
       {
         name: 'Bárbaro',
         description: 'Um guerreiro feroz que pode entrar em fúria de batalha.',
         hitDie: 12,
         primaryAbility: ['Força'],
-        savingThrowProficiencies: ['Força', 'Constituição'],
+        savingThrowProficiencies: ['strength', 'constitution'],
         armorAndWeaponProficiencies: ['Armaduras leves e médias', 'escudos', 'armas simples e marciais'],
         startingEquipmentOptions: [
           '(a) um machado grande ou (b) qualquer arma marcial corpo a corpo',
@@ -343,7 +343,7 @@ export class CharacterCreationService {
         description: 'Um mestre da música, fala e magia, que inspira aliados e desmoraliza inimigos.',
         hitDie: 8,
         primaryAbility: ['Carisma'],
-        savingThrowProficiencies: ['Destreza', 'Carisma'],
+        savingThrowProficiencies: ['dexterity', 'charisma'],
         armorAndWeaponProficiencies: ['Armaduras leves', 'armas simples', 'bestas de mão', 'espadas longas', 'rapieiras', 'espadas curtas'],
         startingEquipmentOptions: [
           '(a) uma rapieira, (b) uma espada longa ou (c) qualquer arma simples',
@@ -358,7 +358,7 @@ export class CharacterCreationService {
         description: 'Um manipulador de magia derivada de um pacto com uma entidade extraplanar.',
         hitDie: 8,
         primaryAbility: ['Carisma'],
-        savingThrowProficiencies: ['Sabedoria', 'Carisma'],
+        savingThrowProficiencies: ['wisdom', 'charisma'],
         armorAndWeaponProficiencies: ['Armaduras leves', 'armas simples'],
         startingEquipmentOptions: [
           '(a) uma besta leve e 20 virotes ou (b) qualquer arma simples',
@@ -373,7 +373,7 @@ export class CharacterCreationService {
         description: 'Um campeão sacerdotal que empunha magia divina a serviço de um poder maior.',
         hitDie: 8,
         primaryAbility: ['Sabedoria'],
-        savingThrowProficiencies: ['Sabedoria', 'Carisma'],
+        savingThrowProficiencies: ['wisdom', 'charisma'],
         armorAndWeaponProficiencies: ['Armaduras leves e médias', 'escudos', 'todas as armas simples'],
         startingEquipmentOptions: [
           '(a) uma maça ou (b) um martelo de guerra (se proficiente)',
@@ -389,7 +389,7 @@ export class CharacterCreationService {
         description: 'Um sacerdote da Velha Fé, que empunha os poderes da natureza e adota formas de animais.',
         hitDie: 8,
         primaryAbility: ['Sabedoria'],
-        savingThrowProficiencies: ['Inteligência', 'Sabedoria'],
+        savingThrowProficiencies: ['intelligence', 'wisdom'],
         armorAndWeaponProficiencies: ['Armaduras leves e médias (não-metálicas)', 'escudos (não-metálicos)', 'clavas', 'adagas', 'dardos', 'azagaias', 'maças', 'bordões', 'cimitarras', 'fundas', 'lanças'],
         startingEquipmentOptions: [
           '(a) um escudo de madeira ou (b) qualquer arma simples',
@@ -403,7 +403,7 @@ export class CharacterCreationService {
         description: 'Um conjurador que extrai magia de uma linhagem ou dom inato.',
         hitDie: 6,
         primaryAbility: ['Carisma'],
-        savingThrowProficiencies: ['Constituição', 'Carisma'],
+        savingThrowProficiencies: ['constitution', 'charisma'],
         armorAndWeaponProficiencies: ['Adagas', 'dardos', 'fundas', 'bordões', 'bestas leves'],
         startingEquipmentOptions: [
           '(a) uma besta leve e 20 virotes ou (b) qualquer arma simples',
@@ -418,7 +418,7 @@ export class CharacterCreationService {
         description: 'Um mestre do combate, especialista em uma ampla gama de armas e armaduras.',
         hitDie: 10,
         primaryAbility: ['Força', 'Destreza'],
-        savingThrowProficiencies: ['Força', 'Constituição'],
+        savingThrowProficiencies: ['strength', 'constitution'],
         armorAndWeaponProficiencies: ['Todas as armaduras', 'escudos', 'armas simples e marciais'],
         startingEquipmentOptions: [
           '(a) cota de malha ou (b) gibão de peles, arco longo e 20 flechas',
@@ -433,7 +433,7 @@ export class CharacterCreationService {
         description: 'Um gatuno que usa furtividade e subterfúgio para superar obstáculos e inimigos.',
         hitDie: 8,
         primaryAbility: ['Destreza'],
-        savingThrowProficiencies: ['Destreza', 'Inteligência'],
+        savingThrowProficiencies: ['dexterity', 'intelligence'],
         armorAndWeaponProficiencies: ['Armaduras leves', 'armas simples', 'bestas de mão', 'espadas longas', 'rapieiras', 'espadas curtas'],
         startingEquipmentOptions: [
           '(a) uma rapieira ou (b) uma espada curta',
@@ -448,7 +448,7 @@ export class CharacterCreationService {
         description: 'Um usuário de magia erudito, capaz de manipular as estruturas da realidade.',
         hitDie: 6,
         primaryAbility: ['Inteligência'],
-        savingThrowProficiencies: ['Inteligência', 'Sabedoria'],
+        savingThrowProficiencies: ['intelligence', 'wisdom'],
         armorAndWeaponProficiencies: ['Adagas', 'dardos', 'fundas', 'bordões', 'bestas leves'],
         startingEquipmentOptions: [
           '(a) um bordão ou (b) uma adaga',
@@ -463,7 +463,7 @@ export class CharacterCreationService {
         description: 'Um mestre das artes marciais, usando o poder do corpo em busca da perfeição física e espiritual.',
         hitDie: 8,
         primaryAbility: ['Destreza', 'Sabedoria'],
-        savingThrowProficiencies: ['Força', 'Destreza'],
+        savingThrowProficiencies: ['strength', 'dexterity'],
         armorAndWeaponProficiencies: ['Armas simples', 'espadas curtas'],
         startingEquipmentOptions: [
           '(a) uma espada curta ou (b) qualquer arma simples',
@@ -477,7 +477,7 @@ export class CharacterCreationService {
         description: 'Um guerreiro sagrado vinculado a um juramento.',
         hitDie: 10,
         primaryAbility: ['Força', 'Carisma'],
-        savingThrowProficiencies: ['Sabedoria', 'Carisma'],
+        savingThrowProficiencies: ['wisdom', 'charisma'],
         armorAndWeaponProficiencies: ['Todas as armaduras', 'escudos', 'armas simples e marciais'],
         startingEquipmentOptions: [
           '(a) uma arma marcial e um escudo ou (b) duas armas marciais',
@@ -492,7 +492,7 @@ export class CharacterCreationService {
         description: 'Um guerreiro que usa habilidade marcial e magia da natureza para combater ameaças nos limites da civilização.',
         hitDie: 10,
         primaryAbility: ['Destreza', 'Sabedoria'],
-        savingThrowProficiencies: ['Força', 'Destreza'],
+        savingThrowProficiencies: ['strength', 'dexterity'],
         armorAndWeaponProficiencies: ['Armaduras leves e médias', 'escudos', 'armas simples e marciais'],
         startingEquipmentOptions: [
           '(a) brunea ou (b) corselete de couro',
