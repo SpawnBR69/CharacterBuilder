@@ -1,0 +1,231 @@
+<div class="container mx-auto p-4 font-sans">
+  <h1 class="text-3xl font-bold mb-6 text-center text-red-700">Criador de Personagens D&D 5e</h1>
+
+  <!-- Passo 1: Raça -->
+  <div *ngIf="currentStep === 1">
+    <h2 class="text-2xl font-semibold mb-4 text-red-600">Passo 1: Escolha sua Raça</h2>
+    
+    <!-- Caixa de Seleção para Raças -->
+    <div class="mb-4">
+      <label for="race-select" class="block text-lg font-medium text-gray-700">Raça</label>
+      <select id="race-select" (change)="onRaceSelected($event)" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm rounded-md bg-white">
+        <option value="">-- Escolha uma Raça --</option>
+        <option *ngFor="let race of races" [value]="race.name">
+          {{ race.name }} ({{ race.sourceBook }})
+        </option>
+      </select>
+    </div>
+
+    <!-- Container para exibir detalhes da raça selecionada -->
+    <div *ngIf="selectedRace" class="mt-4 p-4 border rounded-lg bg-gray-50">
+      <h3 class="text-xl font-bold text-red-800">{{ selectedRace.name }}</h3>
+      <p class="mt-2 text-sm text-gray-700">{{ selectedRace.description }}</p>
+      
+      <div class="mt-3">
+        <p><strong class="font-semibold">Aumento de Valor de Habilidade:</strong> 
+          <span *ngFor="let increase of selectedRace.abilityScoreIncrease | keyvalue">
+            {{ increase.key | titlecase }} +{{ increase.value }}. 
+          </span>
+        </p>
+        <p><strong class="font-semibold">Deslocamento:</strong> {{ selectedRace.speed }} metros.</p>
+        <p><strong class="font-semibold">Idiomas:</strong> {{ selectedRace.languages?.join(', ') }}.</p>
+        <div *ngIf="selectedRace.traits && selectedRace.traits.length > 0">
+          <strong class="font-semibold">Traços Raciais:</strong>
+          <ul class="list-disc list-inside ml-4">
+            <li *ngFor="let trait of selectedRace.traits">{{ trait }}</li>
+          </ul>
+        </div>
+      </div>
+      
+      <!-- Caixa de Seleção para Sub-raças (se aplicável) -->
+      <div *ngIf="selectedRace.subraces && selectedRace.subraces.length > 0" class="mt-4">
+        <label for="subrace-select" class="block text-lg font-medium text-gray-700">Sub-raça</label>
+        <select id="subrace-select" (change)="onSubraceSelected($event)" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm rounded-md bg-white">
+          <option value="">-- Escolha uma Sub-raça --</option>
+          <option *ngFor="let subrace of selectedRace.subraces" [value]="subrace.name">
+            {{ subrace.name }}
+          </option>
+        </select>
+      </div>
+
+      <!-- Detalhes da Sub-raça Selecionada -->
+      <div *ngIf="selectedSubrace" class="mt-3 p-3 border-t border-gray-200">
+        <h4 class="text-lg font-bold text-red-700">{{ selectedSubrace.name }}</h4>
+        <p class="mt-1 text-sm text-gray-600">{{ selectedSubrace.description }}</p>
+        <p class="mt-1"><strong class="font-semibold">Aumento Adicional:</strong> 
+          <span *ngFor="let increase of selectedSubrace.abilityScoreIncrease | keyvalue">
+            {{ increase.key | titlecase }} +{{ increase.value }}.
+          </span>
+        </p>
+        <div *ngIf="selectedSubrace.traits && selectedSubrace.traits.length > 0">
+          <strong class="font-semibold">Traços de Sub-raça:</strong>
+          <ul class="list-disc list-inside ml-4">
+            <li *ngFor="let trait of selectedSubrace.traits">{{ trait }}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <button (click)="nextStep()" [disabled]="!selectedRace || (selectedRace.subraces && selectedRace.subraces.length > 0 && !selectedSubrace)"
+            class="mt-6 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg shadow disabled:opacity-50">
+      Próximo
+    </button>
+  </div>
+
+  <!-- Passo 2: Classe -->
+  <div *ngIf="currentStep === 2">
+    <h2 class="text-2xl font-semibold mb-4 text-red-600">Passo 2: Escolha sua Classe</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div *ngFor="let cls of classes"
+           class="p-4 border rounded-lg shadow hover:shadow-md cursor-pointer"
+           [class.bg-red-100]="selectedClass === cls"
+           (click)="selectClass(cls)">
+        <h3 class="text-xl font-bold text-red-800">{{ cls.name }}</h3>
+        <p class="text-sm text-gray-700">{{ cls.description }}</p>
+      </div>
+    </div>
+    <button (click)="prevStep()" class="mt-6 mr-2 bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg shadow">Anterior</button>
+    <button (click)="nextStep()" [disabled]="!selectedClass"
+            class="mt-6 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg shadow disabled:opacity-50">
+      Próximo
+    </button>
+  </div>
+
+  <!-- Passo 3: Valores de Habilidade -->
+  <div *ngIf="currentStep === 3">
+    <h2 class="text-2xl font-semibold mb-4 text-red-600">Passo 3: Determine os Valores de Habilidade</h2>
+    <div class="mb-4">
+      <label class="mr-2">Método:</label>
+      <select [(ngModel)]="abilityScoreMethod" (ngModelChange)="initializeAbilityScores()" class="p-2 border rounded-lg shadow-sm">
+        <option value="standard">Valores Padrão</option>
+        <option value="roll">Rolar Dados (4d6kh3)</option>
+        <option value="pointbuy">Compra por Pontos</option>
+      </select>
+    </div>
+
+    <!-- Info para Roll e Standard -->
+    <div *ngIf="abilityScoreMethod === 'roll'" class="mb-4 flex items-center gap-4">
+      <button (click)="onRollScores()" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg shadow">Rolar Dados</button>
+      <button *ngIf="abilityScorePool.length > 0" (click)="resetScoreAssignments()" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg shadow">Limpar Seleções</button>
+    </div>
+    <div *ngIf="abilityScoreMethod === 'standard'" class="mb-4 flex items-center gap-4">
+      <p>Use os valores: {{ standardArray.join(', ') }}.</p>
+      <button (click)="resetScoreAssignments()" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg shadow">Limpar Seleções</button>
+    </div>
+    
+    <!-- Info para Point Buy -->
+    <div *ngIf="abilityScoreMethod === 'pointbuy'" class="mb-4">
+        <p class="font-semibold">Pontos Restantes: <span [class.text-red-500]="pointBuyPoints < 0">{{ pointBuyPoints }}</span></p>
+        <p class="text-xs text-gray-600">Custos: 8 (0), 9 (1), 10 (2), 11 (3), 12 (4), 13 (5), 14 (7), 15 (9).</p>
+    </div>
+
+    <!-- Inputs de Habilidade -->
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <!-- UI para Point Buy -->
+        <ng-container *ngIf="abilityScoreMethod === 'pointbuy'">
+            <div *ngFor="let ability of abilityKeys" class="mb-2">
+                <label class="font-semibold capitalize text-red-700">{{ ability.charAt(0).toUpperCase() + ability.slice(1) }}:</label>
+                <input type="number"
+                       [(ngModel)]="assignedScores[ability]"
+                       (ngModelChange)="recalculatePointBuyPoints()"
+                       min="8" max="15"
+                       class="w-full p-2 border rounded-lg shadow-sm mt-1">
+            </div>
+        </ng-container>
+
+        <!-- UI para Standard/Roll -->
+        <ng-container *ngIf="abilityScoreMethod === 'standard' || abilityScoreMethod === 'roll'">
+            <div *ngFor="let ability of abilityKeys" class="mb-2">
+                <label class="font-semibold capitalize text-red-700">{{ ability.charAt(0).toUpperCase() + ability.slice(1) }}:</label>
+                <select [(ngModel)]="assignedScores[ability]" class="w-full p-2 border rounded-lg shadow-sm mt-1 bg-white">
+                    <option [ngValue]="0" disabled>Escolha...</option>
+                    <option *ngFor="let score of getAvailableScoresFor(ability)" [ngValue]="score">
+                        {{ score }}
+                    </option>
+                </select>
+            </div>
+        </ng-container>
+    </div>
+
+    <!-- Validação e Navegação -->
+    <div *ngIf="abilityScoreMethod === 'pointbuy' && pointBuyPoints !== 0" class="mt-2 text-red-500 font-semibold">
+        Você deve usar exatamente 27 pontos. Pontos restantes: {{ pointBuyPoints }}.
+    </div>
+    <div *ngIf="(abilityScoreMethod === 'standard' || abilityScoreMethod === 'roll') && isNextStepInStep3Disabled && abilityScorePool.length > 0" class="mt-2 text-red-500 font-semibold">
+        Por favor, atribua um valor para cada habilidade.
+    </div>
+
+    <button (click)="prevStep()" class="mt-6 mr-2 bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg shadow">Anterior</button>
+    <button (click)="nextStep()" [disabled]="isNextStepInStep3Disabled"
+            class="mt-6 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg shadow disabled:opacity-50">
+      Próximo
+    </button>
+  </div>
+
+  <!-- Passo 4: Antecedente -->
+  <div *ngIf="currentStep === 4">
+    <h2 class="text-2xl font-semibold mb-4 text-red-600">Passo 4: Escolha seu Antecedente</h2>
+     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div *ngFor="let bg of backgrounds"
+             class="p-4 border rounded-lg shadow hover:shadow-md cursor-pointer"
+             [class.bg-red-100]="selectedBackground === bg"
+             (click)="selectBackground(bg)">
+          <h3 class="text-xl font-bold text-red-800">{{ bg.name }}</h3>
+          <p class="text-sm text-gray-700">{{ bg.description }}</p>
+        </div>
+    </div>
+    <button (click)="prevStep()" class="mt-6 mr-2 bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg shadow">Anterior</button>
+    <button (click)="nextStep()" [disabled]="!selectedBackground"
+            class="mt-6 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg shadow disabled:opacity-50">
+      Próximo
+    </button>
+  </div>
+
+   <!-- Passo 5: Equipamento (Simplificado) -->
+  <div *ngIf="currentStep === 5">
+    <h2 class="text-2xl font-semibold mb-4 text-red-600">Passo 5: Equipamento</h2>
+    <p class="mb-2">Seu equipamento inicial é determinado pela sua classe e antecedente.</p>
+    <p class="mb-4 text-sm text-gray-600">(Em uma aplicação completa, aqui haveria opções de escolha baseadas nas regras do Livro do Jogador).</p>
+    <div>
+        <h3 class="text-lg font-semibold text-red-700">Equipamento Sugerido:</h3>
+        <ul class="list-disc list-inside mt-2">
+            <!-- Acessar characterService que agora é público -->
+            <li *ngFor="let item of characterService.getStartingEquipment(character.class?.name, character.background?.name)">
+                {{ item }}
+            </li>
+        </ul>
+    </div>
+    <button (click)="prevStep()" class="mt-6 mr-2 bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg shadow">Anterior</button>
+    <button (click)="nextStep()"
+            class="mt-6 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg shadow">
+      Ver Resumo
+    </button>
+  </div>
+
+  <!-- Passo 6: Resumo do Personagem -->
+  <div *ngIf="currentStep === 6">
+    <h2 class="text-2xl font-semibold mb-4 text-red-600">Resumo do Personagem</h2>
+    <div class="bg-white p-6 rounded-lg shadow-lg">
+      <p class="mb-2"><strong class="text-red-700">Nome:</strong> {{ character.name || 'Ainda não definido' }}</p>
+      <p class="mb-2"><strong class="text-red-700">Raça:</strong> {{ character.race?.name }} {{ character.subrace ? '(' + character.subrace.name + ')' : '' }}</p>
+      <p class="mb-2"><strong class="text-red-700">Classe:</strong> {{ character.class?.name }} | <strong class="text-red-700">Nível:</strong> {{ character.level }}</p>
+      <p class="mb-2"><strong class="text-red-700">Antecedente:</strong> {{ character.background?.name }}</p>
+
+      <h3 class="text-xl font-semibold mt-4 mb-2 text-red-700">Valores de Habilidade Finais (com bônus racial):</h3>
+      <ul class="list-disc list-inside mb-2">
+        <!-- Iterar com abilityKeys para garantir consistência e tipagem -->
+        <li *ngFor="let ability of abilityKeys">
+            <span class="capitalize">{{ability}}:</span> {{ getFinalAbilityScore(ability) }} ({{ getAbilityModifier(getFinalAbilityScore(ability)) }})
+        </li>
+      </ul>
+       <h3 class="text-xl font-semibold mt-4 mb-2 text-red-700">Equipamento Inicial:</h3>
+        <ul class="list-disc list-inside mb-2">
+            <li *ngFor="let item of character.equipment">{{ item }}</li>
+        </ul>
+      <!-- Adicionar mais detalhes como Perícias, PV, CA, etc. -->
+    </div>
+    <button (click)="prevStep()" class="mt-6 mr-2 bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg shadow">Anterior</button>
+    <button (click)="exportToPdf()" class="mt-6 bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg shadow">Exportar para PDF (Conceitual)</button>
+  </div>
+
+</div>

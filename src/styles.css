@@ -1,1 +1,9 @@
-/* You can add global styles to this file, and also import other style files */
+body {
+  font-family: 'Inter', sans-serif; /* Exemplo de fonte, similar ao Tailwind padrão */
+  background-color: #f9fafb; /* Cinza claro, similar ao bg-gray-50 */
+  color: #1f2937; /* Cinza escuro, similar ao text-gray-800 */
+}
+
+.container {
+  max-width: 900px; /* Limita a largura para melhor leitura */
+}
