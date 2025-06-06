@@ -180,6 +180,7 @@ export class AppComponent implements OnInit {
 
   recalculatePointBuyPoints() {
     let totalCost = 0;
+    console.log('gaming');
     for (const abilityKey of this.abilityKeys) { 
         totalCost += this.characterService.calculatePointBuyCost(this.assignedScores[abilityKey]);
     }

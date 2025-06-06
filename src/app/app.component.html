@@ -128,7 +128,7 @@
                             <div *ngFor="let ability of abilityKeys" class="field mb-2 text-center">
                                 <label class="font-semibold capitalize text-red-700 block mb-1">{{ ability }}</label>
                                 <p-inputNumber [(ngModel)]="assignedScores[ability]"
-                                    (onValueChange)="recalculatePointBuyPoints()" [min]="8" [max]="15"
+                                    (onBlur)="recalculatePointBuyPoints()" [min]="8" [max]="15"
                                     [showButtons]="true"></p-inputNumber>
                             </div>
                         </div>
