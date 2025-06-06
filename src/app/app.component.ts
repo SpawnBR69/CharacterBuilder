@@ -35,6 +35,8 @@ export class AppComponent implements OnInit {
   // Opções para o SelectButton do método de habilidade
   abilityMethodOptions: any[];
 
+  equipmentChoices: { [key: string]: string } = {};
+
   constructor(public characterService: CharacterCreationService) {
     this.abilityMethodOptions = [
       { label: 'Valores Padrão', value: 'standard' },
@@ -148,6 +150,11 @@ export class AppComponent implements OnInit {
   onClassSelected(event: { value: Class }) {
     this.selectedClass = event.value;
     this.characterService.updateCharacter({ class: this.selectedClass });
+    this.equipmentChoices = {};
+  }
+
+  isEquipmentChoice(item: any): item is string[] {
+    return Array.isArray(item);
   }
 
   onBackgroundSelected(event: { value: Background }) {
@@ -258,6 +265,21 @@ export class AppComponent implements OnInit {
     finalCharacter.level = 1;
     finalCharacter.proficiencyBonus = 2;
 
+    if(this,this.selectedRace?.traits){
+      this.selectedRace.traits.forEach(trait => {
+        finalCharacter.traits.push(trait);
+      })
+    }
+
+    if(this,this.selectedSubrace?.traits){
+      this.selectedSubrace.traits.forEach(trait => {
+        finalCharacter.traits.push(trait);
+      })
+    }
+
+    if(this.selectedBackground){
+      finalCharacter.traits.push(this.selectedBackground.feature.name);
+    }
     this.abilityKeys.forEach(key => {
       finalCharacter.abilityScores[key] = this.getFinalAbilityScore(key);
     });
@@ -288,12 +310,29 @@ export class AppComponent implements OnInit {
     finalCharacter.armorClass = 10 + dexModifier;
     finalCharacter.initiative = dexModifier;
     
-    finalCharacter.equipment = this.characterService.getStartingEquipment(finalCharacter.class?.name, finalCharacter.background?.name);
-    finalCharacter.traits = [
-      ...(finalCharacter.race?.traits || []),
-      ...(finalCharacter.subrace?.traits || []),
-      ...(finalCharacter.background?.feature ? [finalCharacter.background.feature.name] : [])
-    ];
+    const finalEquipment: string[] = [];
+    
+    // Adiciona equipamento escolhido da classe
+    if(finalCharacter.class?.startingEquipment) {
+        finalCharacter.class.startingEquipment.forEach((item, index) => {
+            if(this.isEquipmentChoice(item)) {
+                // Adiciona o item selecionado pelo usuário
+                const choiceKey = `class-choice-${index}`;
+                if (this.equipmentChoices[choiceKey]) {
+                    finalEquipment.push(this.equipmentChoices[choiceKey]);
+                }
+            } else {
+                // Adiciona o item fixo
+                finalEquipment.push(item);
+            }
+        });
+    }
+    // Adiciona equipamento do antecedente
+    if(finalCharacter.background?.equipment) {
+        finalEquipment.push(...finalCharacter.background.equipment);
+    }
+    
+    finalCharacter.equipment = finalEquipment;
     
     this.character = finalCharacter;
   }

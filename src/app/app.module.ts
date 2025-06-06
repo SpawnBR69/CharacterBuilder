@@ -13,6 +13,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { DropdownModule } from 'primeng/dropdown';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { RadioButtonModule } from 'primeng/radiobutton';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { InputNumberModule } from 'primeng/inputnumber';
     InputTextModule,
     DropdownModule,
     SelectButtonModule,
-    InputNumberModule
+    InputNumberModule,
+    RadioButtonModule
   ],
   providers: [
     CharacterCreationService

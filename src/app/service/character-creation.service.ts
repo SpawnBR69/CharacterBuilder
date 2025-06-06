@@ -99,8 +99,20 @@ export class CharacterCreationService {
         size: 'Médio',
         speed: 9, // 30 feet
         languages: ['Comum', 'Dracônico'],
-        traits: ['Ancestralidade Dracônica (escolher tipo de dragão)', 'Sopro de Arma', 'Resistência a Dano (conforme ancestralidade)'],
+        traits: [], // Traços genéricos removidos, movidos para sub-raças
         sourceBook: 'Livro do Jogador',
+        subraces: [
+          { name: 'Draconato de Bronze', description: 'Ancestralidade de Dragão de Bronze.', traits: ['Sopro de Arma (Raio)', 'Resistência a Dano Elétrico'] },
+          { name: 'Draconato de Cobre', description: 'Ancestralidade de Dragão de Cobre.', traits: ['Sopro de Arma (Ácido)', 'Resistência a Dano Ácido'] },
+          { name: 'Draconato de Latão', description: 'Ancestralidade de Dragão de Latão.', traits: ['Sopro de Arma (Fogo)', 'Resistência a Dano de Fogo'] },
+          { name: 'Draconato de Ouro', description: 'Ancestralidade de Dragão de Ouro.', traits: ['Sopro de Arma (Fogo)', 'Resistência a Dano de Fogo'] },
+          { name: 'Draconato de Prata', description: 'Ancestralidade de Dragão de Prata.', traits: ['Sopro de Arma (Frio)', 'Resistência a Dano de Frio'] },
+          { name: 'Draconato Azul', description: 'Ancestralidade de Dragão Azul.', traits: ['Sopro de Arma (Raio)', 'Resistência a Dano Elétrico'] },
+          { name: 'Draconato Branco', description: 'Ancestralidade de Dragão Branco.', traits: ['Sopro de Arma (Frio)', 'Resistência a Dano de Frio'] },
+          { name: 'Draconato Preto', description: 'Ancestralidade de Dragão Preto.', traits: ['Sopro de Arma (Ácido)', 'Resistência a Dano Ácido'] },
+          { name: 'Draconato Verde', description: 'Ancestralidade de Dragão Verde.', traits: ['Sopro de Arma (Veneno)', 'Resistência a Dano de Veneno'] },
+          { name: 'Draconato Vermelho', description: 'Ancestralidade de Dragão Vermelho.', traits: ['Sopro de Arma (Fogo)', 'Resistência a Dano de Fogo'] }
+        ]
       },
       {
         name: 'Gnomo',
@@ -321,8 +333,8 @@ export class CharacterCreationService {
     ];
   }
 
-  getClasses(): Class[] {
-    // Todas as classes base do Livro do Jogador com a tipagem correta para savingThrowProficiencies
+   getClasses(): Class[] {
+    // Dados das classes com a nova estrutura para 'startingEquipment'
     return [
       {
         name: 'Bárbaro',
@@ -331,9 +343,9 @@ export class CharacterCreationService {
         primaryAbility: ['Força'],
         savingThrowProficiencies: ['strength', 'constitution'],
         armorAndWeaponProficiencies: ['Armaduras leves e médias', 'escudos', 'armas simples e marciais'],
-        startingEquipmentOptions: [
-          '(a) um machado grande ou (b) qualquer arma marcial corpo a corpo',
-          '(a) duas machadinhas ou (b) qualquer arma simples',
+        startingEquipment: [
+          ['(a) um machado grande', '(b) qualquer arma marcial corpo a corpo'],
+          ['(a) duas machadinhas', '(b) qualquer arma simples'],
           'Um pacote de aventureiro e quatro azagaias'
         ],
         sourceBook: 'Livro do Jogador'
@@ -345,11 +357,11 @@ export class CharacterCreationService {
         primaryAbility: ['Carisma'],
         savingThrowProficiencies: ['dexterity', 'charisma'],
         armorAndWeaponProficiencies: ['Armaduras leves', 'armas simples', 'bestas de mão', 'espadas longas', 'rapieiras', 'espadas curtas'],
-        startingEquipmentOptions: [
-          '(a) uma rapieira, (b) uma espada longa ou (c) qualquer arma simples',
-          '(a) um pacote de diplomata ou (b) um pacote de artista',
-          '(a) um alaúde ou (b) qualquer outro instrumento musical',
-          'Corselete de couro e uma adaga'
+        startingEquipment: [
+            ['(a) uma rapieira', '(b) uma espada longa', '(c) qualquer arma simples'],
+            ['(a) um pacote de diplomata', '(b) um pacote de artista'],
+            ['(a) um alaúde', '(b) qualquer outro instrumento musical'],
+            'Corselete de couro e uma adaga'
         ],
         sourceBook: 'Livro do Jogador'
       },
@@ -360,26 +372,26 @@ export class CharacterCreationService {
         primaryAbility: ['Carisma'],
         savingThrowProficiencies: ['wisdom', 'charisma'],
         armorAndWeaponProficiencies: ['Armaduras leves', 'armas simples'],
-        startingEquipmentOptions: [
-          '(a) uma besta leve e 20 virotes ou (b) qualquer arma simples',
-          '(a) uma bolsa de componentes ou (b) um foco arcano',
-          '(a) um pacote de estudioso ou (b) um pacote de masmorra',
-          'Corselete de couro, qualquer arma simples e duas adagas'
+        startingEquipment: [
+            ['(a) uma besta leve e 20 virotes', '(b) qualquer arma simples'],
+            ['(a) uma bolsa de componentes', '(b) um foco arcano'],
+            ['(a) um pacote de estudioso', '(b) um pacote de masmorra'],
+            'Corselete de couro, qualquer arma simples e duas adagas'
         ],
         sourceBook: 'Livro do Jogador'
       },
-      {
+       {
         name: 'Clérigo',
         description: 'Um campeão sacerdotal que empunha magia divina a serviço de um poder maior.',
         hitDie: 8,
         primaryAbility: ['Sabedoria'],
         savingThrowProficiencies: ['wisdom', 'charisma'],
         armorAndWeaponProficiencies: ['Armaduras leves e médias', 'escudos', 'todas as armas simples'],
-        startingEquipmentOptions: [
-          '(a) uma maça ou (b) um martelo de guerra (se proficiente)',
-          '(a) brunea, (b) corselete de couro ou (c) cota de malha (se proficiente)',
-          '(a) uma besta leve e 20 virotes ou (b) qualquer arma simples',
-          '(a) um pacote de sacerdote ou (b) um pacote de aventureiro',
+        startingEquipment: [
+          ['(a) uma maça', '(b) um martelo de guerra (se proficiente)'],
+          ['(a) brunea', '(b) corselete de couro', '(c) cota de malha (se proficiente)'],
+          ['(a) uma besta leve e 20 virotes', '(b) qualquer arma simples'],
+          ['(a) um pacote de sacerdote', '(b) um pacote de aventureiro'],
           'Um escudo e um símbolo sagrado'
         ],
         sourceBook: 'Livro do Jogador'
@@ -391,9 +403,9 @@ export class CharacterCreationService {
         primaryAbility: ['Sabedoria'],
         savingThrowProficiencies: ['intelligence', 'wisdom'],
         armorAndWeaponProficiencies: ['Armaduras leves e médias (não-metálicas)', 'escudos (não-metálicos)', 'clavas', 'adagas', 'dardos', 'azagaias', 'maças', 'bordões', 'cimitarras', 'fundas', 'lanças'],
-        startingEquipmentOptions: [
-          '(a) um escudo de madeira ou (b) qualquer arma simples',
-          '(a) uma cimitarra ou (b) qualquer arma corpo a corpo simples',
+        startingEquipment: [
+          ['(a) um escudo de madeira', '(b) qualquer arma simples'],
+          ['(a) uma cimitarra' , '(b) qualquer arma corpo a corpo simples'],
           'Corselete de couro, um pacote de explorador e um foco druídico'
         ],
         sourceBook: 'Livro do Jogador'
@@ -405,10 +417,10 @@ export class CharacterCreationService {
         primaryAbility: ['Carisma'],
         savingThrowProficiencies: ['constitution', 'charisma'],
         armorAndWeaponProficiencies: ['Adagas', 'dardos', 'fundas', 'bordões', 'bestas leves'],
-        startingEquipmentOptions: [
-          '(a) uma besta leve e 20 virotes ou (b) qualquer arma simples',
-          '(a) uma bolsa de componentes ou (b) um foco arcano',
-          '(a) um pacote de masmorra ou (b) um pacote de explorador',
+        startingEquipment: [
+          ['(a) uma besta leve e 20 virotes', '(b) qualquer arma simples'],
+          ['(a) uma bolsa de componentes ',' (b) um foco arcano'],
+          ['(a) um pacote de masmorra ',' (b) um pacote de explorador'],
           'Duas adagas'
         ],
         sourceBook: 'Livro do Jogador'
@@ -420,11 +432,11 @@ export class CharacterCreationService {
         primaryAbility: ['Força', 'Destreza'],
         savingThrowProficiencies: ['strength', 'constitution'],
         armorAndWeaponProficiencies: ['Todas as armaduras', 'escudos', 'armas simples e marciais'],
-        startingEquipmentOptions: [
-          '(a) cota de malha ou (b) gibão de peles, arco longo e 20 flechas',
-          '(a) uma arma marcial e um escudo ou (b) duas armas marciais',
-          '(a) uma besta leve e 20 virotes ou (b) duas machadinhas',
-          '(a) um pacote de masmorra ou (b) um pacote de explorador'
+        startingEquipment: [
+          ['(a) cota de malha ',' (b) gibão de peles, arco longo e 20 flechas'],
+          ['(a) uma arma marcial e um escudo ',' (b) duas armas marciais'],
+          ['(a) uma besta leve e 20 virotes ',' (b) duas machadinhas'],
+          ['(a) um pacote de masmorra ',' (b) um pacote de explorador']
         ],
         sourceBook: 'Livro do Jogador'
       },
@@ -435,10 +447,10 @@ export class CharacterCreationService {
         primaryAbility: ['Destreza'],
         savingThrowProficiencies: ['dexterity', 'intelligence'],
         armorAndWeaponProficiencies: ['Armaduras leves', 'armas simples', 'bestas de mão', 'espadas longas', 'rapieiras', 'espadas curtas'],
-        startingEquipmentOptions: [
-          '(a) uma rapieira ou (b) uma espada curta',
-          '(a) um arco curto e aljava com 20 flechas ou (b) uma espada curta',
-          '(a) um pacote de assaltante, (b) um pacote de masmorra ou (c) um pacote de explorador',
+        startingEquipment: [
+          ['(a) uma rapieira ',' (b) uma espada curta'],
+          ['(a) um arco curto e aljava com 20 flechas ',' (b) uma espada curta'],
+          ['(a) um pacote de assaltante ',' (b) um pacote de masmorra ',' (c) um pacote de explorador'],
           'Corselete de couro, duas adagas e ferramentas de ladrão'
         ],
         sourceBook: 'Livro do Jogador'
@@ -450,10 +462,10 @@ export class CharacterCreationService {
         primaryAbility: ['Inteligência'],
         savingThrowProficiencies: ['intelligence', 'wisdom'],
         armorAndWeaponProficiencies: ['Adagas', 'dardos', 'fundas', 'bordões', 'bestas leves'],
-        startingEquipmentOptions: [
-          '(a) um bordão ou (b) uma adaga',
-          '(a) uma bolsa de componentes ou (b) um foco arcano',
-          '(a) um pacote de estudioso ou (b) um pacote de explorador',
+        startingEquipment: [
+          ['(a) um bordão ',' (b) uma adaga'],
+          ['(a) uma bolsa de componentes ',' (b) um foco arcano'],
+          ['(a) um pacote de estudioso ',' (b) um pacote de explorador'],
           'Um grimório'
         ],
         sourceBook: 'Livro do Jogador'
@@ -465,9 +477,9 @@ export class CharacterCreationService {
         primaryAbility: ['Destreza', 'Sabedoria'],
         savingThrowProficiencies: ['strength', 'dexterity'],
         armorAndWeaponProficiencies: ['Armas simples', 'espadas curtas'],
-        startingEquipmentOptions: [
-          '(a) uma espada curta ou (b) qualquer arma simples',
-          '(a) um pacote de masmorra ou (b) um pacote de explorador',
+        startingEquipment: [
+          ['(a) uma espada curta ',' (b) qualquer arma simples'],
+          ['(a) um pacote de masmorra ',' (b) um pacote de explorador'],
           '10 dardos'
         ],
         sourceBook: 'Livro do Jogador'
@@ -479,10 +491,10 @@ export class CharacterCreationService {
         primaryAbility: ['Força', 'Carisma'],
         savingThrowProficiencies: ['wisdom', 'charisma'],
         armorAndWeaponProficiencies: ['Todas as armaduras', 'escudos', 'armas simples e marciais'],
-        startingEquipmentOptions: [
-          '(a) uma arma marcial e um escudo ou (b) duas armas marciais',
-          '(a) cinco azagaias ou (b) qualquer arma corpo a corpo simples',
-          '(a) um pacote de sacerdote ou (b) um pacote de aventureiro',
+        startingEquipment: [
+          ['(a) uma arma marcial e um escudo ',' (b) duas armas marciais'],
+          ['(a) cinco azagaias ',' (b) qualquer arma corpo a corpo simples'],
+          ['(a) um pacote de sacerdote ',' (b) um pacote de aventureiro'],
           'Cota de malha e um símbolo sagrado'
         ],
         sourceBook: 'Livro do Jogador'
@@ -494,10 +506,10 @@ export class CharacterCreationService {
         primaryAbility: ['Destreza', 'Sabedoria'],
         savingThrowProficiencies: ['strength', 'dexterity'],
         armorAndWeaponProficiencies: ['Armaduras leves e médias', 'escudos', 'armas simples e marciais'],
-        startingEquipmentOptions: [
-          '(a) brunea ou (b) corselete de couro',
-          '(a) duas espadas curtas ou (b) duas armas corpo a corpo simples',
-          '(a) um pacote de masmorra ou (b) um pacote de explorador',
+        startingEquipment: [
+          ['(a) brunea ',' (b) corselete de couro'],
+          ['(a) duas espadas curtas ',' (b) duas armas corpo a corpo simples'],
+          ['(a) um pacote de masmorra ',' (b) um pacote de explorador'],
           'Um arco longo e uma aljava com 20 flechas'
         ],
         sourceBook: 'Livro do Jogador'
@@ -658,30 +670,5 @@ export class CharacterCreationService {
     if (score === 14) return 7; // 5 (para 13) + 2
     if (score === 15) return 9; // 7 (para 14) + 2
     return 0;
-  }
-
-  // --- LÓGICA DE EQUIPAMENTO ---
-  getStartingEquipment(className: string | undefined, backgroundName: string | undefined): string[] {
-    let combinedEquipment: string[] = [];
-
-    // Adiciona equipamento da Classe
-    if (className) {
-      const selectedClass = this.getClasses().find(c => c.name === className);
-      if (selectedClass && selectedClass.startingEquipmentOptions) {
-        // Para este exemplo, apenas listamos as opções. Uma implementação completa
-        // exigiria uma interface de usuário para o jogador fazer as escolhas.
-        combinedEquipment.push(...selectedClass.startingEquipmentOptions);
-      }
-    }
-
-    // Adiciona equipamento do Antecedente
-    if (backgroundName) {
-      const selectedBackground = this.getBackgrounds().find(b => b.name === backgroundName);
-      if (selectedBackground && selectedBackground.equipment) {
-        combinedEquipment.push(...selectedBackground.equipment);
-      }
-    }
-
-    return combinedEquipment;
   }
 }
