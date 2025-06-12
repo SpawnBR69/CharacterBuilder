@@ -1,0 +1,124 @@
+[
+  {
+    "name": "Aasimar",
+    "description": "Os Aasimar carregam em suas almas a luz dos céus. Eles descendem de humanos com um toque do poder celestial do Monte Celestia.",
+    "abilityScoreIncrease": { "charisma": 2 },
+    "speed": 9,
+    "languages": ["Comum", "Celestial"],
+    "traits": ["Visão no Escuro", "Resistência Celestial (resistência a dano necrótico e radiante)", "Mãos Curativas", "Portador da Luz"],
+    "sourceBook": "Guia de Volo para Monstros",
+    "subraces": [
+      { "name": "Aasimar Protetor", "description": "Aasimar protetores são encarregados por poderes do bem para guardar os fracos e golpear as forças do mal.", "abilityScoreIncrease": { "wisdom": 1 }, "traits": ["Alma Radiante"] },
+      { "name": "Aasimar Flagelo", "description": "Aasimar flagelos são imbuídos com um desejo divino de destruir o mal - um desejo que é, na melhor das hipóteses, uma bênção e, na pior, uma maldição.", "abilityScoreIncrease": { "constitution": 1 }, "traits": ["Consumo Radiante"] },
+      { "name": "Aasimar Caído", "description": "Um aasimar que foi tocado por poderes sombrios quando jovem ou que se voltou para o mal mais tarde na vida pode se tornar um dos caídos.", "abilityScoreIncrease": { "strength": 1 }, "traits": ["Sudário Necrótico"] }
+    ]
+  },
+  {
+    "name": "Firbolg",
+    "description": "Os Firbolgs são reclusos habitantes da floresta que preferem a paz e a tranquilidade de seus lares à intrusão do mundo exterior.",
+    "abilityScoreIncrease": { "wisdom": 2, "strength": 1 },
+    "speed": 9,
+    "languages": ["Comum", "Élfico", "Gigante"],
+    "traits": ["Magia Firbolg", "Passo Escondido", "Fala Poderosa", "Fala das Bestas e Folhas"],
+    "sourceBook": "Guia de Volo para Monstros"
+  },
+  {
+    "name": "Goliath",
+    "description": "Os Goliaths vivem nos picos mais altos das montanhas, onde o ar é rarefeito e os ventos uivam. Eles são um povo orgulhoso e competitivo.",
+    "abilityScoreIncrease": { "strength": 2, "constitution": 1 },
+    "speed": 9,
+    "languages": ["Comum", "Gigante"],
+    "traits": ["Atleta Natural (proficiência em Atletismo)", "Resistência da Pedra", "Nascido na Montanha", "Construção Poderosa"],
+    "sourceBook": "Guia de Volo para Monstros"
+  },
+  {
+    "name": "Kenku",
+    "description": "Amaldiçoados com uma falta de criatividade e a incapacidade de voar, os Kenku vagam pelo mundo como pedintes e ladrões que vivem à margem da sociedade humana.",
+    "abilityScoreIncrease": { "dexterity": 2, "wisdom": 1 },
+    "speed": 9,
+    "languages": ["Comum (entendem, mas falam apenas por mimetismo)", "Auran (entendem, mas falam apenas por mimetismo)"],
+    "traits": ["Perito em Falsificação", "Treinamento Kenku (proficiência em duas perícias à escolha: Acrobacia, Enganação, Furtividade, Prestidigitação)", "Mimetismo"],
+    "sourceBook": "Guia de Volo para Monstros"
+  },
+  {
+    "name": "Povo-Lagarto",
+    "description": "Os Povo-Lagarto são sobreviventes primitivos que habitam pântanos e charcos. Eles são conhecidos por sua natureza alienígena e, às vezes, brutal.",
+    "abilityScoreIncrease": { "constitution": 2, "wisdom": 1 },
+    "speed": 9,
+    "languages": ["Comum", "Dracônico"],
+    "traits": ["Mordida", "Artesão Astuto", "Prender a Respiração", "Defesa Natural", "Determinação Faminta", "Armadura Natural"],
+    "sourceBook": "Guia de Volo para Monstros"
+  },
+  {
+    "name": "Tabaxi",
+    "description": "Originários de uma estranha e distante terra, os tabaxi são humanoides felinos guiados pela curiosidade para colecionar artefatos interessantes, reunir contos e observar todas as maravilhas do mundo.",
+    "abilityScoreIncrease": { "dexterity": 2, "charisma": 1 },
+    "speed": 9,
+    "languages": ["Comum", "Um idioma adicional à escolha"],
+    "traits": ["Visão no Escuro", "Agilidade Felina", "Garras de Gato", "Percepção Felina (proficiência em Percepção e Furtividade)"],
+    "sourceBook": "Guia de Volo para Monstros"
+  },
+  {
+    "name": "Tritão",
+    "description": "Os Tritões são um povo aquático, guardiões das profundezas oceânicas, que raramente se aventuram em terra firme.",
+    "abilityScoreIncrease": { "strength": 1, "constitution": 1, "charisma": 1 },
+    "speed": 9,
+    "languages": ["Comum", "Primordial (Aquan)"],
+    "traits": ["Anfíbio", "Controle do Ar e da Água", "Emissário das Profundezas", "Guardião das Profundezas"],
+    "sourceBook": "Guia de Volo para Monstros"
+  },
+  {
+    "name": "Bugbear",
+    "description": "Bugbears são goblins grandes e peludos que confiam na furtividade e na força para aterrorizar seus inimigos.",
+    "abilityScoreIncrease": { "strength": 2, "dexterity": 1 },
+    "speed": 9,
+    "languages": ["Comum", "Goblin"],
+    "traits": ["Visão no Escuro", "Braços Longos", "Corpo Poderoso", "Ataque Surpresa", "Furtivo (proficiência em Furtividade)"],
+    "sourceBook": "Guia de Volo para Monstros (Raça Monstruosa)"
+  },
+  {
+    "name": "Goblin",
+    "description": "Goblins são pequenos humanoides malévolos e egoístas que vivem em tribos subterrâneas ou em ruínas desoladas.",
+    "abilityScoreIncrease": { "dexterity": 2, "constitution": 1 },
+    "speed": 9,
+    "languages": ["Comum", "Goblin"],
+    "traits": ["Visão no Escuro", "Fúria dos Pequenos", "Escapada Ágil"],
+    "sourceBook": "Guia de Volo para Monstros (Raça Monstruosa)"
+  },
+  {
+    "name": "Hobgoblin",
+    "description": "Hobgoblins são humanoides militaristas e disciplinados, obcecados com a guerra e a conquista.",
+    "abilityScoreIncrease": { "constitution": 2, "intelligence": 1 },
+    "speed": 9,
+    "languages": ["Comum", "Goblin"],
+    "traits": ["Visão no Escuro", "Treinamento Marcial", "Fortuna dos Muitos"],
+    "sourceBook": "Guia de Volo para Monstros (Raça Monstruosa)"
+  },
+  {
+    "name": "Kobold",
+    "description": "Kobolds são pequenos humanoides reptilianos que se destacam em cavar túneis e armar armadilhas.",
+    "abilityScoreIncrease": { "dexterity": 2, "strength": -2 },
+    "speed": 9,
+    "languages": ["Comum", "Dracônico"],
+    "traits": ["Visão no Escuro", "Escavar", "Táticas de Bando", "Sensibilidade à Luz Solar", "Servidão Dracônica"],
+    "sourceBook": "Guia de Volo para Monstros (Raça Monstruosa)"
+  },
+  {
+    "name": "Orc",
+    "description": "Orcs são humanoides selvagens e brutais conhecidos por sua ferocidade em batalha.",
+    "abilityScoreIncrease": { "strength": 2, "constitution": 1, "intelligence": -2 },
+    "speed": 9,
+    "languages": ["Comum", "Orc"],
+    "traits": ["Visão no Escuro", "Agressivo", "Corpo Poderoso", "Ameaçador (proficiência em Intimidação)"],
+    "sourceBook": "Guia de Volo para Monstros (Raça Monstruosa)"
+  },
+  {
+    "name": "Yuan-ti Puro-sangue",
+    "description": "Yuan-ti puro-sangues são os mais humanos dos yuan-ti, capazes de se infiltrar em sociedades humanoides enquanto servem a seus mestres serpentinos.",
+    "abilityScoreIncrease": { "charisma": 2, "intelligence": 1 },
+    "speed": 9,
+    "languages": ["Comum", "Abissal", "Dracônico"],
+    "traits": ["Visão no Escuro", "Imunidade a Veneno (Imunidade a dano de veneno e à condição envenenado)", "Resistência à Magia", "Magia Inata (Truque de Veneno, Amizade Animal (apenas cobras), Sugestão)"],
+    "sourceBook": "Guia de Volo para Monstros (Raça Monstruosa)"
+  }
+]
