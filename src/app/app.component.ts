@@ -166,7 +166,6 @@ export class AppComponent implements OnInit {
   onRollScores() {
     this.rolledScores = this.characterService.rollAbilityScores();
     this.resetScoreAssignments(); // Chama a função de reset para popular o pool
-    alert(`Scores rolados: ${this.rolledScores.join(', ')}\nPor favor, distribua-os abaixo.`);
   }
 
   resetScoreAssignments() {
