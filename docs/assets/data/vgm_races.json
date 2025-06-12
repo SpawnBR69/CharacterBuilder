@@ -5,12 +5,17 @@
     "abilityScoreIncrease": { "charisma": 2 },
     "speed": 9,
     "languages": ["Comum", "Celestial"],
-    "traits": ["Visão no Escuro", "Resistência Celestial (resistência a dano necrótico e radiante)", "Mãos Curativas", "Portador da Luz"],
+    "traits": [
+        { "name": "Visão no Escuro", "description": "Abençoado com uma alma radiante, seus olhos são acostumados à escuridão divina. Você pode ver na penumbra a até 18 metros de você como se fosse luz plena, e na escuridão como se fosse penumbra." },
+        { "name": "Resistência Celestial", "description": "Você tem resistência a dano necrótico e dano radiante." },
+        { "name": "Mãos Curativas", "description": "Como uma ação, você pode tocar uma criatura e fazer com que ela recupere um número de pontos de vida igual ao seu nível. Depois de usar essa característica, você não pode usá-la novamente até completar um descanso longo." },
+        { "name": "Portador da Luz", "description": "Você conhece o truque luz. Carisma é a sua habilidade de conjuração para ele." }
+    ],
     "sourceBook": "Guia de Volo para Monstros",
     "subraces": [
-      { "name": "Aasimar Protetor", "description": "Aasimar protetores são encarregados por poderes do bem para guardar os fracos e golpear as forças do mal.", "abilityScoreIncrease": { "wisdom": 1 }, "traits": ["Alma Radiante"] },
-      { "name": "Aasimar Flagelo", "description": "Aasimar flagelos são imbuídos com um desejo divino de destruir o mal - um desejo que é, na melhor das hipóteses, uma bênção e, na pior, uma maldição.", "abilityScoreIncrease": { "constitution": 1 }, "traits": ["Consumo Radiante"] },
-      { "name": "Aasimar Caído", "description": "Um aasimar que foi tocado por poderes sombrios quando jovem ou que se voltou para o mal mais tarde na vida pode se tornar um dos caídos.", "abilityScoreIncrease": { "strength": 1 }, "traits": ["Sudário Necrótico"] }
+      { "name": "Aasimar Protetor", "description": "Aasimar protetores são encarregados por poderes do bem para guardar os fracos e golpear as forças do mal.", "abilityScoreIncrease": { "wisdom": 1 }, "traits": [{ "name": "Alma Radiante", "description": "A partir do 3º nível, você pode usar sua ação para liberar a energia divina dentro de si, fazendo com que seus olhos brilhem e duas asas espectrais e luminosas brotem de suas costas. Sua transformação dura por 1 minuto ou até você terminá-la como uma ação bônus. Durante esse tempo, você tem um deslocamento de voo de 9 metros, e uma vez em cada um dos seus turnos, você pode causar dano radiante extra a um alvo quando o danifica com um ataque ou uma magia. O dano radiante extra é igual ao seu nível. Depois de usar essa característica, você não pode usá-la novamente até completar um descanso longo." }] },
+      { "name": "Aasimar Flagelo", "description": "Aasimar flagelos são imbuídos com um desejo divino de destruir o mal - um desejo que é, na melhor das hipóteses, uma bênção e, na pior, uma maldição.", "abilityScoreIncrease": { "constitution": 1 }, "traits": [{ "name": "Consumo Radiante", "description": "A partir do 3º nível, você pode usar sua ação para liberar a energia divina dentro de si, fazendo com que luz crepite de seus olhos e boca, e causando dor enquanto ela queima. Sua transformação dura por 1 minuto ou até você terminá-la como uma ação bônus. Durante esse tempo, você emite luz plena em um raio de 3 metros e penumbra por mais 3 metros, e no final de cada um dos seus turnos, você e cada criatura a até 3 metros de você sofrem dano radiante igual à metade do seu nível (arredondado para cima). Além disso, uma vez em cada um dos seus turnos, você pode causar dano radiante extra a um alvo quando o danifica com um ataque ou uma magia. O dano radiante extra é igual ao seu nível. Depois de usar essa característica, você não pode usá-la novamente até completar um descanso longo." }] },
+      { "name": "Aasimar Caído", "description": "Um aasimar que foi tocado por poderes sombrios quando jovem ou que se voltou para o mal mais tarde na vida pode se tornar um dos caídos.", "abilityScoreIncrease": { "strength": 1 }, "traits": [{ "name": "Sudário Necrótico", "description": "A partir do 3º nível, você pode usar sua ação para liberar a energia divina dentro de si, fazendo com que seus olhos se tornem poças de escuridão e duas asas esqueléticas e fantasmagóricas brotem de suas costas. Sua transformação dura por 1 minuto ou até você terminá-la como uma ação bônus. Durante esse tempo, uma vez em cada um dos seus turnos, você pode causar dano necrótico extra a um alvo quando o danifica com um ataque ou uma magia. O dano necrótico extra é igual ao seu nível. Além disso, qualquer criatura a até 3 metros de você que possa vê-lo deve fazer um teste de resistência de Carisma (CD 8 + seu bônus de proficiência + seu modificador de Carisma). Se falhar, a criatura fica amedrontada por você até o final do seu próximo turno. Depois de usar essa característica, você não pode usá-la novamente até completar um descanso longo." }] }
     ]
   },
   {
@@ -19,7 +24,12 @@
     "abilityScoreIncrease": { "wisdom": 2, "strength": 1 },
     "speed": 9,
     "languages": ["Comum", "Élfico", "Gigante"],
-    "traits": ["Magia Firbolg", "Passo Escondido", "Fala Poderosa", "Fala das Bestas e Folhas"],
+    "traits": [
+        { "name": "Magia Firbolg", "description": "Você pode conjurar as magias detectar magia e disfarçar-se com esta característica. A partir do 3º nível, você pode conjurar detectar magia sem gastar um espaço de magia. A partir do 5º nível, você pode conjurar disfarçar-se uma vez com esta característica e recuperar a capacidade de fazê-lo quando completar um descanso curto ou longo. Sabedoria é a sua habilidade de conjuração para essas magias." },
+        { "name": "Passo Escondido", "description": "Como uma ação bônus, você pode magicamente se tornar invisível até o início do seu próximo turno ou até você atacar, fazer uma jogada de dano ou forçar alguém a fazer um teste de resistência. Depois de usar essa característica, você não pode usá-la novamente até completar um descanso curto ou longo." },
+        { "name": "Construção Poderosa", "description": "Você conta como um tamanho maior ao determinar sua capacidade de carga e o peso que você pode empurrar, arrastar ou levantar." },
+        { "name": "Fala das Bestas e Folhas", "description": "Você tem a capacidade de se comunicar de uma forma limitada com bestas e plantas. Eles podem entender o significado de suas palavras, embora você não tenha nenhuma habilidade especial para entendê-los em troca." }
+    ],
     "sourceBook": "Guia de Volo para Monstros"
   },
   {
@@ -28,7 +38,12 @@
     "abilityScoreIncrease": { "strength": 2, "constitution": 1 },
     "speed": 9,
     "languages": ["Comum", "Gigante"],
-    "traits": ["Atleta Natural (proficiência em Atletismo)", "Resistência da Pedra", "Nascido na Montanha", "Construção Poderosa"],
+    "traits": [
+        { "name": "Atleta Natural", "description": "Você tem proficiência na perícia Atletismo." },
+        { "name": "Resistência da Pedra", "description": "Você pode focar sua resiliência para se livrar de um ferimento. Quando você sofre dano, você pode usar sua reação para rolar um d12. Adicione seu modificador de Constituição ao número rolado e reduza o dano por esse total. Depois de usar essa característica, você não pode usá-la novamente até completar um descanso curto ou longo." },
+        { "name": "Nascido na Montanha", "description": "Você está aclimatado a grandes altitudes, incluindo elevações acima de 6.000 metros. Você também é naturalmente adaptado a climas frios." },
+        { "name": "Construção Poderosa", "description": "Você conta como um tamanho maior ao determinar sua capacidade de carga e o peso que você pode empurrar, arrastar ou levantar." }
+    ],
     "sourceBook": "Guia de Volo para Monstros"
   },
   {
@@ -37,7 +52,11 @@
     "abilityScoreIncrease": { "dexterity": 2, "wisdom": 1 },
     "speed": 9,
     "languages": ["Comum (entendem, mas falam apenas por mimetismo)", "Auran (entendem, mas falam apenas por mimetismo)"],
-    "traits": ["Perito em Falsificação", "Treinamento Kenku (proficiência em duas perícias à escolha: Acrobacia, Enganação, Furtividade, Prestidigitação)", "Mimetismo"],
+    "traits": [
+        { "name": "Perito em Falsificação", "description": "Você pode duplicar a caligrafia e o artesanato de outras criaturas. Você tem vantagem em todos os testes feitos para produzir falsificações ou duplicatas de objetos existentes." },
+        { "name": "Treinamento Kenku", "description": "Você tem proficiência em duas das seguintes perícias à sua escolha: Acrobacia, Enganação, Furtividade e Prestidigitação." },
+        { "name": "Mimetismo", "description": "Você pode imitar sons que ouviu, incluindo vozes. Uma criatura que ouve os sons pode dizer que são imitações com um teste bem-sucedido de Sabedoria (Intuição) contra sua CD de Enganação." }
+    ],
     "sourceBook": "Guia de Volo para Monstros"
   },
   {
@@ -46,7 +65,13 @@
     "abilityScoreIncrease": { "constitution": 2, "wisdom": 1 },
     "speed": 9,
     "languages": ["Comum", "Dracônico"],
-    "traits": ["Mordida", "Artesão Astuto", "Prender a Respiração", "Defesa Natural", "Determinação Faminta", "Armadura Natural"],
+    "traits": [
+        { "name": "Mordida", "description": "Sua boca com presas é uma arma natural, que você pode usar para fazer ataques desarmados. Se você acertar com ela, você causa dano perfurante igual a 1d6 + seu modificador de Força, em vez do dano contundente normal para um ataque desarmado." },
+        { "name": "Artesão Astuto", "description": "Como parte de um descanso curto, você pode colher ossos e couro de uma criatura abatida de tamanho Pequeno ou maior para criar um dos seguintes itens: um escudo, uma clava, uma azagaia ou 1d4 dardos ou agulhas de zarabatana. Para usar esta característica, você precisa de uma lâmina, como uma adaga, ou ferramentas de artesão apropriadas." },
+        { "name": "Prender a Respiração", "description": "Você pode prender a respiração por até 15 minutos." },
+        { "name": "Determinação Faminta", "description": "Você ganha uma proficiência adicional com uma das seguintes perícias: Adestrar Animais, Natureza, Percepção, Furtividade e Sobrevivência." },
+        { "name": "Armadura Natural", "description": "Você tem uma pele grossa e escamosa. Quando você não está vestindo armadura, sua Classe de Armadura é 13 + seu modificador de Destreza. Você pode usar um escudo e ainda obter este benefício." }
+    ],
     "sourceBook": "Guia de Volo para Monstros"
   },
   {
@@ -55,7 +80,12 @@
     "abilityScoreIncrease": { "dexterity": 2, "charisma": 1 },
     "speed": 9,
     "languages": ["Comum", "Um idioma adicional à escolha"],
-    "traits": ["Visão no Escuro", "Agilidade Felina", "Garras de Gato", "Percepção Felina (proficiência em Percepção e Furtividade)"],
+    "traits": [
+        { "name": "Visão no Escuro", "description": "Você tem os sentidos aguçados de um gato, especialmente no escuro. Você pode ver na penumbra a até 18 metros de você como se fosse luz plena, e na escuridão como se fosse penumbra." },
+        { "name": "Agilidade Felina", "description": "Seus reflexos e agilidade permitem que você se mova com uma explosão de velocidade. Quando você se move em seu turno em combate, você pode dobrar sua velocidade. Depois de usar essa característica, você não pode usá-la novamente até se mover 0 metros em um de seus turnos." },
+        { "name": "Garras de Gato", "description": "Suas garras são armas naturais, que você pode usar para fazer ataques desarmados. Se você acertar com elas, você causa dano cortante igual a 1d4 + seu modificador de Força, em vez do dano contundente normal para um ataque desarmado. Além disso, suas garras lhe dão um deslocamento de escalada de 6 metros." },
+        { "name": "Percepção Felina", "description": "Você tem proficiência nas perícias Percepção e Furtividade." }
+    ],
     "sourceBook": "Guia de Volo para Monstros"
   },
   {
@@ -64,7 +94,12 @@
     "abilityScoreIncrease": { "strength": 1, "constitution": 1, "charisma": 1 },
     "speed": 9,
     "languages": ["Comum", "Primordial (Aquan)"],
-    "traits": ["Anfíbio", "Controle do Ar e da Água", "Emissário das Profundezas", "Guardião das Profundezas"],
+    "traits": [
+        { "name": "Anfíbio", "description": "Você pode respirar ar e água." },
+        { "name": "Controle do Ar e da Água", "description": "Você pode conjurar névoa obscurecente. A partir do 3º nível, você pode conjurar rajada de vento com esta característica. A partir do 5º nível, você também pode conjurar muralha de água com ela. Depois de conjurar uma magia com esta característica, você não pode fazer isso de novo até completar um descanso longo. Carisma é sua habilidade de conjuração para essas magias." },
+        { "name": "Emissário das Profundezas", "description": "Bestas aquáticas têm uma afinidade extraordinária com seu povo. Você pode se comunicar com ideias simples com bestas que podem respirar água. Elas podem entender o significado de suas palavras, embora você não tenha nenhuma habilidade especial para entendê-las em troca." },
+        { "name": "Guardião das Profundezas", "description": "Adaptado às profundezas ainda mais escuras e esmagadoras do oceano, você tem resistência a dano de frio e ignora quaisquer desvantagens causadas por um ambiente subaquático profundo." }
+    ],
     "sourceBook": "Guia de Volo para Monstros"
   },
   {
@@ -73,7 +108,13 @@
     "abilityScoreIncrease": { "strength": 2, "dexterity": 1 },
     "speed": 9,
     "languages": ["Comum", "Goblin"],
-    "traits": ["Visão no Escuro", "Braços Longos", "Corpo Poderoso", "Ataque Surpresa", "Furtivo (proficiência em Furtividade)"],
+    "traits": [
+        { "name": "Visão no Escuro", "description": "Você pode ver na penumbra a até 18 metros de você como se fosse luz plena, e na escuridão como se fosse penumbra." },
+        { "name": "Braços Longos", "description": "Quando você faz um ataque corpo a corpo em seu turno, seu alcance é 1,5 metros maior que o normal." },
+        { "name": "Construção Poderosa", "description": "Você conta como um tamanho maior ao determinar sua capacidade de carga e o peso que você pode empurrar, arrastar ou levantar." },
+        { "name": "Ataque Surpresa", "description": "Se você surpreender uma criatura e acertá-la com um ataque em seu primeiro turno em combate, o ataque causa 2d6 de dano extra. Você pode usar essa característica apenas uma vez por combate." },
+        { "name": "Furtivo", "description": "Você tem proficiência na perícia Furtividade." }
+    ],
     "sourceBook": "Guia de Volo para Monstros (Raça Monstruosa)"
   },
   {
@@ -82,7 +123,11 @@
     "abilityScoreIncrease": { "dexterity": 2, "constitution": 1 },
     "speed": 9,
     "languages": ["Comum", "Goblin"],
-    "traits": ["Visão no Escuro", "Fúria dos Pequenos", "Escapada Ágil"],
+    "traits": [
+        { "name": "Visão no Escuro", "description": "Você pode ver na penumbra a até 18 metros de você como se fosse luz plena, e na escuridão como se fosse penumbra." },
+        { "name": "Fúria dos Pequenos", "description": "Quando você danifica uma criatura com um ataque ou magia e o tamanho da criatura é maior que o seu, você pode fazer com que o ataque ou magia cause dano extra à criatura. O dano extra é igual ao seu nível. Depois de usar essa característica, você não pode usá-la novamente até completar um descanso curto ou longo." },
+        { "name": "Escapada Ágil", "description": "Você pode realizar a ação de Desengajar ou Esconder-se como uma ação bônus em cada um dos seus turnos." }
+    ],
     "sourceBook": "Guia de Volo para Monstros (Raça Monstruosa)"
   },
   {
@@ -91,25 +136,41 @@
     "abilityScoreIncrease": { "constitution": 2, "intelligence": 1 },
     "speed": 9,
     "languages": ["Comum", "Goblin"],
-    "traits": ["Visão no Escuro", "Treinamento Marcial", "Fortuna dos Muitos"],
+    "traits": [
+        { "name": "Visão no Escuro", "description": "Você pode ver na penumbra a até 18 metros de você como se fosse luz plena, e na escuridão como se fosse penumbra." },
+        { "name": "Treinamento Marcial", "description": "Você tem proficiência com duas armas marciais à sua escolha e com armaduras leves." },
+        { "name": "Fortuna dos Muitos", "description": "Se você errar com uma jogada de ataque ou falhar em um teste de habilidade ou teste de resistência, você pode ganhar um bônus na jogada igual ao número de aliados que você pode ver a até 9 metros de você (bônus máximo de +5). Depois de usar essa característica, você não pode usá-la novamente até completar um descanso curto ou longo." }
+    ],
     "sourceBook": "Guia de Volo para Monstros (Raça Monstruosa)"
   },
   {
     "name": "Kobold",
     "description": "Kobolds são pequenos humanoides reptilianos que se destacam em cavar túneis e armar armadilhas.",
-    "abilityScoreIncrease": { "dexterity": 2, "strength": -2 },
+    "abilityScoreIncrease": { "dexterity": 2 },
     "speed": 9,
     "languages": ["Comum", "Dracônico"],
-    "traits": ["Visão no Escuro", "Escavar", "Táticas de Bando", "Sensibilidade à Luz Solar", "Servidão Dracônica"],
+    "traits": [
+        { "name": "Redução no Valor de Habilidade", "description": "Seu valor de Força diminui em 2." },
+        { "name": "Visão no Escuro", "description": "Você pode ver na penumbra a até 18 metros de você como se fosse luz plena, e na escuridão como se fosse penumbra." },
+        { "name": "Acovardar, Encolher-se e Suplicar", "description": "Como uma ação em seu turno, você pode se acovardar pateticamente para distrair todos os inimigos humanoides a até 3 metros de você que podem vê-lo. Até o final do seu próximo turno, as jogadas de ataque contra você têm vantagem, e suas jogadas de ataque contra eles têm vantagem. Você não pode usar esta característica novamente até completar um descanso curto ou longo." },
+        { "name": "Táticas de Bando", "description": "Você tem vantagem em uma jogada de ataque contra uma criatura se pelo menos um de seus aliados estiver a 1,5 metro da criatura e o aliado não estiver incapacitado." },
+        { "name": "Sensibilidade à Luz Solar", "description": "Você tem desvantagem em jogadas de ataque e testes de Sabedoria (Percepção) que dependem da visão quando você, o alvo do seu ataque ou o que quer que você esteja tentando perceber está sob luz solar direta." }
+    ],
     "sourceBook": "Guia de Volo para Monstros (Raça Monstruosa)"
   },
   {
     "name": "Orc",
     "description": "Orcs são humanoides selvagens e brutais conhecidos por sua ferocidade em batalha.",
-    "abilityScoreIncrease": { "strength": 2, "constitution": 1, "intelligence": -2 },
+    "abilityScoreIncrease": { "strength": 2, "constitution": 1 },
     "speed": 9,
     "languages": ["Comum", "Orc"],
-    "traits": ["Visão no Escuro", "Agressivo", "Corpo Poderoso", "Ameaçador (proficiência em Intimidação)"],
+    "traits": [
+        { "name": "Redução no Valor de Habilidade", "description": "Seu valor de Inteligência diminui em 2." },
+        { "name": "Visão no Escuro", "description": "Você pode ver na penumbra a até 18 metros de você como se fosse luz plena, e na escuridão como se fosse penumbra." },
+        { "name": "Agressivo", "description": "Como uma ação bônus em seu turno, você pode se mover até o seu deslocamento em direção a uma criatura hostil que você possa ver." },
+        { "name": "Construção Poderosa", "description": "Você conta como um tamanho maior ao determinar sua capacidade de carga e o peso que você pode empurrar, arrastar ou levantar." },
+        { "name": "Ameaçador", "description": "Você tem proficiência na perícia Intimidação." }
+    ],
     "sourceBook": "Guia de Volo para Monstros (Raça Monstruosa)"
   },
   {
@@ -118,7 +179,12 @@
     "abilityScoreIncrease": { "charisma": 2, "intelligence": 1 },
     "speed": 9,
     "languages": ["Comum", "Abissal", "Dracônico"],
-    "traits": ["Visão no Escuro", "Imunidade a Veneno (Imunidade a dano de veneno e à condição envenenado)", "Resistência à Magia", "Magia Inata (Truque de Veneno, Amizade Animal (apenas cobras), Sugestão)"],
+    "traits": [
+        { "name": "Visão no Escuro", "description": "Você pode ver na penumbra a até 18 metros de você como se fosse luz plena, e na escuridão como se fosse penumbra." },
+        { "name": "Imunidade a Veneno", "description": "Você é imune a dano de veneno e à condição envenenado." },
+        { "name": "Resistência à Magia", "description": "Você tem vantagem em testes de resistência contra magias e outros efeitos mágicos." },
+        { "name": "Magia Inata", "description": "Você conhece o truque toque venenoso. A partir do 3º nível, você pode conjurar a magia amizade animal um número ilimitado de vezes com esta característica, mas você pode visar apenas cobras com ela. A partir do 5º nível, você também pode conjurar a magia sugestão uma vez com esta característica e recuperar a capacidade de fazê-lo quando completar um descanso longo. Carisma é sua habilidade de conjuração para essas magias." }
+    ],
     "sourceBook": "Guia de Volo para Monstros (Raça Monstruosa)"
   }
 ]

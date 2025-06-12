@@ -1,3 +1,8 @@
+export interface Trait {
+  name: string;
+  description: string;
+}
+
 export interface AbilityScores {
   strength: number;
   dexterity: number;
@@ -17,17 +22,15 @@ export interface Race {
   name: string;
   description: string;
   abilityScoreIncrease?: Partial<AbilityScores>; 
-  ageDescription?: string;
-  alignmentDescription?: string;
-  size?: string;
   speed?: number;
-  traits?: string[]; 
+  traits?: Trait[]; // <- Alterado de string[] para Trait[]
   languages?: string[];
   subraces?: SubRace[];
   sourceBook?: string; 
 }
 
 export interface SubRace extends Omit<Race, 'subraces' | 'sourceBook'> {
+  // traits já é Trait[] por causa do Omit
 }
 
 export interface Class {
@@ -37,8 +40,6 @@ export interface Class {
   primaryAbility: string[];
   savingThrowProficiencies: (keyof AbilityScores)[];
   armorAndWeaponProficiencies: string[];
-  // ESTRUTURA ATUALIZADA:
-  // Agora pode ser um item fixo (string) ou uma escolha entre itens (string[]).
   startingEquipment: (string | string[])[]; 
   sourceBook: string;
 }
@@ -50,8 +51,7 @@ export interface Background {
   toolProficiencies?: string[];
   languages?: string[];
   equipment: string[];
-  feature: { name: string; description: string };
-  suggestedCharacteristics?: any;
+  feature: Trait; // <- Alterado para usar a interface Trait
   sourceBook: string;
 }
 
@@ -62,7 +62,6 @@ export interface Character {
   subrace?: SubRace;
   class?: Class;
   background?: Background;
-  alignment?: string;
   
   abilityScores: AbilityScores;
   proficiencyBonus: number;
@@ -74,5 +73,5 @@ export interface Character {
   hitPoints: { max: number; current: number; temporary: number };
 
   equipment: string[];
-  traits: string[];
+  traits: Trait[]; // <- Alterado de string[] para Trait[]
 }

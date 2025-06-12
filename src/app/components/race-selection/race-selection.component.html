@@ -18,7 +18,7 @@
         <div *ngIf="race.traits?.length">
             <strong class="font-semibold text-red-700">Traços Raciais:</strong>
             <ul class="list-disc list-inside ml-4">
-                <li *ngFor="let trait of race.traits">{{ trait }}</li>
+                <li *ngFor="let trait of race.traits">{{ trait.name }} - {{ trait.description }}</li>
             </ul>
         </div>
     </div>
@@ -37,7 +37,7 @@
         <div *ngIf="subrace.traits?.length">
             <strong class="font-semibold text-red-700">Traços de Sub-raça:</strong>
             <ul class="list-disc list-inside ml-4">
-                <li *ngFor="let trait of subrace.traits">{{ trait }}</li>
+                <li *ngFor="let trait of subrace.traits">{{ trait.name }} - {{ trait.description }}</li>
             </ul>
         </div>
     </div>

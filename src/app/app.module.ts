@@ -24,6 +24,7 @@ import { EquipmentSelectionComponent } from './components/equipment-selection/eq
 import { CharacterSummaryComponent } from './components/character-summary/character-summary.component';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { HttpClientModule } from '@angular/common/http';
+import { TooltipModule } from 'primeng/tooltip';
 
 
 @NgModule({
@@ -50,6 +51,7 @@ import { HttpClientModule } from '@angular/common/http';
     InputNumberModule,
     RadioButtonModule,
     ProgressSpinnerModule,
+    TooltipModule,
   ],
   providers: [
     CharacterCreationService

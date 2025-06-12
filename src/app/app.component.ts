@@ -140,9 +140,16 @@ export class AppComponent implements OnInit {
     finalCharacter.proficiencyBonus = 2;
 
     // Traits
-    if(this.selectedRace?.traits) finalCharacter.traits.push(...this.selectedRace.traits);
-    if(this.selectedSubrace?.traits) finalCharacter.traits.push(...this.selectedSubrace.traits);
-    if(this.selectedBackground) finalCharacter.traits.push(this.selectedBackground.feature.name);
+    finalCharacter.traits = []; // Inicia o array
+    if(this.selectedRace?.traits) {
+      finalCharacter.traits.push(...this.selectedRace.traits);
+    }
+    if(this.selectedSubrace?.traits) {
+      finalCharacter.traits.push(...this.selectedSubrace.traits);
+    }
+    if(this.selectedBackground) {
+      finalCharacter.traits.push(this.selectedBackground.feature);
+    }
 
     // Scores
     this.getAbilityKeys().forEach(key => {

@@ -79,7 +79,16 @@
             <div>
                 <h4 class="font-bold text-red-700 border-b pb-1 mb-2">Traços e Características</h4>
                 <ul class="list-disc list-inside text-sm text-gray-700 space-y-2 pl-2">
-                    <li *ngFor="let trait of character.traits">{{ trait }}</li>
+                    <!-- Lógica atualizada para usar pTooltip -->
+                    <li *ngFor="let trait of character.traits"
+                        class="cursor-help hover:text-red-600 transition-colors"
+                        [pTooltip]="trait.description"
+                        tooltipPosition="top"
+                        appendTo="target"
+                        tooltipStyleClass="w-auto max-w-xs text-left"
+                        [showDelay]="250">
+                        {{ trait.name }}
+                    </li>
                 </ul>
             </div>
 
