@@ -15,21 +15,41 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { RadioButtonModule } from 'primeng/radiobutton';
 
+import { CharacterNameComponent } from './components/character-name/character-name.component';
+import { RaceSelectionComponent } from './components/race-selection/race-selection.component';
+import { ClassSelectionComponent } from './components/class-selection/class-selection.component';
+import { AbilityScoresComponent } from './components/ability-scores/ability-scores.component';
+import { BackgroundSelectionComponent } from './components/background-selection/background-selection.component';
+import { EquipmentSelectionComponent } from './components/equipment-selection/equipment-selection.component';
+import { CharacterSummaryComponent } from './components/character-summary/character-summary.component';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { HttpClientModule } from '@angular/common/http';
+
+
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    CharacterNameComponent,
+    RaceSelectionComponent,
+    ClassSelectionComponent,
+    AbilityScoresComponent,
+    BackgroundSelectionComponent,
+    EquipmentSelectionComponent,
+    CharacterSummaryComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     BrowserAnimationsModule,
+    HttpClientModule,
     CardModule,
     ButtonModule,
     InputTextModule,
     DropdownModule,
     SelectButtonModule,
     InputNumberModule,
-    RadioButtonModule
+    RadioButtonModule,
+    ProgressSpinnerModule,
   ],
   providers: [
     CharacterCreationService

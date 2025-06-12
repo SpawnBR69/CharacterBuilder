@@ -8,45 +8,30 @@ import { Race, Class, Background, AbilityScores, Character, SubRace, Skill } fro
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  character: Partial<Character> = { name: '' }; // Inicializa com nome vazio
-  currentStep = 0; // Começa no passo 0
-
-  // Opções para seleção
+  isDataLoaded = false; // Flag para controlar o carregamento
+  // ... (outras propriedades permanecem as mesmas)
+  character: Partial<Character> = {};
+  currentStep = 0;
+  isStepValid = false;
   races: Race[] = [];
-  selectedRace?: Race;
-  selectedSubrace?: SubRace; 
-
   classes: Class[] = [];
-  selectedClass?: Class;
-
   backgrounds: Background[] = [];
+  selectedRace?: Race;
+  selectedSubrace?: SubRace;
+  selectedClass?: Class;
   selectedBackground?: Background;
-
-  abilityScoreMethod: 'roll' | 'standard' | 'pointbuy' = 'standard';
-  rolledScores: number[] = [];
-  standardArray: number[] = [15, 14, 13, 12, 10, 8];
-  abilityScorePool: number[] = [];
-  
-  assignedScores: AbilityScores = { strength: 0, dexterity: 0, constitution: 0, intelligence: 0, wisdom: 0, charisma: 0 };
-  pointBuyPoints = 27;
-  
-  abilityKeys: (keyof AbilityScores)[] = ['strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma'];
-
-  // Opções para o SelectButton do método de habilidade
-  abilityMethodOptions: any[];
-
+  assignedScores?: AbilityScores;
   equipmentChoices: { [key: string]: string } = {};
 
-  constructor(public characterService: CharacterCreationService) {
-    this.abilityMethodOptions = [
-      { label: 'Valores Padrão', value: 'standard' },
-      { label: 'Rolar Dados', value: 'roll' },
-      { label: 'Compra por Pontos', value: 'pointbuy' }
-    ];
-  } 
+
+  constructor(public characterService: CharacterCreationService) { }
 
   ngOnInit() {
-    this.resetToInitialState();
+    this.characterService.loadAllData().subscribe(() => {
+        console.log("Dados carregados com sucesso!");
+        this.isDataLoaded = true;
+        this.resetToInitialState();
+    });
   }
 
   resetToInitialState() {
@@ -56,13 +41,213 @@ export class AppComponent implements OnInit {
     this.selectedSubrace = undefined;
     this.selectedClass = undefined;
     this.selectedBackground = undefined;
-
+    this.assignedScores = { strength: 8, dexterity: 8, constitution: 8, intelligence: 8, wisdom: 8, charisma: 8 };
+    this.equipmentChoices = {};
+    
+    // Carrega dados do serviço APÓS o carregamento dos JSON
     this.races = this.characterService.getRaces();
     this.classes = this.characterService.getClasses();
     this.backgrounds = this.characterService.getBackgrounds();
-    this.initializeAbilityScores();
+
+    this.updateStepValidity();
   }
 
+  // --- NAVEGAÇÃO ---
+  nextStep() {
+    if (this.currentStep === 5) {
+      this.compileCharacterData();
+    }
+    if (this.currentStep < 6) {
+      this.currentStep++;
+      this.updateStepValidity();
+    }
+  }
+
+  prevStep() {
+    if (this.currentStep > 0) {
+      this.currentStep--;
+      this.updateStepValidity();
+    }
+  }
+  
+  // --- HANDLERS DE EVENTOS DOS FILHOS ---
+
+  onNameChanged(name: string) {
+    this.character.name = name;
+    this.updateStepValidity();
+  }
+
+  onRaceChanged(race: Race) {
+    this.selectedRace = race;
+    this.selectedSubrace = undefined; // Reseta a sub-raça ao trocar de raça
+    this.updateStepValidity();
+  }
+
+  onSubraceChanged(subrace: SubRace) {
+    this.selectedSubrace = subrace;
+    this.updateStepValidity();
+  }
+
+  onClassChanged(newClass: Class) {
+    this.selectedClass = newClass;
+    this.equipmentChoices = {}; // Reseta as escolhas de equipamento
+    this.updateStepValidity();
+  }
+  
+  onScoresChanged(scores: AbilityScores) {
+    this.assignedScores = scores;
+    this.updateStepValidity();
+  }
+
+  onBackgroundChanged(background: Background) {
+    this.selectedBackground = background;
+    this.updateStepValidity();
+  }
+
+  onEquipmentChanged(choices: { [key: string]: string }) {
+    this.equipmentChoices = choices;
+    this.updateStepValidity();
+  }
+
+  onStepValidityChanged(isValid: boolean) {
+      this.isStepValid = isValid;
+  }
+  
+  // --- LÓGICA DE VALIDAÇÃO ---
+  updateStepValidity() {
+    switch(this.currentStep) {
+      case 0: this.isStepValid = !!this.character.name && this.character.name.trim() !== ''; break;
+      case 1: this.isStepValid = !!this.selectedRace && (!this.selectedRace.subraces || this.selectedRace.subraces.length === 0 || !!this.selectedSubrace); break;
+      case 2: this.isStepValid = !!this.selectedClass; break;
+      // A validade do passo 3 é gerenciada pelo seu próprio componente via (onStepValidityChanged)
+      case 4: this.isStepValid = !!this.selectedBackground; break;
+      case 5: this.isStepValid = true; break; // Equipamento é opcional
+      default: this.isStepValid = false;
+    }
+  }
+
+
+  // --- COMPILAÇÃO E DADOS ---
+  compileCharacterData() {
+    const finalCharacter: Character = this.createEmptyCharacter() as Character;
+    
+    finalCharacter.name = this.character.name || 'Sem Nome';
+    finalCharacter.race = this.selectedRace;
+    finalCharacter.subrace = this.selectedSubrace;
+    finalCharacter.class = this.selectedClass;
+    finalCharacter.background = this.selectedBackground;
+    finalCharacter.level = 1;
+    finalCharacter.proficiencyBonus = 2;
+
+    // Traits
+    if(this.selectedRace?.traits) finalCharacter.traits.push(...this.selectedRace.traits);
+    if(this.selectedSubrace?.traits) finalCharacter.traits.push(...this.selectedSubrace.traits);
+    if(this.selectedBackground) finalCharacter.traits.push(this.selectedBackground.feature.name);
+
+    // Scores
+    this.getAbilityKeys().forEach(key => {
+      let score = this.assignedScores?.[key] || 0;
+      if (this.selectedRace?.abilityScoreIncrease?.[key]) { score += this.selectedRace.abilityScoreIncrease[key]!; }
+      if (this.selectedSubrace?.abilityScoreIncrease?.[key]) { score += this.selectedSubrace.abilityScoreIncrease[key]!; }
+      finalCharacter.abilityScores[key] = score;
+    });
+
+    // Saving Throws
+    this.getAbilityKeys().forEach(key => {
+      const modifier = this.getAbilityModifier(finalCharacter.abilityScores[key]);
+      const isProficient = finalCharacter.class?.savingThrowProficiencies.includes(key) || false;
+      finalCharacter.savingThrows[key] = {
+        proficient: isProficient,
+        value: modifier + (isProficient ? finalCharacter.proficiencyBonus : 0)
+      };
+    });
+
+    // Skills
+    const backgroundSkills = finalCharacter.background?.skillProficiencies || [];
+    for (const skillName in finalCharacter.skills) {
+      if (backgroundSkills.includes(skillName)) {
+        finalCharacter.skills[skillName].proficient = true;
+      }
+    }
+
+    // HP, AC, Initiative
+    const conModifier = this.getAbilityModifier(finalCharacter.abilityScores.constitution);
+    const dexModifier = this.getAbilityModifier(finalCharacter.abilityScores.dexterity);
+    finalCharacter.hitPoints = {
+      max: (finalCharacter.class?.hitDie || 0) + conModifier,
+      current: (finalCharacter.class?.hitDie || 0) + conModifier,
+      temporary: 0
+    };
+    finalCharacter.armorClass = 10 + dexModifier;
+    finalCharacter.initiative = dexModifier;
+    
+    // Equipment
+    const finalEquipment: string[] = [];
+    if(finalCharacter.class?.startingEquipment) {
+        finalCharacter.class.startingEquipment.forEach((item, index) => {
+            if(Array.isArray(item)) {
+                const choiceKey = `class-choice-${index}`;
+                if (this.equipmentChoices[choiceKey]) {
+                    finalEquipment.push(this.equipmentChoices[choiceKey]);
+                }
+            } else {
+                finalEquipment.push(item);
+            }
+        });
+    }
+    if(finalCharacter.background?.equipment) {
+        finalEquipment.push(...finalCharacter.background.equipment);
+    }
+    finalCharacter.equipment = finalEquipment;
+    
+    this.character = finalCharacter;
+  }
+  
+  // --- IMPORT/EXPORT ---
+  downloadJson() {
+    if (this.currentStep < 6) {
+      this.compileCharacterData();
+    }
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(this.character, null, 2));
+    const downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute("href", dataStr);
+    downloadAnchorNode.setAttribute("download", `${(this.character.name || 'personagem').replace(/\s+/g, '_')}.json`);
+    document.body.appendChild(downloadAnchorNode);
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
+  }
+
+  handleFileUpload(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (!input.files?.length) return;
+    const file = input.files[0];
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const importedChar = JSON.parse(e.target?.result as string) as Character;
+        if (!importedChar.name || !importedChar.class || !importedChar.race || !importedChar.background || !importedChar.abilityScores) {
+          throw new Error('Arquivo JSON incompleto ou em formato incorreto.');
+        }
+
+        // Atualiza o estado principal com os dados importados
+        this.character = importedChar;
+        this.selectedRace = this.races.find(r => r.name === importedChar.race?.name);
+        this.selectedSubrace = this.selectedRace?.subraces?.find(sr => sr.name === importedChar.subrace?.name);
+        this.selectedClass = this.classes.find(c => c.name === importedChar.class?.name);
+        this.selectedBackground = this.backgrounds.find(b => b.name === importedChar.background?.name);
+        this.assignedScores = importedChar.abilityScores;
+        this.equipmentChoices = {}; // Nota: A escolha de equipamento não é salva no JSON, pode ser uma melhoria futura.
+
+        this.currentStep = 6;
+      } catch (error) {
+        console.error("Erro ao importar JSON:", error);
+        alert("Ocorreu um erro ao ler o arquivo. Verifique se é um JSON válido e completo.");
+      }
+    };
+    reader.readAsText(file);
+  }
+
+  // --- MÉTODOS AUXILIARES ---
   createEmptyCharacter(): Partial<Character> {
     return {
       name: '',
@@ -97,292 +282,12 @@ export class AppComponent implements OnInit {
 
   initializeSavingThrows(): Character['savingThrows'] {
     const savingThrows: any = {};
-    this.abilityKeys.forEach(key => {
+    this.getAbilityKeys().forEach(key => {
       savingThrows[key] = { proficient: false, value: 0 };
     });
     return savingThrows;
   }
-  
-  initializeAbilityScores() {
-    this.assignedScores = { strength: 0, dexterity: 0, constitution: 0, intelligence: 0, wisdom: 0, charisma: 0 };
-    this.abilityScorePool = [];
-    this.rolledScores = [];
 
-    if (this.abilityScoreMethod === 'pointbuy') {
-      this.assignedScores = { strength: 8, dexterity: 8, constitution: 8, intelligence: 8, wisdom: 8, charisma: 8 };
-      this.recalculatePointBuyPoints();
-    } else if (this.abilityScoreMethod === 'standard') {
-      this.abilityScorePool = [...this.characterService.getStandardArray()];
-    }
-  }
-
-  // Funções de Navegação
-  nextStep() {
-    if (this.currentStep === 5) { this.compileCharacterData(); }
-    this.currentStep++;
-  }
-  prevStep() { this.currentStep--; }
-
-  onRaceSelected(event: { value: Race }) {
-    this.selectedRace = event.value;
-    this.selectedSubrace = undefined;
-    
-    if (this.selectedRace) {
-      if (!this.selectedRace.subraces || this.selectedRace.subraces.length === 0) {
-        this.characterService.updateCharacter({ race: this.selectedRace, subrace: undefined });
-      } else {
-        this.characterService.updateCharacter({ race: this.selectedRace, subrace: undefined });
-      }
-    } else {
-      this.characterService.updateCharacter({ race: undefined, subrace: undefined });
-    }
-  }
-  
-  onRaceChange() {
-    this.selectedSubrace = undefined;
-  }
-
-  onSubraceSelected(event: { value: SubRace }) {
-    this.selectedSubrace = event.value;
-    this.characterService.updateCharacter({ subrace: this.selectedSubrace });
-  }
-
-  onClassSelected(event: { value: Class }) {
-    this.selectedClass = event.value;
-    this.characterService.updateCharacter({ class: this.selectedClass });
-    this.equipmentChoices = {};
-  }
-
-  isEquipmentChoice(item: any): item is string[] {
-    return Array.isArray(item);
-  }
-
-  onBackgroundSelected(event: { value: Background }) {
-    this.selectedBackground = event.value;
-    this.characterService.updateCharacter({ background: this.selectedBackground });
-  }
-
-  // Lógica de Valores de Habilidade
-  onRollScores() {
-    this.rolledScores = this.characterService.rollAbilityScores();
-    this.resetScoreAssignments(); // Chama a função de reset para popular o pool
-  }
-
-  resetScoreAssignments() {
-    this.assignedScores = { strength: 0, dexterity: 0, constitution: 0, intelligence: 0, wisdom: 0, charisma: 0 };
-    if(this.abilityScoreMethod === 'standard') {
-      this.abilityScorePool = [...this.characterService.getStandardArray()];
-    } else if (this.abilityScoreMethod === 'roll' && this.rolledScores.length > 0) {
-      this.abilityScorePool = [...this.rolledScores];
-    }
-  }
-
-  recalculatePointBuyPoints() {
-    let totalCost = 0;
-    console.log('gaming');
-    for (const abilityKey of this.abilityKeys) { 
-        totalCost += this.characterService.calculatePointBuyCost(this.assignedScores[abilityKey]);
-    }
-    this.pointBuyPoints = 27 - totalCost;
-  }
-
-  getAvailableScoresFor(currentAbility: keyof AbilityScores): number[] {
-    const currentlyAssignedScore = this.assignedScores[currentAbility];
-    
-    // Pega todos os scores atribuídos a OUTRAS habilidades
-    const otherAssignedScores = this.abilityKeys
-      .filter(key => key !== currentAbility)
-      .map(key => this.assignedScores[key])
-      .filter(score => score > 0); 
-
-    // Cria uma cópia do pool original para poder manipular
-    const tempPool = [...this.abilityScorePool];
-
-    // Para cada score já atribuído a outra habilidade, remove UMA ocorrência dele do pool temporário
-    for(const score of otherAssignedScores) {
-      const indexToRemove = tempPool.indexOf(score);
-      if (indexToRemove !== -1) {
-        tempPool.splice(indexToRemove, 1);
-      }
-    }
-    
-    // O pool temporário agora contém apenas os scores realmente disponíveis.
-    // Usamos Set para remover duplicatas para a lista de opções, mas a lógica acima já cuidou da contagem.
-    const available = [...new Set(tempPool)];
-    
-    // Garante que o valor atualmente selecionado para ESTA habilidade sempre apareça na lista,
-    // para que a seleção não fique em branco.
-    if (currentlyAssignedScore > 0 && !available.includes(currentlyAssignedScore)) {
-      available.push(currentlyAssignedScore);
-    }
-    
-    return available.sort((a, b) => b - a);
-  }
-  
-  get isNextStepInStep3Disabled(): boolean {
-    if (this.abilityScoreMethod === 'pointbuy') {
-      return this.pointBuyPoints !== 0;
-    } else {
-      if (this.abilityScorePool.length === 0) return true;
-      const assignedCount = this.abilityKeys.filter(key => this.assignedScores[key] > 0).length;
-      return assignedCount < 6;
-    }
-  }
-
-  // --- Lógica de Compilação e Cálculo ---
-
-  getFinalAbilityScore(ability: keyof AbilityScores): number {
-    let score = this.assignedScores[ability] || 0;
-    if (this.selectedRace?.abilityScoreIncrease?.[ability]) { score += this.selectedRace.abilityScoreIncrease[ability]!; }
-    if (this.selectedSubrace?.abilityScoreIncrease?.[ability]) { score += this.selectedSubrace.abilityScoreIncrease[ability]!; }
-    return score;
-  }
-
-  getAbilityModifier(score: number): number {
-    return Math.floor((score - 10) / 2);
-  }
-  
-  getModifierString(value: number | undefined): string {
-    if (value === undefined) return '+0';
-    return value >= 0 ? `+${value}` : `${value}`;
-  }
-
-  getSkillModifierValue(skill: Skill): number {
-    if (!this.character.abilityScores || !this.character.proficiencyBonus) return 0;
-    const modifier = this.getAbilityModifier(this.character.abilityScores[skill.ability]);
-    const proficiencyBonus = skill.proficient ? this.character.proficiencyBonus : 0;
-    return modifier + proficiencyBonus;
-  }
-
-  compileCharacterData() {
-    const finalCharacter: Character = this.createEmptyCharacter() as Character;
-    
-    finalCharacter.name = this.character.name || 'Sem Nome';
-    finalCharacter.race = this.selectedRace;
-    finalCharacter.subrace = this.selectedSubrace;
-    finalCharacter.class = this.selectedClass;
-    finalCharacter.background = this.selectedBackground;
-    finalCharacter.level = 1;
-    finalCharacter.proficiencyBonus = 2;
-
-    if(this,this.selectedRace?.traits){
-      this.selectedRace.traits.forEach(trait => {
-        finalCharacter.traits.push(trait);
-      })
-    }
-
-    if(this,this.selectedSubrace?.traits){
-      this.selectedSubrace.traits.forEach(trait => {
-        finalCharacter.traits.push(trait);
-      })
-    }
-
-    if(this.selectedBackground){
-      finalCharacter.traits.push(this.selectedBackground.feature.name);
-    }
-    this.abilityKeys.forEach(key => {
-      finalCharacter.abilityScores[key] = this.getFinalAbilityScore(key);
-    });
-
-    this.abilityKeys.forEach(key => {
-      const modifier = this.getAbilityModifier(finalCharacter.abilityScores[key]);
-      const isProficient = finalCharacter.class?.savingThrowProficiencies.includes(key) || false;
-      finalCharacter.savingThrows[key] = {
-        proficient: isProficient,
-        value: modifier + (isProficient ? finalCharacter.proficiencyBonus : 0)
-      };
-    });
-
-    const backgroundSkills = finalCharacter.background?.skillProficiencies || [];
-    for (const skillName in finalCharacter.skills) {
-        if (backgroundSkills.includes(skillName)) {
-            finalCharacter.skills[skillName].proficient = true;
-        }
-    }
-
-    const conModifier = this.getAbilityModifier(finalCharacter.abilityScores.constitution);
-    const dexModifier = this.getAbilityModifier(finalCharacter.abilityScores.dexterity);
-    finalCharacter.hitPoints = {
-      max: (finalCharacter.class?.hitDie || 0) + conModifier,
-      current: (finalCharacter.class?.hitDie || 0) + conModifier,
-      temporary: 0
-    };
-    finalCharacter.armorClass = 10 + dexModifier;
-    finalCharacter.initiative = dexModifier;
-    
-    const finalEquipment: string[] = [];
-    
-    // Adiciona equipamento escolhido da classe
-    if(finalCharacter.class?.startingEquipment) {
-        finalCharacter.class.startingEquipment.forEach((item, index) => {
-            if(this.isEquipmentChoice(item)) {
-                // Adiciona o item selecionado pelo usuário
-                const choiceKey = `class-choice-${index}`;
-                if (this.equipmentChoices[choiceKey]) {
-                    finalEquipment.push(this.equipmentChoices[choiceKey]);
-                }
-            } else {
-                // Adiciona o item fixo
-                finalEquipment.push(item);
-            }
-        });
-    }
-    // Adiciona equipamento do antecedente
-    if(finalCharacter.background?.equipment) {
-        finalEquipment.push(...finalCharacter.background.equipment);
-    }
-    
-    finalCharacter.equipment = finalEquipment;
-    
-    this.character = finalCharacter;
-  }
-  
-  // --- Funções de Importação/Exportação ---
-  downloadJson() { 
-      if (this.currentStep < 6) {
-        this.compileCharacterData(); 
-      }
-      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(this.character, null, 2));
-      const downloadAnchorNode = document.createElement('a');
-      downloadAnchorNode.setAttribute("href", dataStr);
-      downloadAnchorNode.setAttribute("download", `${(this.character.name || 'personagem').replace(/\s+/g, '_')}.json`);
-      document.body.appendChild(downloadAnchorNode);
-      downloadAnchorNode.click();
-      downloadAnchorNode.remove();
-  }
-  handleFileUpload(event: Event) {
-    const input = event.target as HTMLInputElement;
-    if (!input.files?.length) return;
-    
-    const file = input.files[0];
-    const reader = new FileReader();
-    
-    reader.onload = (e) => {
-      try {
-        const importedChar = JSON.parse(e.target?.result as string) as Character;
-        if (!importedChar.name || !importedChar.class || !importedChar.race || !importedChar.background || !importedChar.abilityScores) {
-          throw new Error('Arquivo JSON incompleto ou em formato incorreto.');
-        }
-
-        this.character = importedChar;
-        
-        // Popula as propriedades de seleção para consistência da UI
-        this.selectedRace = this.races.find(r => r.name === importedChar.race?.name);
-        this.selectedSubrace = this.selectedRace?.subraces?.find(sr => sr.name === importedChar.subrace?.name);
-        this.selectedClass = this.classes.find(c => c.name === importedChar.class?.name);
-        this.selectedBackground = this.backgrounds.find(b => b.name === importedChar.background?.name);
-        
-        this.currentStep = 6;
-
-      } catch (error) {
-        console.error("Erro ao importar JSON:", error);
-        alert("Ocorreu um erro ao ler o arquivo. Verifique se é um JSON válido e completo.");
-      }
-    };
-    reader.readAsText(file);
-  }
-  
-  exportToPdf() {
-    alert("Funcionalidade de exportar para PDF editável seria implementada aqui.");
-  }
+  getAbilityKeys = (): (keyof AbilityScores)[] => ['strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma'];
+  getAbilityModifier = (score: number) => Math.floor((score - 10) / 2);
 }

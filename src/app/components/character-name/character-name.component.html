@@ -1,0 +1,12 @@
+<p-card header="Passo 0: Comece sua Jornada"
+    subheader="Dê um nome ao seu herói e comece uma nova aventura ou importe um personagem existente.">
+    <div class="field mb-4">
+        <label for="character-name" class="block text-lg font-medium text-gray-700 mb-2">Nome do Personagem</label>
+        <input id="character-name" type="text" pInputText [ngModel]="characterName" (ngModelChange)="nameChange.emit($event)" class="w-full">
+    </div>
+    <div class="flex justify-start">
+        <button pButton pRipple label="Importar JSON" icon="pi pi-upload" class="p-button-secondary"
+            (click)="fileInput.click()"></button>
+        <input #fileInput type="file" (change)="fileSelected.emit($event)" class="hidden" accept=".json">
+    </div>
+</p-card>

@@ -1,0 +1,41 @@
+<p-card>
+    <ng-template pTemplate="title">Passo 3: Determine os Atributos</ng-template>
+
+    <div class="field text-center mb-4">
+        <label class="block mb-2 font-semibold">Método de Atribuição</label>
+        <p-selectButton [options]="abilityMethodOptions" [(ngModel)]="abilityScoreMethod"
+            (onChange)="initializeAbilityScores()" optionLabel="label" optionValue="value"></p-selectButton>
+    </div>
+
+    <!-- Compra por Pontos -->
+    <div *ngIf="abilityScoreMethod === 'pointbuy'">
+        <p class="font-semibold text-center mb-2">Pontos Restantes: 
+            <span [class.text-red-500]="pointBuyPoints < 0" [class.text-green-600]="pointBuyPoints === 0">{{ pointBuyPoints }}</span>
+        </p>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <div *ngFor="let ability of abilityKeys" class="field mb-2 text-center">
+                <label class="font-semibold capitalize text-red-700 block mb-1">{{ ability }}</label>
+                <p-inputNumber [(ngModel)]="assignedScores[ability]" (onBlur)="recalculatePointBuyPoints()" 
+                               [min]="8" [max]="15" [showButtons]="true"></p-inputNumber>
+            </div>
+        </div>
+    </div>
+
+    <!-- Padrão ou Rolagem -->
+    <div *ngIf="abilityScoreMethod === 'standard' || abilityScoreMethod === 'roll'">
+        <div class="mb-4 flex items-center justify-center gap-4">
+            <button *ngIf="abilityScoreMethod === 'roll'" pButton pRipple label="Rolar Dados"
+                icon="pi pi-bolt" (click)="onRollScores()"></button>
+            <p *ngIf="abilityScorePool.length > 0">Valores: <strong class="text-blue-600">{{ abilityScorePool.join(', ') }}</strong></p>
+            <button *ngIf="abilityScorePool.length > 0" pButton pRipple label="Limpar"
+                icon="pi pi-refresh" class="p-button-secondary" (click)="resetScoreAssignments()"></button>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <div *ngFor="let ability of abilityKeys" class="field mb-2">
+                <label class="font-semibold capitalize text-red-700 block mb-1">{{ ability }}</label>
+                <p-dropdown [options]="getAvailableScoresFor(ability)" [(ngModel)]="assignedScores[ability]"
+                            (onChange)="onScoreAssigned()" placeholder="Escolha" [showClear]="true" styleClass="w-full"></p-dropdown>
+            </div>
+        </div>
+    </div>
+</p-card>

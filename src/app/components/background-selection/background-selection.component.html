@@ -1,0 +1,20 @@
+<p-card>
+    <ng-template pTemplate="title">Passo 4: Escolha seu Antecedente</ng-template>
+
+    <div class="field mb-4">
+        <label class="block mb-2 font-semibold">Antecedente</label>
+        <p-dropdown [options]="backgrounds" [ngModel]="selectedBackground" (ngModelChange)="backgroundChange.emit($event)"
+                    optionLabel="name" placeholder="-- Escolha um Antecedente --" [showClear]="true" styleClass="w-full"></p-dropdown>
+    </div>
+
+    <div *ngIf="selectedBackground as bg" class="mt-4 p-4 border rounded-lg bg-gray-50 text-sm space-y-2">
+        <p class="italic">{{ bg.description }}</p>
+        <p><strong class="font-semibold text-red-700">Perícias:</strong> {{ bg.skillProficiencies.join(', ') }}</p>
+        <p *ngIf="bg.toolProficiencies"><strong class="font-semibold text-red-700">Ferramentas:</strong> {{ bg.toolProficiencies.join(', ') }}</p>
+        <p *ngIf="bg.languages"><strong class="font-semibold text-red-700">Idiomas:</strong> {{ bg.languages.join(', ') }}</p>
+        <div>
+            <strong class="font-semibold text-red-700">Característica - {{ bg.feature.name }}:</strong>
+            <p class="italic ml-4">{{ bg.feature.description }}</p>
+        </div>
+    </div>
+</p-card>

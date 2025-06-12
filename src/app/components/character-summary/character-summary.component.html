@@ -1,0 +1,100 @@
+<p-card *ngIf="character.name">
+    <ng-template pTemplate="title">
+        <div class="text-center text-4xl font-serif text-red-800">{{ character.name }}</div>
+    </ng-template>
+    <ng-template pTemplate="subtitle">
+        <div class="text-center text-lg text-gray-600">
+            {{ character.race?.name }} {{ character.subrace ? '(' + character.subrace.name + ')' : '' }} |
+            {{ character.class?.name }} Nível {{ character.level }}
+        </div>
+    </ng-template>
+
+    <!-- Atributos e Modificadores -->
+    <div class="grid grid-cols-3 md:grid-cols-6 gap-2 md:gap-4 text-center mb-6">
+        <div *ngFor="let ability of abilityKeys" class="p-2 border rounded-lg bg-gray-50 flex flex-col justify-center items-center h-28">
+            <div class="text-sm font-bold text-red-700 uppercase">{{ ability.slice(0, 3) }}</div>
+            <div class="text-4xl font-bold">{{ getModifierString(getAbilityModifier(character.abilityScores![ability])) }}</div>
+            <div class="text-md text-gray-600">{{ character.abilityScores![ability] }}</div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Coluna Esquerda: Resistências e Perícias -->
+        <div class="md:col-span-1 space-y-6">
+            <!-- Testes de Resistência -->
+            <div>
+                <h4 class="font-bold text-red-700 border-b pb-1 mb-2">Testes de Resistência</h4>
+                <ul *ngIf="character.savingThrows" class="space-y-2">
+                    <li *ngFor="let key of abilityKeys" class="flex items-center gap-3 w-full">
+                        <div class="w-4 flex-shrink-0">
+                            <input type="radio" [checked]="character.savingThrows![key].proficient" disabled class="w-4 h-4 border-2 border-gray-500 rounded-full checked:bg-gray-800 checked:border-gray-800">
+                        </div>
+                        <span class="w-10 text-left font-semibold">{{ getModifierString(character.savingThrows![key].value) }}</span>
+                        <span class="w-32 text-left text-gray-600 capitalize truncate">{{ key }}</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Perícias -->
+            <div>
+                <h4 class="font-bold text-red-700 border-b pb-1 mb-2">Perícias</h4>
+                <ul *ngIf="character.skills" class="space-y-1.5">
+                    <li *ngFor="let skill of character.skills | keyvalue" class="flex items-center gap-3 text-sm w-full">
+                        <div class="w-4 flex-shrink-0">
+                            <input type="radio" [checked]="skill.value.proficient" disabled class="w-4 h-4 border-2 border-gray-500 rounded-full checked:bg-gray-800 checked:border-gray-800">
+                        </div>
+                        <span class="w-10 text-left font-semibold">{{ getModifierString(getSkillModifierValue(skill.value)) }}</span>
+                        <span class="text-gray-600">{{ skill.key }}</span>
+                        <span class="text-gray-400">({{ skill.value.ability.slice(0, 3) }})</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Coluna Direita: Combate, Traços, Equipamento -->
+        <div class="md:col-span-2 space-y-6">
+             <!-- Status de Combate -->
+            <div class="grid grid-cols-3 gap-4 text-center">
+                <div class="p-2 border rounded-lg bg-gray-50 flex flex-col justify-center items-center h-28">
+                    <strong class="block text-red-700">Classe de Armadura</strong>
+                    <span class="text-3xl font-bold">{{ character.armorClass }}</span>
+                </div>
+                <div class="p-2 border rounded-lg bg-gray-50 flex flex-col justify-center items-center h-28">
+                    <strong class="block text-red-700">Iniciativa</strong>
+                    <span class="text-3xl font-bold">{{ getModifierString(character.initiative) }}</span>
+                </div>
+                <div class="p-2 border rounded-lg bg-gray-50 flex flex-col justify-center items-center h-28">
+                    <strong class="block text-red-700">Deslocamento</strong>
+                    <span class="text-3xl font-bold">{{ character.race?.speed }} m</span>
+                </div>
+            </div>
+
+            <!-- Pontos de Vida -->
+            <div class="p-3 border rounded-lg bg-gray-50">
+                <strong class="block text-red-700 text-center">Pontos de Vida</strong>
+                <div class="text-center text-3xl font-bold">{{ character.hitPoints?.current }} / {{ character.hitPoints?.max }}</div>
+            </div>
+
+            <!-- Traços e Características -->
+            <div>
+                <h4 class="font-bold text-red-700 border-b pb-1 mb-2">Traços e Características</h4>
+                <ul class="list-disc list-inside text-sm text-gray-700 space-y-2 pl-2">
+                    <li *ngFor="let trait of character.traits">{{ trait }}</li>
+                </ul>
+            </div>
+
+            <!-- Equipamento -->
+            <div>
+                <h4 class="font-bold text-red-700 border-b pb-1 mb-2">Equipamento</h4>
+                <p class="text-sm text-gray-600">{{ character.equipment?.join(', ') }}</p>
+            </div>
+        </div>
+    </div>
+
+    <ng-template pTemplate="footer">
+        <div class="flex justify-between mt-6">
+            <button pButton pRipple label="Voltar ao Início" icon="pi pi-replay" (click)="reset.emit()" class="p-button-secondary"></button>
+            <button pButton pRipple label="Exportar JSON" icon="pi pi-download" (click)="download.emit()" class="p-button-success"></button>
+        </div>
+    </ng-template>
+</p-card>

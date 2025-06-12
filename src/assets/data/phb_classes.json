@@ -1,0 +1,180 @@
+[
+  {
+    "name": "Bárbaro",
+    "description": "Um guerreiro feroz que pode entrar em fúria de batalha.",
+    "hitDie": 12,
+    "primaryAbility": ["Força"],
+    "savingThrowProficiencies": ["strength", "constitution"],
+    "armorAndWeaponProficiencies": ["Armaduras leves e médias", "escudos", "armas simples e marciais"],
+    "startingEquipment": [
+      ["(a) um machado grande", "(b) qualquer arma marcial corpo a corpo"],
+      ["(a) duas machadinhas", "(b) qualquer arma simples"],
+      "Um pacote de aventureiro e quatro azagaias"
+    ],
+    "sourceBook": "Livro do Jogador"
+  },
+  {
+    "name": "Bardo",
+    "description": "Um mestre da música, fala e magia, que inspira aliados e desmoraliza inimigos.",
+    "hitDie": 8,
+    "primaryAbility": ["Carisma"],
+    "savingThrowProficiencies": ["dexterity", "charisma"],
+    "armorAndWeaponProficiencies": ["Armaduras leves", "armas simples", "bestas de mão", "espadas longas", "rapieiras", "espadas curtas"],
+    "startingEquipment": [
+        ["(a) uma rapieira", "(b) uma espada longa", "(c) qualquer arma simples"],
+        ["(a) um pacote de diplomata", "(b) um pacote de artista"],
+        ["(a) um alaúde", "(b) qualquer outro instrumento musical"],
+        "Corselete de couro e uma adaga"
+    ],
+    "sourceBook": "Livro do Jogador"
+  },
+  {
+    "name": "Bruxo",
+    "description": "Um manipulador de magia derivada de um pacto com uma entidade extraplanar.",
+    "hitDie": 8,
+    "primaryAbility": ["Carisma"],
+    "savingThrowProficiencies": ["wisdom", "charisma"],
+    "armorAndWeaponProficiencies": ["Armaduras leves", "armas simples"],
+    "startingEquipment": [
+        ["(a) uma besta leve e 20 virotes", "(b) qualquer arma simples"],
+        ["(a) uma bolsa de componentes", "(b) um foco arcano"],
+        ["(a) um pacote de estudioso", "(b) um pacote de masmorra"],
+        "Corselete de couro, qualquer arma simples e duas adagas"
+    ],
+    "sourceBook": "Livro do Jogador"
+  },
+   {
+    "name": "Clérigo",
+    "description": "Um campeão sacerdotal que empunha magia divina a serviço de um poder maior.",
+    "hitDie": 8,
+    "primaryAbility": ["Sabedoria"],
+    "savingThrowProficiencies": ["wisdom", "charisma"],
+    "armorAndWeaponProficiencies": ["Armaduras leves e médias", "escudos", "todas as armas simples"],
+    "startingEquipment": [
+      ["(a) uma maça", "(b) um martelo de guerra (se proficiente)"],
+      ["(a) brunea", "(b) corselete de couro", "(c) cota de malha (se proficiente)"],
+      ["(a) uma besta leve e 20 virotes", "(b) qualquer arma simples"],
+      ["(a) um pacote de sacerdote", "(b) um pacote de aventureiro"],
+      "Um escudo e um símbolo sagrado"
+    ],
+    "sourceBook": "Livro do Jogador"
+  },
+  {
+    "name": "Druida",
+    "description": "Um sacerdote da Velha Fé, que empunha os poderes da natureza e adota formas de animais.",
+    "hitDie": 8,
+    "primaryAbility": ["Sabedoria"],
+    "savingThrowProficiencies": ["intelligence", "wisdom"],
+    "armorAndWeaponProficiencies": ["Armaduras leves e médias (não-metálicas)", "escudos (não-metálicos)", "clavas", "adagas", "dardos", "azagaias", "maças", "bordões", "cimitarras", "fundas", "lanças"],
+    "startingEquipment": [
+      ["(a) um escudo de madeira", "(b) qualquer arma simples"],
+      ["(a) uma cimitarra" , "(b) qualquer arma corpo a corpo simples"],
+      "Corselete de couro, um pacote de explorador e um foco druídico"
+    ],
+    "sourceBook": "Livro do Jogador"
+  },
+  {
+    "name": "Feiticeiro",
+    "description": "Um conjurador que extrai magia de uma linhagem ou dom inato.",
+    "hitDie": 6,
+    "primaryAbility": ["Carisma"],
+    "savingThrowProficiencies": ["constitution", "charisma"],
+    "armorAndWeaponProficiencies": ["Adagas", "dardos", "fundas", "bordões", "bestas leves"],
+    "startingEquipment": [
+      ["(a) uma besta leve e 20 virotes", "(b) qualquer arma simples"],
+      ["(a) uma bolsa de componentes "," (b) um foco arcano"],
+      ["(a) um pacote de masmorra "," (b) um pacote de explorador"],
+      "Duas adagas"
+    ],
+    "sourceBook": "Livro do Jogador"
+  },
+  {
+    "name": "Guerreiro",
+    "description": "Um mestre do combate, especialista em uma ampla gama de armas e armaduras.",
+    "hitDie": 10,
+    "primaryAbility": ["Força", "Destreza"],
+    "savingThrowProficiencies": ["strength", "constitution"],
+    "armorAndWeaponProficiencies": ["Todas as armaduras", "escudos", "armas simples e marciais"],
+    "startingEquipment": [
+      ["(a) cota de malha "," (b) gibão de peles, arco longo e 20 flechas"],
+      ["(a) uma arma marcial e um escudo "," (b) duas armas marciais"],
+      ["(a) uma besta leve e 20 virotes "," (b) duas machadinhas"],
+      ["(a) um pacote de masmorra "," (b) um pacote de explorador"]
+    ],
+    "sourceBook": "Livro do Jogador"
+  },
+  {
+    "name": "Ladino",
+    "description": "Um gatuno que usa furtividade e subterfúgio para superar obstáculos e inimigos.",
+    "hitDie": 8,
+    "primaryAbility": ["Destreza"],
+    "savingThrowProficiencies": ["dexterity", "intelligence"],
+    "armorAndWeaponProficiencies": ["Armaduras leves", "armas simples", "bestas de mão", "espadas longas", "rapieiras", "espadas curtas"],
+    "startingEquipment": [
+      ["(a) uma rapieira "," (b) uma espada curta"],
+      ["(a) um arco curto e aljava com 20 flechas "," (b) uma espada curta"],
+      ["(a) um pacote de assaltante "," (b) um pacote de masmorra "," (c) um pacote de explorador"],
+      "Corselete de couro, duas adagas e ferramentas de ladrão"
+    ],
+    "sourceBook": "Livro do Jogador"
+  },
+  {
+    "name": "Mago",
+    "description": "Um usuário de magia erudito, capaz de manipular as estruturas da realidade.",
+    "hitDie": 6,
+    "primaryAbility": ["Inteligência"],
+    "savingThrowProficiencies": ["intelligence", "wisdom"],
+    "armorAndWeaponProficiencies": ["Adagas", "dardos", "fundas", "bordões", "bestas leves"],
+    "startingEquipment": [
+      ["(a) um bordão "," (b) uma adaga"],
+      ["(a) uma bolsa de componentes "," (b) um foco arcano"],
+      ["(a) um pacote de estudioso "," (b) um pacote de explorador"],
+      "Um grimório"
+    ],
+    "sourceBook": "Livro do Jogador"
+  },
+  {
+    "name": "Monge",
+    "description": "Um mestre das artes marciais, usando o poder do corpo em busca da perfeição física e espiritual.",
+    "hitDie": 8,
+    "primaryAbility": ["Destreza", "Sabedoria"],
+    "savingThrowProficiencies": ["strength", "dexterity"],
+    "armorAndWeaponProficiencies": ["Armas simples", "espadas curtas"],
+    "startingEquipment": [
+      ["(a) uma espada curta "," (b) qualquer arma simples"],
+      ["(a) um pacote de masmorra "," (b) um pacote de explorador"],
+      "10 dardos"
+    ],
+    "sourceBook": "Livro do Jogador"
+  },
+  {
+    "name": "Paladino",
+    "description": "Um guerreiro sagrado vinculado a um juramento.",
+    "hitDie": 10,
+    "primaryAbility": ["Força", "Carisma"],
+    "savingThrowProficiencies": ["wisdom", "charisma"],
+    "armorAndWeaponProficiencies": ["Todas as armaduras", "escudos", "armas simples e marciais"],
+    "startingEquipment": [
+      ["(a) uma arma marcial e um escudo "," (b) duas armas marciais"],
+      ["(a) cinco azagaias "," (b) qualquer arma corpo a corpo simples"],
+      ["(a) um pacote de sacerdote "," (b) um pacote de aventureiro"],
+      "Cota de malha e um símbolo sagrado"
+    ],
+    "sourceBook": "Livro do Jogador"
+  },
+  {
+    "name": "Patrulheiro",
+    "description": "Um guerreiro que usa habilidade marcial e magia da natureza para combater ameaças nos limites da civilização.",
+    "hitDie": 10,
+    "primaryAbility": ["Destreza", "Sabedoria"],
+    "savingThrowProficiencies": ["strength", "dexterity"],
+    "armorAndWeaponProficiencies": ["Armaduras leves e médias", "escudos", "armas simples e marciais"],
+    "startingEquipment": [
+      ["(a) brunea "," (b) corselete de couro"],
+      ["(a) duas espadas curtas "," (b) duas armas corpo a corpo simples"],
+      ["(a) um pacote de masmorra "," (b) um pacote de explorador"],
+      "Um arco longo e uma aljava com 20 flechas"
+    ],
+    "sourceBook": "Livro do Jogador"
+  }
+]
