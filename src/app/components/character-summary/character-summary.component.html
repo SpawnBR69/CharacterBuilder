@@ -29,8 +29,8 @@
                         <div class="w-4 flex-shrink-0">
                             <input type="radio" [checked]="character.savingThrows![key].proficient" disabled class="w-4 h-4 border-2 border-gray-500 rounded-full checked:bg-gray-800 checked:border-gray-800">
                         </div>
-                        <span class="w-10 text-left font-semibold">{{ getModifierString(character.savingThrows![key].value) }}</span>
-                        <span class="w-32 text-left text-gray-600 capitalize truncate">{{ key }}</span>
+                        <span class="text-left font-semibold">{{ getModifierString(character.savingThrows![key].value) }}</span>
+                        <span class="text-left text-gray-600 capitalize truncate">{{ key }}</span>
                     </li>
                 </ul>
             </div>
