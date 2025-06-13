@@ -39,7 +39,7 @@
     "speed": 9,
     "languages": ["Comum", "Gigante"],
     "traits": [
-        { "name": "Atleta Natural", "description": "Você tem proficiência na perícia Atletismo." },
+        { "name": "Atleta Natural", "description": "Você tem proficiência na perícia Atletismo.", "skillProficiencies": ["Atletismo"] },
         { "name": "Resistência da Pedra", "description": "Você pode focar sua resiliência para se livrar de um ferimento. Quando você sofre dano, você pode usar sua reação para rolar um d12. Adicione seu modificador de Constituição ao número rolado e reduza o dano por esse total. Depois de usar essa característica, você não pode usá-la novamente até completar um descanso curto ou longo." },
         { "name": "Nascido na Montanha", "description": "Você está aclimatado a grandes altitudes, incluindo elevações acima de 6.000 metros. Você também é naturalmente adaptado a climas frios." },
         { "name": "Construção Poderosa", "description": "Você conta como um tamanho maior ao determinar sua capacidade de carga e o peso que você pode empurrar, arrastar ou levantar." }
@@ -54,7 +54,7 @@
     "languages": ["Comum (entendem, mas falam apenas por mimetismo)", "Auran (entendem, mas falam apenas por mimetismo)"],
     "traits": [
         { "name": "Perito em Falsificação", "description": "Você pode duplicar a caligrafia e o artesanato de outras criaturas. Você tem vantagem em todos os testes feitos para produzir falsificações ou duplicatas de objetos existentes." },
-        { "name": "Treinamento Kenku", "description": "Você tem proficiência em duas das seguintes perícias à sua escolha: Acrobacia, Enganação, Furtividade e Prestidigitação." },
+        { "name": "Treinamento Kenku", "description": "Você tem proficiência em duas das seguintes perícias à sua escolha: Acrobacia, Enganação, Furtividade e Prestidigitação.","skillProficiencies": ["CHOICE:2:Acrobacia,Enganação,Furtividade,Prestidigitação"] },
         { "name": "Mimetismo", "description": "Você pode imitar sons que ouviu, incluindo vozes. Uma criatura que ouve os sons pode dizer que são imitações com um teste bem-sucedido de Sabedoria (Intuição) contra sua CD de Enganação." }
     ],
     "sourceBook": "Guia de Volo para Monstros"
@@ -69,7 +69,7 @@
         { "name": "Mordida", "description": "Sua boca com presas é uma arma natural, que você pode usar para fazer ataques desarmados. Se você acertar com ela, você causa dano perfurante igual a 1d6 + seu modificador de Força, em vez do dano contundente normal para um ataque desarmado." },
         { "name": "Artesão Astuto", "description": "Como parte de um descanso curto, você pode colher ossos e couro de uma criatura abatida de tamanho Pequeno ou maior para criar um dos seguintes itens: um escudo, uma clava, uma azagaia ou 1d4 dardos ou agulhas de zarabatana. Para usar esta característica, você precisa de uma lâmina, como uma adaga, ou ferramentas de artesão apropriadas." },
         { "name": "Prender a Respiração", "description": "Você pode prender a respiração por até 15 minutos." },
-        { "name": "Determinação Faminta", "description": "Você ganha uma proficiência adicional com uma das seguintes perícias: Adestrar Animais, Natureza, Percepção, Furtividade e Sobrevivência." },
+        { "name": "Determinação Faminta", "description": "Você ganha uma proficiência adicional com uma das seguintes perícias: Adestrar Animais, Natureza, Percepção, Furtividade e Sobrevivência.", "skillProficiencies": ["CHOICE:1:Adestrar Animais,Natureza,Percepção,Furtividade,Sobrevivência"] },
         { "name": "Armadura Natural", "description": "Você tem uma pele grossa e escamosa. Quando você não está vestindo armadura, sua Classe de Armadura é 13 + seu modificador de Destreza. Você pode usar um escudo e ainda obter este benefício." }
     ],
     "sourceBook": "Guia de Volo para Monstros"
@@ -84,7 +84,7 @@
         { "name": "Visão no Escuro", "description": "Você tem os sentidos aguçados de um gato, especialmente no escuro. Você pode ver na penumbra a até 18 metros de você como se fosse luz plena, e na escuridão como se fosse penumbra." },
         { "name": "Agilidade Felina", "description": "Seus reflexos e agilidade permitem que você se mova com uma explosão de velocidade. Quando você se move em seu turno em combate, você pode dobrar sua velocidade. Depois de usar essa característica, você não pode usá-la novamente até se mover 0 metros em um de seus turnos." },
         { "name": "Garras de Gato", "description": "Suas garras são armas naturais, que você pode usar para fazer ataques desarmados. Se você acertar com elas, você causa dano cortante igual a 1d4 + seu modificador de Força, em vez do dano contundente normal para um ataque desarmado. Além disso, suas garras lhe dão um deslocamento de escalada de 6 metros." },
-        { "name": "Percepção Felina", "description": "Você tem proficiência nas perícias Percepção e Furtividade." }
+        { "name": "Percepção Felina", "description": "Você tem proficiência nas perícias Percepção e Furtividade.", "skillProficiencies": ["Percepção", "Furtividade"] }
     ],
     "sourceBook": "Guia de Volo para Monstros"
   },
@@ -113,7 +113,7 @@
         { "name": "Braços Longos", "description": "Quando você faz um ataque corpo a corpo em seu turno, seu alcance é 1,5 metros maior que o normal." },
         { "name": "Construção Poderosa", "description": "Você conta como um tamanho maior ao determinar sua capacidade de carga e o peso que você pode empurrar, arrastar ou levantar." },
         { "name": "Ataque Surpresa", "description": "Se você surpreender uma criatura e acertá-la com um ataque em seu primeiro turno em combate, o ataque causa 2d6 de dano extra. Você pode usar essa característica apenas uma vez por combate." },
-        { "name": "Furtivo", "description": "Você tem proficiência na perícia Furtividade." }
+        { "name": "Furtivo", "description": "Você tem proficiência na perícia Furtividade.", "skillProficiencies": ["Furtividade"] }
     ],
     "sourceBook": "Guia de Volo para Monstros (Raça Monstruosa)"
   },
@@ -169,7 +169,7 @@
         { "name": "Visão no Escuro", "description": "Você pode ver na penumbra a até 18 metros de você como se fosse luz plena, e na escuridão como se fosse penumbra." },
         { "name": "Agressivo", "description": "Como uma ação bônus em seu turno, você pode se mover até o seu deslocamento em direção a uma criatura hostil que você possa ver." },
         { "name": "Construção Poderosa", "description": "Você conta como um tamanho maior ao determinar sua capacidade de carga e o peso que você pode empurrar, arrastar ou levantar." },
-        { "name": "Ameaçador", "description": "Você tem proficiência na perícia Intimidação." }
+        { "name": "Ameaçador", "description": "Você tem proficiência na perícia Intimidação.", "skillProficiencies": ["Intimidação"] }
     ],
     "sourceBook": "Guia de Volo para Monstros (Raça Monstruosa)"
   },

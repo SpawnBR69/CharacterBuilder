@@ -44,4 +44,31 @@
             </div>
         </div>
     </div>
+
+    <div class="mt-6" *ngIf="fixedSkillProficiencies.length > 0 || skillChoiceGroups.length > 0">
+    <h4 class="font-bold text-red-700 border-b pb-1 mb-2">Perícias</h4>
+
+    <!-- Perícias Fixas -->
+    <div *ngIf="fixedSkillProficiencies.length > 0" class="mb-4">
+      <p class="font-semibold text-gray-700">Proficiências Garantidas:</p>
+      <p class="text-sm text-gray-600">{{ fixedSkillProficiencies.join(', ') }}</p>
+    </div>
+
+    <!-- Grupos de Escolha de Perícia -->
+    <div *ngFor="let group of skillChoiceGroups; let groupIndex = index" class="mb-4">
+      <p class="font-semibold text-gray-700">De "{{ group.source }}", escolha {{ group.count }}:</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+        <div *ngFor="let i of counter(group.count); let choiceIndex = index">
+          <p-dropdown
+            [options]="getSkillOptionsForGroup(groupIndex, choiceIndex)"
+            [(ngModel)]="selectedBonusSkills[groupIndex][choiceIndex]"
+            (onChange)="onSkillSelectionChange()"
+            placeholder="-- Selecione uma perícia --"
+            [showClear]="true"
+            styleClass="w-full">
+          </p-dropdown>
+        </div>
+      </div>
+    </div>
+  </div>
 </p-card>

@@ -23,6 +23,8 @@ export class AppComponent implements OnInit {
   assignedScores?: AbilityScores;
   equipmentChoices: { [key: string]: string } = {};
   chosenLanguages: string[] = [];
+  skillChoiceGroups: { source: string; count: number; options: string[] }[] = [];
+  chosenSkills: { [groupIndex: number]: string[] } = {};
 
 
   constructor(public characterService: CharacterCreationService) { }
@@ -44,6 +46,9 @@ export class AppComponent implements OnInit {
     this.selectedBackground = undefined;
     this.assignedScores = { strength: 8, dexterity: 8, constitution: 8, intelligence: 8, wisdom: 8, charisma: 8 };
     this.equipmentChoices = {};
+    this.chosenLanguages = [];
+    this.skillChoiceGroups = [];
+    this.chosenSkills = {};
     
     // Carrega dados do serviço APÓS o carregamento dos JSON
     this.races = this.characterService.getRaces();
@@ -82,11 +87,13 @@ export class AppComponent implements OnInit {
     this.selectedRace = race;
     this.selectedSubrace = undefined; // Reseta a sub-raça ao trocar de raça
     this.updateStepValidity();
+    this.recalculateSkillChoices();
   }
 
   onSubraceChanged(subrace: SubRace) {
     this.selectedSubrace = subrace;
     this.updateStepValidity();
+    this.recalculateSkillChoices();
   }
 
   onClassChanged(newClass: Class) {
@@ -177,6 +184,60 @@ export class AppComponent implements OnInit {
     this.chosenLanguages = languages;
   }
 
+  onSkillChoicesChanged(choices: { [groupIndex: number]: string[] }) {
+    this.chosenSkills = choices;
+  }
+
+  get fixedSkillProficiencies(): string[] {
+    const proficiencies = new Set<string>();
+
+    this.selectedBackground?.skillProficiencies?.forEach(skill => proficiencies.add(skill));
+    
+    const traits = [
+      ...(this.selectedRace?.traits || []),
+      ...(this.selectedSubrace?.traits || [])
+    ];
+
+    traits.forEach(trait => {
+      trait.skillProficiencies?.forEach(prof => {
+        if (!prof.startsWith('CHOICE:')) {
+          proficiencies.add(prof);
+        }
+      });
+    });
+
+    return Array.from(proficiencies);
+  }
+
+  // Este método é chamado sempre que a seleção de raça/classe/etc. muda
+  recalculateSkillChoices() {
+    const choiceGroups: { source: string; count: number; options: string[] }[] = [];
+    const traits = [
+      ...(this.selectedRace?.traits || []),
+      ...(this.selectedSubrace?.traits || [])
+    ];
+
+    traits.forEach(trait => {
+      trait.skillProficiencies?.forEach(prof => {
+        if (prof.startsWith('CHOICE:')) {
+          const parts = prof.split(':');
+          const count = parseInt(parts[1] || '0', 10);
+          const optionsStr = parts[2];
+          const options = optionsStr === 'ALL' ? this.characterService.getAvailableSkills() : optionsStr.split(',');
+          
+          choiceGroups.push({
+            source: trait.name,
+            count: count,
+            options: options.filter(opt => !this.fixedSkillProficiencies.includes(opt)) // Remove opções já conhecidas
+          });
+        }
+      });
+    });
+
+    this.skillChoiceGroups = choiceGroups;
+    this.chosenSkills = {}; // Reseta as escolhas ao recalcular
+  }
+
 
   // --- COMPILAÇÃO E DADOS ---
   compileCharacterData() {
@@ -220,10 +281,17 @@ export class AppComponent implements OnInit {
       };
     });
 
-    // Skills
-    const backgroundSkills = finalCharacter.background?.skillProficiencies || [];
+    //Skills
+    const allSkillProficiencies = new Set<string>(this.fixedSkillProficiencies);
+    this.selectedBackground?.skillProficiencies?.forEach(skill => allSkillProficiencies.add(skill));
+    Object.values(this.chosenSkills).forEach(groupChoices => {
+      groupChoices.forEach(skill => {
+        if (skill) allSkillProficiencies.add(skill);
+      });
+    });
+
     for (const skillName in finalCharacter.skills) {
-      if (backgroundSkills.includes(skillName)) {
+      if (allSkillProficiencies.has(skillName)) {
         finalCharacter.skills[skillName].proficient = true;
       }
     }

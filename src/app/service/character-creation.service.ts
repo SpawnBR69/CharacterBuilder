@@ -72,6 +72,14 @@ export class CharacterCreationService {
       'Primordial', 'Silvestre', 'Comum'
     ];
   }
+  getAvailableSkills(): string[] {
+    return [
+      'Acrobacia', 'Adestrar Animais', 'Arcanismo', 'Atletismo', 'Enganação', 
+      'Furtividade', 'História', 'Intimidação', 'Intuição', 'Investigação', 
+      'Medicina', 'Natureza', 'Percepção', 'Atuação', 'Persuasão', 
+      'Prestidigitação', 'Religião', 'Sobrevivência'
+    ];
+  }
 
   getStandardArray = (): number[] => [15, 14, 13, 12, 10, 8];
 

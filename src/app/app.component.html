@@ -49,7 +49,11 @@
                     [knownLanguages]="knownLanguages"
                     [languageChoicesCount]="languageChoicesCount"
                     [availableLanguages]="availableLanguagesForSelection"
-                    (languagesChange)="onLanguagesChanged($event)">
+                    (languagesChange)="onLanguagesChanged($event)"
+                    
+                    [fixedSkillProficiencies]="fixedSkillProficiencies"
+                    [skillChoiceGroups]="skillChoiceGroups"
+                    (skillChoicesChange)="onSkillChoicesChanged($event)">
                 </app-background-selection>
 
                 <!-- Passo 5: Equipamento -->

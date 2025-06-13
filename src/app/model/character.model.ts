@@ -1,6 +1,7 @@
 export interface Trait {
   name: string;
   description: string;
+  skillProficiencies?: string[];
 }
 
 export interface AbilityScores {

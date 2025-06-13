@@ -26,7 +26,7 @@
     "languages": ["Comum", "Élfico"],
     "traits": [
       { "name": "Visão no Escuro", "description": "Acostumado a florestas crepusculares e ao céu noturno, você tem uma visão superior em condições de escuridão e penumbra." },
-      { "name": "Sentidos Aguçados", "description": "Você tem proficiência na perícia Percepção." },
+      { "name": "Sentidos Aguçados", "description": "Você tem proficiência na perícia Percepção.", "skillProficiencies": ["Percepção"] },
       { "name": "Ancestralidade Feérica", "description": "Você tem vantagem em testes de resistência para não ser enfeitiçado, e a magia não pode colocá-lo para dormir." },
       { "name": "Transe", "description": "Elfos não precisam dormir. Em vez disso, eles meditam profundamente, permanecendo semiconscientes, por 4 horas por dia." }
     ],
@@ -198,7 +198,7 @@
         { "name": "Aumento no Valor de Habilidade", "description": "Seu valor de Carisma aumenta em 2, e dois outros valores de habilidade à sua escolha aumentam em 1." },
         { "name": "Visão no Escuro", "description": "Graças ao seu sangue élfico, você tem uma visão superior em condições de escuridão e penumbra." },
         { "name": "Ancestralidade Feérica", "description": "Você tem vantagem em testes de resistência para não ser enfeitiçado, e a magia não pode colocá-lo para dormir." },
-        { "name": "Versatilidade em Perícia", "description": "Você ganha proficiência em duas perícias à sua escolha." }
+        { "name": "Versatilidade em Perícia", "description": "Você ganha proficiência em duas perícias à sua escolha.", "skillProficiencies": ["CHOICE:2:ALL"] }
     ],
     "sourceBook": "Livro do Jogador"
   },
@@ -210,7 +210,7 @@
     "languages": ["Comum", "Orc"],
     "traits": [
         { "name": "Visão no Escuro", "description": "Graças ao seu sangue orc, você tem uma visão superior em condições de escuridão e penumbra." },
-        { "name": "Ameaçador", "description": "Você ganha proficiência na perícia Intimidação." },
+        { "name": "Ameaçador", "description": "Você ganha proficiência na perícia Intimidação.", "skillProficiencies": ["Intimidação"] },
         { "name": "Resistência Implacável", "description": "Quando você é reduzido a 0 pontos de vida, mas não é morto imediatamente, você pode cair para 1 ponto de vida em vez disso. Você não pode usar esta característica novamente até completar um descanso longo." },
         { "name": "Ataques Selvagens", "description": "Quando você consegue um acerto crítico com um ataque de arma corpo a corpo, você pode rolar um dos dados de dano da arma uma vez adicional e adicioná-lo ao dano extra do acerto crítico." }
     ],
