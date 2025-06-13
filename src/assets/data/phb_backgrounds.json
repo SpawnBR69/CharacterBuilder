@@ -3,7 +3,7 @@
     "name": "Acólito",
     "description": "Você passou sua vida a serviço de um templo para uma divindade ou panteão específico.",
     "skillProficiencies": ["Intuição", "Religião"],
-    "languages": ["Dois à sua escolha"],
+    "languages": ["CHOICE:2"],
     "equipment": ["Um símbolo sagrado (um presente dado a você quando entrou no sacerdócio)", "um livro de orações ou uma roda de oração", "5 varetas de incenso", "vestimentas", "um conjunto de roupas comuns", "uma bolsa com 15 po"],
     "feature": { "name": "Abrigo dos Fiéis", "description": "Você e seus companheiros de aventura podem esperar receber cura e cuidados gratuitos em um templo, santuário ou outra presença estabelecida de sua fé." },
     "sourceBook": "Livro do Jogador"
@@ -13,7 +13,7 @@
     "description": "Você é membro de uma guilda de artesãos, hábil em um campo específico e com conexões no mundo do comércio e da manufatura.",
     "skillProficiencies": ["Intuição", "Persuasão"],
     "toolProficiencies": ["Um tipo de ferramenta de artesão"],
-    "languages": ["Um à sua escolha"],
+    "languages": ["CHOICE:1"],
     "equipment": ["Um conjunto de ferramentas de artesão (à sua escolha)", "uma carta de apresentação de sua guilda", "um conjunto de roupas de viajante", "uma bolsa com 15 po"],
     "feature": { "name": "Membro da Guilda", "description": "Como membro da sua guilda, você tem acesso a certos benefícios. Seus companheiros da guilda fornecerão alojamento e comida, se necessário, e pagarão pelo seu funeral." },
     "sourceBook": "Livro do Jogador"
@@ -50,7 +50,7 @@
     "description": "Você viveu em reclusão – seja em um abrigo isolado ou em uma comunidade fechada – por um período significativo de sua vida.",
     "skillProficiencies": ["Medicina", "Religião"],
     "toolProficiencies": ["Kit de herbalismo"],
-    "languages": ["Um à sua escolha"],
+    "languages": ["CHOICE:1"],
     "equipment": ["Um estojo de pergaminho cheio de notas de seus estudos ou orações", "um cobertor de inverno", "um conjunto de roupas comuns", "um kit de herbalismo", "5 po"],
     "feature": { "name": "Descoberta", "description": "A quietude de sua reclusão lhe deu acesso a uma descoberta ou verdade única e poderosa. O conhecimento exato depende da natureza de sua reclusão." },
     "sourceBook": "Livro do Jogador"
@@ -60,7 +60,7 @@
     "description": "Você cresceu na selva, longe da civilização e dos confortos da cidade e da tecnologia.",
     "skillProficiencies": ["Atletismo", "Sobrevivência"],
     "toolProficiencies": ["Um tipo de instrumento musical"],
-    "languages": ["Um à sua escolha"],
+    "languages": ["CHOICE:1"],
     "equipment": ["Um cajado", "uma armadilha de caça", "um troféu de um animal que você matou", "um conjunto de roupas de viajante", "uma bolsa com 10 po"],
     "feature": { "name": "Andarilho", "description": "Você tem uma memória excelente para mapas e geografia, e sempre pode se lembrar do layout geral de terrenos, assentamentos e outras características ao seu redor." },
     "sourceBook": "Livro do Jogador"
@@ -88,7 +88,7 @@
     "description": "Você entende de riqueza, poder e privilégio. Você carrega um título nobre, e sua família possui terras, arrecada impostos e exerce significativa influência política.",
     "skillProficiencies": ["História", "Persuasão"],
     "toolProficiencies": ["Um tipo de kit de jogo"],
-    "languages": ["Um à sua escolha"],
+    "languages": ["CHOICE:1"],
     "equipment": ["Um conjunto de roupas finas", "um anel de sinete", "um rolo de pedigree", "uma bolsa com 25 po"],
     "feature": { "name": "Posição de Privilégio", "description": "Graças ao seu nascimento nobre, as pessoas estão inclinadas a pensar o melhor de você. Você é bem-vindo na alta sociedade e as pessoas assumem que você tem o direito de estar onde está." },
     "sourceBook": "Livro do Jogador"
@@ -106,7 +106,7 @@
     "name": "Sábio",
     "description": "Você passou anos aprendendo o conhecimento do multiverso. Você vasculhou manuscritos, estudou pergaminhos e ouviu os maiores especialistas nos temas que lhe interessam.",
     "skillProficiencies": ["Arcanismo", "História"],
-    "languages": ["Dois à sua escolha"],
+    "languages": ["CHOICE:2"],
     "equipment": ["Um vidro de tinta preta", "uma pena", "uma faca pequena", "uma carta de um colega morto com uma pergunta que você ainda não conseguiu responder", "um conjunto de roupas comuns", "uma bolsa com 10 po"],
     "feature": { "name": "Pesquisador", "description": "Quando você tenta aprender ou lembrar de uma informação, se você não a conhece, muitas vezes sabe onde e de quem pode obtê-la." },
     "sourceBook": "Livro do Jogador"

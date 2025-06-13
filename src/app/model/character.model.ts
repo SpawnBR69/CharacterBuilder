@@ -74,4 +74,5 @@ export interface Character {
 
   equipment: string[];
   traits: Trait[]; // <- Alterado de string[] para Trait[]
+  languages: string[];
 }

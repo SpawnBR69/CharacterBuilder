@@ -22,6 +22,7 @@ export class AppComponent implements OnInit {
   selectedBackground?: Background;
   assignedScores?: AbilityScores;
   equipmentChoices: { [key: string]: string } = {};
+  chosenLanguages: string[] = [];
 
 
   constructor(public characterService: CharacterCreationService) { }
@@ -127,6 +128,56 @@ export class AppComponent implements OnInit {
   }
 
 
+  //Lógica de lingugagens
+  get knownLanguages(): string[] {
+    const languages = new Set<string>();
+    
+    this.selectedRace?.languages?.forEach(lang => {
+      if (!lang.startsWith('CHOICE:')) {
+        languages.add(lang);
+      }
+    });
+    this.selectedSubrace?.languages?.forEach(lang => {
+      if (!lang.startsWith('CHOICE:')) {
+        languages.add(lang);
+      }
+    });
+    this.selectedBackground?.languages?.forEach(lang => {
+      if(!lang.startsWith('CHOICE:')){
+        languages.add(lang);
+      }
+    });
+
+    return Array.from(languages);
+  }
+
+  get languageChoicesCount(): number {
+    let count = 0;
+    const sources = [this.selectedRace, this.selectedSubrace, this.selectedBackground];
+
+    sources.forEach(source => {
+      source?.languages?.forEach(lang => {
+        if (lang.startsWith('CHOICE:')) {
+          count += parseInt(lang.split(':')[1] || '0', 10);
+        }
+      });
+    });
+
+    return count;
+  }
+  
+  get availableLanguagesForSelection(): string[] {
+    const allLangs = this.characterService.getAvailableLanguages();
+    const known = this.knownLanguages;
+    return allLangs.filter(lang => !known.includes(lang));
+  }
+
+  // Crie um handler para o evento do componente filho
+  onLanguagesChanged(languages: string[]) {
+    this.chosenLanguages = languages;
+  }
+
+
   // --- COMPILAÇÃO E DADOS ---
   compileCharacterData() {
     const finalCharacter: Character = this.createEmptyCharacter() as Character;
@@ -206,6 +257,10 @@ export class AppComponent implements OnInit {
         finalEquipment.push(...finalCharacter.background.equipment);
     }
     finalCharacter.equipment = finalEquipment;
+
+    // Lógica de idiomas
+    const finalLanguages = new Set<string>([...this.knownLanguages, ...this.chosenLanguages]);
+    finalCharacter.languages = Array.from(finalLanguages);
     
     this.character = finalCharacter;
   }

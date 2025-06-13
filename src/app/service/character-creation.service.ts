@@ -65,6 +65,13 @@ export class CharacterCreationService {
     }
     return scores;
   }
+  getAvailableLanguages(): string[] {
+    return [
+      'Anão', 'Élfico', 'Gigante', 'Gnômico', 'Goblin', 'Halfling', 'Orc',
+      'Abissal', 'Celestial', 'Dracônico', 'Dialeto Subterrâneo', 'Infernal', 
+      'Primordial', 'Silvestre', 'Comum'
+    ];
+  }
 
   getStandardArray = (): number[] => [15, 14, 13, 12, 10, 8];
 

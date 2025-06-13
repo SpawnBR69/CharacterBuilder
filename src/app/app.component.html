@@ -44,7 +44,12 @@
                 <app-background-selection *ngSwitchCase="4"
                     [backgrounds]="backgrounds"
                     [selectedBackground]="selectedBackground"
-                    (backgroundChange)="onBackgroundChanged($event)">
+                    (backgroundChange)="onBackgroundChanged($event)"
+                    
+                    [knownLanguages]="knownLanguages"
+                    [languageChoicesCount]="languageChoicesCount"
+                    [availableLanguages]="availableLanguagesForSelection"
+                    (languagesChange)="onLanguagesChanged($event)">
                 </app-background-selection>
 
                 <!-- Passo 5: Equipamento -->

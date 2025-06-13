@@ -32,7 +32,7 @@
     ],
     "sourceBook": "Livro do Jogador",
     "subraces": [
-      { "name": "Alto Elfo", "description": "Como um alto elfo, você tem uma mente perspicaz e um domínio da magia básica.", "abilityScoreIncrease": { "intelligence": 1 }, "traits": [
+      { "name": "Alto Elfo", "description": "Como um alto elfo, você tem uma mente perspicaz e um domínio da magia básica.", "abilityScoreIncrease": { "intelligence": 1 },"languages": ["CHOICE:1"], "traits": [
         { "name": "Treinamento Élfico com Armas", "description": "Você tem proficiência com espadas longas, espadas curtas, arcos longos e arcos curtos." },
         { "name": "Truque", "description": "Você conhece um truque da lista de truques de mago. Inteligência é a sua habilidade de conjuração para ele." },
         { "name": "Idioma Adicional", "description": "Você pode falar, ler e escrever um idioma adicional à sua escolha." }
@@ -72,7 +72,7 @@
     "description": "Humanos são os mais adaptáveis e ambiciosos entre as raças comuns. Seja qual for a sua origem, os humanos são inovadores, realizadores e pioneiros.",
     "abilityScoreIncrease": { "strength": 1, "dexterity": 1, "constitution": 1, "intelligence": 1, "wisdom": 1, "charisma": 1 },
     "speed": 9,
-    "languages": ["Comum", "Um idioma adicional à escolha"],
+    "languages": ["Comum", "CHOICE:1"],
     "traits": [],
     "sourceBook": "Livro do Jogador"
   },
@@ -193,7 +193,7 @@
     "description": "Caminhando entre dois mundos, mas não pertencendo verdadeiramente a nenhum, os meio-elfos combinam o que alguns dizem ser as melhores qualidades de seus pais humanos e elfos.",
     "abilityScoreIncrease": { "charisma": 2 },
     "speed": 9,
-    "languages": ["Comum", "Élfico", "Um idioma adicional à escolha"],
+    "languages": ["Comum", "Élfico", "CHOICE:1"],
     "traits": [
         { "name": "Aumento no Valor de Habilidade", "description": "Seu valor de Carisma aumenta em 2, e dois outros valores de habilidade à sua escolha aumentam em 1." },
         { "name": "Visão no Escuro", "description": "Graças ao seu sangue élfico, você tem uma visão superior em condições de escuridão e penumbra." },

@@ -17,4 +17,31 @@
             <p class="italic ml-4">{{ bg.feature.description }}</p>
         </div>
     </div>
+
+    <div class="mt-6">
+        <h4 class="font-bold text-red-700 border-b pb-1 mb-2">Idiomas</h4>
+        
+        <!-- Idiomas Conhecidos Automaticamente -->
+        <div *ngIf="knownLanguages.length > 0" class="mb-4">
+            <p class="font-semibold text-gray-700">Idiomas Conhecidos:</p>
+            <p class="text-sm text-gray-600">{{ knownLanguages.join(', ') }}</p>
+        </div>
+
+        <!-- Seleção de Idiomas Adicionais -->
+        <div *ngIf="languageChoicesCount > 0">
+            <p class="font-semibold text-gray-700">Escolha {{ languageChoicesCount }} idioma(s) adicional(is):</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+                <div *ngFor="let i of counter(languageChoicesCount); let index = index">
+                    <p-dropdown 
+                        [options]="getOptionsForDropdown(index)" 
+                        [(ngModel)]="selectedBonusLanguages[index]"
+                        (onChange)="onLanguageSelectionChange()"
+                        placeholder="-- Selecione um idioma --"
+                        [showClear]="true"
+                        styleClass="w-full">
+                    </p-dropdown>
+                </div>
+            </div>
+        </div>
+    </div>
 </p-card>

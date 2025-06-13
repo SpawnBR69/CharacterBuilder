@@ -79,7 +79,7 @@
     "description": "Originários de uma estranha e distante terra, os tabaxi são humanoides felinos guiados pela curiosidade para colecionar artefatos interessantes, reunir contos e observar todas as maravilhas do mundo.",
     "abilityScoreIncrease": { "dexterity": 2, "charisma": 1 },
     "speed": 9,
-    "languages": ["Comum", "Um idioma adicional à escolha"],
+    "languages": ["Comum", "CHOICE:1"],
     "traits": [
         { "name": "Visão no Escuro", "description": "Você tem os sentidos aguçados de um gato, especialmente no escuro. Você pode ver na penumbra a até 18 metros de você como se fosse luz plena, e na escuridão como se fosse penumbra." },
         { "name": "Agilidade Felina", "description": "Seus reflexos e agilidade permitem que você se mova com uma explosão de velocidade. Quando você se move em seu turno em combate, você pode dobrar sua velocidade. Depois de usar essa característica, você não pode usá-la novamente até se mover 0 metros em um de seus turnos." },
