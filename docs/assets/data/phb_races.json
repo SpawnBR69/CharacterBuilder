@@ -192,6 +192,11 @@
     "name": "Meio-Elfo",
     "description": "Caminhando entre dois mundos, mas não pertencendo verdadeiramente a nenhum, os meio-elfos combinam o que alguns dizem ser as melhores qualidades de seus pais humanos e elfos.",
     "abilityScoreIncrease": { "charisma": 2 },
+    "abilityScoreChoice": {
+      "count": 2,
+      "amount": 1,
+      "options": "ALL"
+    },
     "speed": 9,
     "languages": ["Comum", "Élfico", "CHOICE:1"],
     "traits": [
@@ -199,6 +204,29 @@
         { "name": "Visão no Escuro", "description": "Graças ao seu sangue élfico, você tem uma visão superior em condições de escuridão e penumbra." },
         { "name": "Ancestralidade Feérica", "description": "Você tem vantagem em testes de resistência para não ser enfeitiçado, e a magia não pode colocá-lo para dormir." },
         { "name": "Versatilidade em Perícia", "description": "Você ganha proficiência em duas perícias à sua escolha.", "skillProficiencies": ["CHOICE:2:ALL"] }
+    ],
+    "sourceBook": "Livro do Jogador"
+  },
+  {
+    "name": "Humano (Variante)",
+    "description": "Humanos variantes são mais flexíveis e especializados que seus parentes. Eles ganham um talento e perícias adicionais, mas abrem mão do aumento geral de atributos.",
+    "abilityScoreChoice": {
+      "count": 2,
+      "amount": 1,
+      "options": "ALL"
+    },
+    "speed": 9,
+    "languages": ["Comum", "CHOICE:1"],
+    "traits": [
+      {
+        "name": "Perícia Adicional",
+        "description": "Você ganha proficiência em uma perícia à sua escolha.",
+        "skillProficiencies": ["CHOICE:1:ALL"]
+      },
+      {
+        "name": "Talento",
+        "description": "Você ganha um talento (feat) à sua escolha. (Nota: A seleção de talentos não está implementada neste aplicativo ainda)."
+      }
     ],
     "sourceBook": "Livro do Jogador"
   },

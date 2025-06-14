@@ -25,6 +25,8 @@ export class AppComponent implements OnInit {
   chosenLanguages: string[] = [];
   skillChoiceGroups: { source: string; count: number; options: string[] }[] = [];
   chosenSkills: { [groupIndex: number]: string[] } = {};
+  abilityScoreChoiceInfo: { count: number; amount: number; options: (keyof AbilityScores)[] } | null = null;
+  chosenAbilityBonuses: (keyof AbilityScores)[] = [];
 
 
   constructor(public characterService: CharacterCreationService) { }
@@ -53,6 +55,9 @@ export class AppComponent implements OnInit {
     this.races = this.characterService.getRaces();
     this.classes = this.characterService.getClasses();
     this.backgrounds = this.characterService.getBackgrounds();
+
+    this.abilityScoreChoiceInfo = null;
+    this.chosenAbilityBonuses = [];
 
     this.updateStepValidity();
   }
@@ -87,6 +92,39 @@ export class AppComponent implements OnInit {
     this.selectedSubrace = undefined; // Reseta a sub-raça ao trocar de raça
     this.updateStepValidity();
     this.recalculateSkillChoices();
+    this.recalculateAbilityScoreChoices();
+  }
+
+  onAbilityScoreChoicesChanged(choices: (keyof AbilityScores)[]) {
+    this.chosenAbilityBonuses = choices;
+    this.updateStepValidity(); // Atualiza a validade do passo
+  }
+  
+  // Novo método para calcular as escolhas de atributo
+  recalculateAbilityScoreChoices() {
+    this.chosenAbilityBonuses = []; // Reseta as escolhas
+    if (this.selectedRace?.abilityScoreChoice) {
+      const choiceData = this.selectedRace.abilityScoreChoice;
+      let options: (keyof AbilityScores)[];
+
+      if (choiceData.options === 'ALL') {
+        options = this.getAbilityKeys();
+      } else {
+        options = choiceData.options;
+      }
+      
+      // Remove atributos que já recebem um bônus fixo da lista de opções
+      const fixedBonusKeys = Object.keys(this.selectedRace.abilityScoreIncrease || {});
+      options = options.filter(opt => !fixedBonusKeys.includes(opt));
+
+      this.abilityScoreChoiceInfo = {
+        count: choiceData.count,
+        amount: choiceData.amount,
+        options: options
+      };
+    } else {
+      this.abilityScoreChoiceInfo = null;
+    }
   }
 
   onSubraceChanged(subrace: SubRace) {
@@ -124,7 +162,11 @@ export class AppComponent implements OnInit {
   updateStepValidity() {
     switch(this.currentStep) {
       case 0: this.isStepValid = !!this.character.name && this.character.name.trim() !== ''; break;
-      case 1: this.isStepValid = !!this.selectedRace && (!this.selectedRace.subraces || this.selectedRace.subraces.length === 0 || !!this.selectedSubrace); break;
+      case 1:
+        const raceIsValid = !!this.selectedRace && (!this.selectedRace.subraces || this.selectedRace.subraces.length === 0 || !!this.selectedSubrace);
+        const abilityChoiceIsValid = !this.abilityScoreChoiceInfo || this.chosenAbilityBonuses.filter(c => c).length === this.abilityScoreChoiceInfo.count;
+        this.isStepValid = raceIsValid && abilityChoiceIsValid;
+        break;
       case 2: this.isStepValid = !!this.selectedClass; break;
       // A validade do passo 3 é gerenciada pelo seu próprio componente via (onStepValidityChanged)
       case 4: this.isStepValid = !!this.selectedBackground; break;
@@ -264,10 +306,25 @@ export class AppComponent implements OnInit {
     // Scores
     this.getAbilityKeys().forEach(key => {
       let score = this.assignedScores?.[key] || 0;
-      if (this.selectedRace?.abilityScoreIncrease?.[key]) { score += this.selectedRace.abilityScoreIncrease[key]!; }
-      if (this.selectedSubrace?.abilityScoreIncrease?.[key]) { score += this.selectedSubrace.abilityScoreIncrease[key]!; }
+      // Aplica bônus fixo da raça
+      if (this.selectedRace?.abilityScoreIncrease?.[key]) {
+        score += this.selectedRace.abilityScoreIncrease[key]!;
+      }
+      // Aplica bônus fixo da sub-raça
+      if (this.selectedSubrace?.abilityScoreIncrease?.[key]) {
+        score += this.selectedSubrace.abilityScoreIncrease[key]!;
+      }
       finalCharacter.abilityScores[key] = score;
     });
+
+    // Aplica bônus escolhidos
+    if(this.abilityScoreChoiceInfo) {
+      this.chosenAbilityBonuses.forEach(abilityKey => {
+        if(abilityKey) {
+          finalCharacter.abilityScores[abilityKey] += this.abilityScoreChoiceInfo!.amount;
+        }
+      });
+    }
 
     // Saving Throws
     this.getAbilityKeys().forEach(key => {

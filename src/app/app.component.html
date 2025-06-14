@@ -24,7 +24,10 @@
                     [selectedRace]="selectedRace"
                     [selectedSubrace]="selectedSubrace"
                     (raceChange)="onRaceChanged($event)"
-                    (subraceChange)="onSubraceChanged($event)">
+                    (subraceChange)="onSubraceChanged($event)"
+
+                    [abilityScoreChoiceInfo]="abilityScoreChoiceInfo"
+                    (abilityScoreChoicesChange)="onAbilityScoreChoicesChanged($event)">
                 </app-race-selection>
 
                 <!-- Passo 2: Classe -->

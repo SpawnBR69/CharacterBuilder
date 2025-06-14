@@ -46,4 +46,20 @@
             </ul>
         </div>
     </div>
+
+    <div *ngIf="abilityScoreChoiceInfo" class="mt-4 pt-4 border-t">
+        <p class="font-semibold text-gray-700">Escolha {{ abilityScoreChoiceInfo.count }} atributo(s) para aumentar em +{{abilityScoreChoiceInfo.amount}}:</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+            <div *ngFor="let i of counter(abilityScoreChoiceInfo.count); let index = index">
+                <p-dropdown 
+                    [options]="getAbilityOptionsForDropdown(index)" 
+                    [(ngModel)]="selectedBonusAbilities[index]"
+                    (onChange)="onAbilitySelectionChange()"
+                    placeholder="-- Atributo #{{index + 1}} --"
+                    [showClear]="true"
+                    styleClass="w-full">
+                </p-dropdown>
+            </div>
+        </div>
+    </div>
 </p-card>

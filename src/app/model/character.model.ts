@@ -23,6 +23,11 @@ export interface Race {
   name: string;
   description: string;
   abilityScoreIncrease?: Partial<AbilityScores>; 
+  abilityScoreChoice?: {
+    count: number;
+    amount: number;
+    options: (keyof AbilityScores)[] | 'ALL';
+  };
   speed?: number;
   traits?: Trait[]; // <- Alterado de string[] para Trait[]
   languages?: string[];
