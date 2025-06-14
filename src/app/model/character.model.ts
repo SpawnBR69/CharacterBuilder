@@ -36,7 +36,6 @@ export interface Race {
 }
 
 export interface SubRace extends Omit<Race, 'subraces' | 'sourceBook'> {
-  // traits já é Trait[] por causa do Omit
 }
 
 export interface Class {
@@ -46,7 +45,8 @@ export interface Class {
   primaryAbility: string[];
   savingThrowProficiencies: (keyof AbilityScores)[];
   armorAndWeaponProficiencies: string[];
-  startingEquipment: (string | string[])[]; 
+  startingEquipment: (string | string[])[];
+  features?: Trait[]; 
   sourceBook: string;
 }
 

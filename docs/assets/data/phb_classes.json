@@ -11,6 +11,16 @@
       ["(a) duas machadinhas", "(b) qualquer arma simples"],
       "Um pacote de aventureiro e quatro azagaias"
     ],
+    "features": [
+      {
+        "name": "Fúria",
+        "description": "Você pode entrar em fúria como uma ação bônus. Enquanto em fúria, você ganha vantagem em testes de Força e resistência, causa dano extra em ataques corpo a corpo com Força e tem resistência a dano de concussão, perfurante e cortante. Você pode usar essa habilidade 2 vezes por descanso longo."
+      },
+      {
+        "name": "Defesa sem Armadura (Bárbaro)",
+        "description": "Enquanto não estiver vestindo nenhuma armadura, sua Classe de Armadura é igual a 10 + seu modificador de Destreza + seu modificador de Constituição. Você pode usar um escudo e ainda obter este benefício."
+      }
+    ],
     "sourceBook": "Livro do Jogador"
   },
   {
@@ -21,10 +31,20 @@
     "savingThrowProficiencies": ["dexterity", "charisma"],
     "armorAndWeaponProficiencies": ["Armaduras leves", "armas simples", "bestas de mão", "espadas longas", "rapieiras", "espadas curtas"],
     "startingEquipment": [
-        ["(a) uma rapieira", "(b) uma espada longa", "(c) qualquer arma simples"],
-        ["(a) um pacote de diplomata", "(b) um pacote de artista"],
-        ["(a) um alaúde", "(b) qualquer outro instrumento musical"],
-        "Corselete de couro e uma adaga"
+      ["(a) uma rapieira", "(b) uma espada longa", "(c) qualquer arma simples"],
+      ["(a) um pacote de diplomata", "(b) um pacote de artista"],
+      ["(a) um alaúde", "(b) qualquer outro instrumento musical"],
+      "Corselete de couro e uma adaga"
+    ],
+    "features": [
+      {
+        "name": "Conjuração (Bardo)",
+        "description": "Você pode conjurar magias de bardo que conhece, usando Carisma como sua habilidade de conjuração."
+      },
+      {
+        "name": "Inspiração de Bardo",
+        "description": "Você pode usar uma ação bônus para inspirar uma criatura (que não seja você) a até 18 metros. A criatura ganha um dado de Inspiração de Bardo (um d6). Uma vez, nos próximos 10 minutos, a criatura pode rolar o dado e adicionar o resultado a um teste de habilidade, jogada de ataque ou teste de resistência. Você pode usar esta característica um número de vezes igual ao seu modificador de Carisma (mínimo 1)."
+      }
     ],
     "sourceBook": "Livro do Jogador"
   },
@@ -36,14 +56,24 @@
     "savingThrowProficiencies": ["wisdom", "charisma"],
     "armorAndWeaponProficiencies": ["Armaduras leves", "armas simples"],
     "startingEquipment": [
-        ["(a) uma besta leve e 20 virotes", "(b) qualquer arma simples"],
-        ["(a) uma bolsa de componentes", "(b) um foco arcano"],
-        ["(a) um pacote de estudioso", "(b) um pacote de masmorra"],
-        "Corselete de couro, qualquer arma simples e duas adagas"
+      ["(a) uma besta leve e 20 virotes", "(b) qualquer arma simples"],
+      ["(a) uma bolsa de componentes", "(b) um foco arcano"],
+      ["(a) um pacote de estudioso", "(b) um pacote de masmorra"],
+      "Corselete de couro, qualquer arma simples e duas adagas"
+    ],
+    "features": [
+      {
+        "name": "Patrono de Outro Mundo",
+        "description": "Você fez um pacto com um ser de outro plano de existência. Sua escolha de patrono (A Arquifada, O Corruptor, O Grande Antigo) concede características no 1º nível e novamente nos níveis 6, 10 e 14."
+      },
+      {
+        "name": "Magia de Pacto",
+        "description": "Sua pesquisa arcana e a magia concedida a você por seu patrono lhe deram a capacidade de conjurar magias. Você possui espaços de magia de pacto que são recuperados após um descanso curto ou longo."
+      }
     ],
     "sourceBook": "Livro do Jogador"
   },
-   {
+  {
     "name": "Clérigo",
     "description": "Um campeão sacerdotal que empunha magia divina a serviço de um poder maior.",
     "hitDie": 8,
@@ -57,6 +87,16 @@
       ["(a) um pacote de sacerdote", "(b) um pacote de aventureiro"],
       "Um escudo e um símbolo sagrado"
     ],
+    "features": [
+      {
+        "name": "Conjuração (Clérigo)",
+        "description": "Como um canal para o poder divino, você pode conjurar magias de clérigo, usando Sabedoria como sua habilidade de conjuração."
+      },
+      {
+        "name": "Domínio Divino",
+        "description": "Escolha um domínio relacionado à sua divindade (Conhecimento, Vida, Luz, Natureza, Tempestade, Enganação ou Guerra). Sua escolha concede magias de domínio e outras características."
+      }
+    ],
     "sourceBook": "Livro do Jogador"
   },
   {
@@ -68,8 +108,18 @@
     "armorAndWeaponProficiencies": ["Armaduras leves e médias (não-metálicas)", "escudos (não-metálicos)", "clavas", "adagas", "dardos", "azagaias", "maças", "bordões", "cimitarras", "fundas", "lanças"],
     "startingEquipment": [
       ["(a) um escudo de madeira", "(b) qualquer arma simples"],
-      ["(a) uma cimitarra" , "(b) qualquer arma corpo a corpo simples"],
+      ["(a) uma cimitarra", "(b) qualquer arma corpo a corpo simples"],
       "Corselete de couro, um pacote de explorador e um foco druídico"
+    ],
+    "features": [
+      {
+        "name": "Druídico",
+        "description": "Você conhece o Druídico, o idioma secreto dos druidas. Você pode falar o idioma e usá-lo para deixar mensagens escondidas."
+      },
+      {
+        "name": "Conjuração (Druida)",
+        "description": "Extraindo da essência divina da própria natureza, você pode conjurar magias de druida, usando Sabedoria como sua habilidade de conjuração."
+      }
     ],
     "sourceBook": "Livro do Jogador"
   },
@@ -82,9 +132,19 @@
     "armorAndWeaponProficiencies": ["Adagas", "dardos", "fundas", "bordões", "bestas leves"],
     "startingEquipment": [
       ["(a) uma besta leve e 20 virotes", "(b) qualquer arma simples"],
-      ["(a) uma bolsa de componentes "," (b) um foco arcano"],
-      ["(a) um pacote de masmorra "," (b) um pacote de explorador"],
+      ["(a) uma bolsa de componentes", "(b) um foco arcano"],
+      ["(a) um pacote de masmorra", "(b) um pacote de explorador"],
       "Duas adagas"
+    ],
+    "features": [
+      {
+        "name": "Conjuração (Feiticeiro)",
+        "description": "Um evento em seu passado, ou na vida de um parente, deixou uma marca indelével em você, infundindo-o com magia arcana. Você usa Carisma como sua habilidade de conjuração."
+      },
+      {
+        "name": "Origem da Feitiçaria",
+        "description": "Escolha uma origem de feitiçaria, que descreve a fonte do seu poder mágico: Linhagem Dracônica ou Magia Selvagem."
+      }
     ],
     "sourceBook": "Livro do Jogador"
   },
@@ -96,10 +156,20 @@
     "savingThrowProficiencies": ["strength", "constitution"],
     "armorAndWeaponProficiencies": ["Todas as armaduras", "escudos", "armas simples e marciais"],
     "startingEquipment": [
-      ["(a) cota de malha "," (b) gibão de peles, arco longo e 20 flechas"],
-      ["(a) uma arma marcial e um escudo "," (b) duas armas marciais"],
-      ["(a) uma besta leve e 20 virotes "," (b) duas machadinhas"],
-      ["(a) um pacote de masmorra "," (b) um pacote de explorador"]
+      ["(a) cota de malha", "(b) gibão de peles, arco longo e 20 flechas"],
+      ["(a) uma arma marcial e um escudo", "(b) duas armas marciais"],
+      ["(a) uma besta leve e 20 virotes", "(b) duas machadinhas"],
+      ["(a) um pacote de masmorra", "(b) um pacote de explorador"]
+    ],
+    "features": [
+      {
+        "name": "Estilo de Luta",
+        "description": "Você adota um estilo de luta particular como sua especialidade. Escolha uma das opções de Estilo de Luta (Arquearia, Defesa, Duelo, Luta com Arma de Duas Mãos, Proteção, Luta com Duas Armas)."
+      },
+      {
+        "name": "Recuperar o Fôlego",
+        "description": "No seu turno, você pode usar uma ação bônus para recuperar pontos de vida iguais a 1d10 + seu nível de guerreiro. Depois de usar esta característica, você deve terminar um descanso curto ou longo antes de poder usá-la novamente."
+      }
     ],
     "sourceBook": "Livro do Jogador"
   },
@@ -111,10 +181,24 @@
     "savingThrowProficiencies": ["dexterity", "intelligence"],
     "armorAndWeaponProficiencies": ["Armaduras leves", "armas simples", "bestas de mão", "espadas longas", "rapieiras", "espadas curtas"],
     "startingEquipment": [
-      ["(a) uma rapieira "," (b) uma espada curta"],
-      ["(a) um arco curto e aljava com 20 flechas "," (b) uma espada curta"],
-      ["(a) um pacote de assaltante "," (b) um pacote de masmorra "," (c) um pacote de explorador"],
+      ["(a) uma rapieira", "(b) uma espada curta"],
+      ["(a) um arco curto e aljava com 20 flechas", "(b) uma espada curta"],
+      ["(a) um pacote de assaltante", "(b) um pacote de masmorra", "(c) um pacote de explorador"],
       "Corselete de couro, duas adagas e ferramentas de ladrão"
+    ],
+    "features": [
+      {
+        "name": "Especialização",
+        "description": "Escolha duas de suas perícias proficientes, ou uma de suas perícias proficientes e sua proficiência com ferramentas de ladrão. Seu bônus de proficiência é dobrado para qualquer teste de habilidade que você fizer que use qualquer uma das proficiências escolhidas."
+      },
+      {
+        "name": "Ataque Furtivo",
+        "description": "Uma vez por turno, você pode causar um extra de 1d6 de dano a uma criatura que você atingir com um ataque se tiver vantagem na jogada de ataque. O ataque deve usar uma arma de acuidade ou de longo alcance."
+      },
+      {
+        "name": "Gíria de Ladrão",
+        "description": "Você conhece a gíria de ladrão, uma mistura secreta de dialeto, jargão e código que permite passar mensagens secretas."
+      }
     ],
     "sourceBook": "Livro do Jogador"
   },
@@ -126,10 +210,20 @@
     "savingThrowProficiencies": ["intelligence", "wisdom"],
     "armorAndWeaponProficiencies": ["Adagas", "dardos", "fundas", "bordões", "bestas leves"],
     "startingEquipment": [
-      ["(a) um bordão "," (b) uma adaga"],
-      ["(a) uma bolsa de componentes "," (b) um foco arcano"],
-      ["(a) um pacote de estudioso "," (b) um pacote de explorador"],
+      ["(a) um bordão", "(b) uma adaga"],
+      ["(a) uma bolsa de componentes", "(b) um foco arcano"],
+      ["(a) um pacote de estudioso", "(b) um pacote de explorador"],
       "Um grimório"
+    ],
+    "features": [
+      {
+        "name": "Conjuração (Mago)",
+        "description": "Como um estudante da magia arcana, você tem um grimório contendo magias que mostram os primeiros vislumbres do seu verdadeiro poder. Você usa Inteligência como sua habilidade de conjuração."
+      },
+      {
+        "name": "Recuperação Arcana",
+        "description": "Você aprendeu a recuperar parte de sua energia mágica. Uma vez por dia, quando você termina um descanso curto, você pode escolher espaços de magia gastos para recuperar. Os espaços de magia podem ter um nível combinado igual ou inferior à metade do seu nível de mago (arredondado para cima)."
+      }
     ],
     "sourceBook": "Livro do Jogador"
   },
@@ -141,9 +235,19 @@
     "savingThrowProficiencies": ["strength", "dexterity"],
     "armorAndWeaponProficiencies": ["Armas simples", "espadas curtas"],
     "startingEquipment": [
-      ["(a) uma espada curta "," (b) qualquer arma simples"],
-      ["(a) um pacote de masmorra "," (b) um pacote de explorador"],
+      ["(a) uma espada curta", "(b) qualquer arma simples"],
+      ["(a) um pacote de masmorra", "(b) um pacote de explorador"],
       "10 dardos"
+    ],
+    "features": [
+      {
+        "name": "Defesa sem Armadura (Monge)",
+        "description": "Enquanto não estiver vestindo armadura nem empunhando um escudo, sua Classe de Armadura é igual a 10 + seu modificador de Destreza + seu modificador de Sabedoria."
+      },
+      {
+        "name": "Artes Marciais",
+        "description": "Seus ataques desarmados e com armas de monge causam 1d4 de dano contundente. Além disso, quando você usa a ação de Ataque com uma arma de monge ou um ataque desarmado em seu turno, você pode fazer um ataque desarmado como uma ação bônus."
+      }
     ],
     "sourceBook": "Livro do Jogador"
   },
@@ -155,10 +259,20 @@
     "savingThrowProficiencies": ["wisdom", "charisma"],
     "armorAndWeaponProficiencies": ["Todas as armaduras", "escudos", "armas simples e marciais"],
     "startingEquipment": [
-      ["(a) uma arma marcial e um escudo "," (b) duas armas marciais"],
-      ["(a) cinco azagaias "," (b) qualquer arma corpo a corpo simples"],
-      ["(a) um pacote de sacerdote "," (b) um pacote de aventureiro"],
+      ["(a) uma arma marcial e um escudo", "(b) duas armas marciais"],
+      ["(a) cinco azagaias", "(b) qualquer arma corpo a corpo simples"],
+      ["(a) um pacote de sacerdote", "(b) um pacote de aventureiro"],
       "Cota de malha e um símbolo sagrado"
+    ],
+    "features": [
+      {
+        "name": "Sentido Divino",
+        "description": "Você pode usar sua ação para abrir sua consciência para detectar forças do bem e do mal. Você sabe a localização de qualquer celestial, corruptor ou morto-vivo a até 18 metros de você que não esteja atrás de cobertura total. Você pode usar esta característica um número de vezes igual a 1 + seu modificador de Carisma."
+      },
+      {
+        "name": "Cura pelas Mãos",
+        "description": "Você tem uma reserva de poder de cura que se reabastece quando você faz um descanso longo. Com essa reserva, você pode restaurar um número total de pontos de vida igual ao seu nível de paladino × 5."
+      }
     ],
     "sourceBook": "Livro do Jogador"
   },
@@ -170,10 +284,20 @@
     "savingThrowProficiencies": ["strength", "dexterity"],
     "armorAndWeaponProficiencies": ["Armaduras leves e médias", "escudos", "armas simples e marciais"],
     "startingEquipment": [
-      ["(a) brunea "," (b) corselete de couro"],
-      ["(a) duas espadas curtas "," (b) duas armas corpo a corpo simples"],
-      ["(a) um pacote de masmorra "," (b) um pacote de explorador"],
+      ["(a) brunea", "(b) corselete de couro"],
+      ["(a) duas espadas curtas", "(b) duas armas corpo a corpo simples"],
+      ["(a) um pacote de masmorra", "(b) um pacote de explorador"],
       "Um arco longo e uma aljava com 20 flechas"
+    ],
+    "features": [
+      {
+        "name": "Inimigo Favorito",
+        "description": "Você tem experiência significativa estudando, rastreando, caçando e até mesmo falando com um certo tipo de inimigo. Escolha um tipo de inimigo favorito: bestas, fadas, humanoides, monstruosidades ou mortos-vivos. Você tem vantagem em testes de Sabedoria (Sobrevivência) para rastrear seus inimigos favoritos, bem como em testes de Inteligência para recordar informações sobre eles."
+      },
+      {
+        "name": "Explorador Natural",
+        "description": "Você é um mestre em navegar pelo mundo natural e é perito em viajar e sobreviver em uma região específica. Escolha um tipo de terreno favorito: ártico, costa, deserto, floresta, pântano, montanhas ou planícies."
+      }
     ],
     "sourceBook": "Livro do Jogador"
   }

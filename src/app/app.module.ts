@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER , NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -25,7 +25,12 @@ import { CharacterSummaryComponent } from './components/character-summary/charac
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { HttpClientModule } from '@angular/common/http';
 import { TooltipModule } from 'primeng/tooltip';
+import { Observable } from 'rxjs';
+import { SpellService } from './service/spell.service';
 
+function initializeSpells(spellService: SpellService): () => Observable<any> {
+  return () => spellService.loadSpells();
+}
 
 @NgModule({
   declarations: [
@@ -54,6 +59,13 @@ import { TooltipModule } from 'primeng/tooltip';
     TooltipModule,
   ],
   providers: [
+    SpellService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeSpells,
+      deps: [SpellService],
+      multi: true
+    },
     CharacterCreationService
   ],
   bootstrap: [AppComponent]

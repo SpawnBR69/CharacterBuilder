@@ -20,5 +20,19 @@
                 <li *ngFor="let prof of sClass.armorAndWeaponProficiencies">{{ prof }}</li>
             </ul>
         </div>
+        <div *ngIf="sClass.features && sClass.features.length > 0" class="pt-2 mt-2 border-t">
+            <strong class="font-semibold text-red-700">Características de Nível 1:</strong>
+            <ul class="list-disc list-inside ml-4">
+                <li *ngFor="let feature of sClass.features"
+                    class="cursor-help hover:text-red-500"
+                    [pTooltip]="feature.description"
+                    tooltipPosition="right"
+                    appendTo="target"
+                    tooltipStyleClass="w-auto max-w-xs text-left"
+                    [showDelay]="250">
+                    {{ feature.name }}
+                </li>
+            </ul>
+        </div>
     </div>
 </p-card>
