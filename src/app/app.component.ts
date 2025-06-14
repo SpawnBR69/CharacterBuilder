@@ -31,7 +31,6 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.characterService.loadAllData().subscribe(() => {
-        console.log("Dados carregados com sucesso!");
         this.isDataLoaded = true;
         this.resetToInitialState();
     });
@@ -179,7 +178,6 @@ export class AppComponent implements OnInit {
     return allLangs.filter(lang => !known.includes(lang));
   }
 
-  // Crie um handler para o evento do componente filho
   onLanguagesChanged(languages: string[]) {
     this.chosenLanguages = languages;
   }

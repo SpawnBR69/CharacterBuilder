@@ -73,6 +73,15 @@ export class BackgroundSelectionComponent implements OnChanges {
 
     return group.options.filter(opt => !allSelected.has(opt));
   }
+  
+  formatLanguageDisplay(lang: string): string {
+    if (lang.startsWith('CHOICE:')) {
+      const count = lang.split(':')[1];
+      const plural = parseInt(count, 10) > 1 ? 's' : '';
+      return `${count} idioma${plural} à sua escolha`;
+    }
+    return lang;
+  }
 
   // Necessário para o *ngFor no template
   counter(i: number) {

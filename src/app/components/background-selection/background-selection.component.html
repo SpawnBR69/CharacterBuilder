@@ -11,7 +11,12 @@
         <p class="italic">{{ bg.description }}</p>
         <p><strong class="font-semibold text-red-700">Perícias:</strong> {{ bg.skillProficiencies.join(', ') }}</p>
         <p *ngIf="bg.toolProficiencies"><strong class="font-semibold text-red-700">Ferramentas:</strong> {{ bg.toolProficiencies.join(', ') }}</p>
-        <p *ngIf="bg.languages"><strong class="font-semibold text-red-700">Idiomas:</strong> {{ bg.languages.join(', ') }}</p>
+        <ng-container *ngIf="bg.languages && bg.languages.length > 0">
+            <p>
+                <strong class="font-semibold text-red-700">Idiomas:</strong> 
+                {{ bg.languages.map(formatLanguageDisplay).join(', ') }}
+            </p>
+        </ng-container>
         <div>
             <strong class="font-semibold text-red-700">Característica - {{ bg.feature.name }}:</strong>
             <p class="italic ml-4">{{ bg.feature.description }}</p>

@@ -12,4 +12,13 @@ export class RaceSelectionComponent {
 
   @Output() raceChange = new EventEmitter<Race>();
   @Output() subraceChange = new EventEmitter<SubRace>();
+
+  formatLanguageDisplay(lang: string): string {
+    if (lang.startsWith('CHOICE:')) {
+      const count = lang.split(':')[1];
+      const plural = parseInt(count, 10) > 1 ? 's' : '';
+      return `${count} idioma${plural} à sua escolha`;
+    }
+    return lang;
+  }
 }

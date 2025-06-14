@@ -14,7 +14,12 @@
             <span *ngFor="let inc of race.abilityScoreIncrease | keyvalue; let last = last">{{ inc.key | titlecase }} +{{ inc.value }}{{ last ? '' : ', ' }}</span>
         </p>
         <p><strong class="font-semibold text-red-700">Deslocamento:</strong> {{ race.speed }}m</p>
-        <p *ngIf="race.languages?.length"><strong class="font-semibold text-red-700">Idiomas:</strong> {{ race.languages?.join(', ') }}</p>
+        <ng-container *ngIf="race.languages && race.languages.length > 0">
+            <p>
+                <strong class="font-semibold text-red-700">Idiomas:</strong> 
+                {{ race.languages.map(formatLanguageDisplay).join(', ') }}
+            </p>
+        </ng-container>
         <div *ngIf="race.traits?.length">
             <strong class="font-semibold text-red-700">Traços Raciais:</strong>
             <ul class="list-disc list-inside ml-4">
