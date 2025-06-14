@@ -37,7 +37,7 @@
         { "name": "Truque", "description": "Você conhece um truque da lista de truques de mago. Inteligência é a sua habilidade de conjuração para ele." },
         { "name": "Idioma Adicional", "description": "Você pode falar, ler e escrever um idioma adicional à sua escolha." }
       ]},
-      { "name": "Elfo da Floresta", "description": "Como um elfo da floresta, você tem sentidos aguçados e intuição.", "abilityScoreIncrease": { "wisdom": 1 }, "traits": [
+      { "name": "Elfo da Floresta", "description": "Como um elfo da floresta, você tem sentidos aguçados e intuição.", "abilityScoreIncrease": { "wisdom": 1 }, "speed":1.5 , "traits": [
         { "name": "Treinamento Élfico com Armas", "description": "Você tem proficiência com espadas longas, espadas curtas, arcos longos e arcos curtos." },
         { "name": "Pés Ligeiros", "description": "Seu deslocamento base de caminhada aumenta para 10,5 metros." },
         { "name": "Máscara da Natureza", "description": "Você pode tentar se esconder mesmo quando estiver apenas levemente obscurecido por folhagem, chuva forte, neve caindo, névoa e outros fenômenos naturais." }

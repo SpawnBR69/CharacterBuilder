@@ -170,7 +170,21 @@ export class AppComponent implements OnInit {
       case 2: this.isStepValid = !!this.selectedClass; break;
       // A validade do passo 3 é gerenciada pelo seu próprio componente via (onStepValidityChanged)
       case 4: this.isStepValid = !!this.selectedBackground; break;
-      case 5: this.isStepValid = true; break; // Equipamento é opcional
+      case 5: 
+        if (!this.selectedClass) {
+          this.isStepValid = false;
+          break;
+        }
+        // Conta quantos grupos de escolha de equipamento a classe tem
+        const requiredChoiceCount = this.selectedClass.startingEquipment
+          .filter(item => Array.isArray(item)).length;
+        
+        // Conta quantas escolhas foram feitas
+        const madeChoiceCount = Object.keys(this.equipmentChoices).filter(key => this.equipmentChoices[key]).length;
+
+        // O passo é válido se o número de escolhas feitas for igual ao necessário
+        this.isStepValid = madeChoiceCount === requiredChoiceCount;
+        break; // Equipamento é opcional
       default: this.isStepValid = false;
     }
   }
@@ -286,6 +300,9 @@ export class AppComponent implements OnInit {
     finalCharacter.name = this.character.name || 'Sem Nome';
     finalCharacter.race = this.selectedRace;
     finalCharacter.subrace = this.selectedSubrace;
+    if(finalCharacter.subrace && finalCharacter.race && finalCharacter.subrace.speed && finalCharacter.race.speed){
+       finalCharacter.race.speed += finalCharacter.subrace.speed;
+    }
     finalCharacter.class = this.selectedClass;
     finalCharacter.background = this.selectedBackground;
     finalCharacter.level = 1;
