@@ -1,7 +1,12 @@
+import { Spell } from './spell.model';
+
 export interface Trait {
   name: string;
   description: string;
   skillProficiencies?: string[];
+  spells?: {
+    known: string[]; // Magias conhecidas automaticamente
+  };
 }
 
 export interface AbilityScores {
@@ -46,7 +51,12 @@ export interface Class {
   savingThrowProficiencies: (keyof AbilityScores)[];
   armorAndWeaponProficiencies: string[];
   startingEquipment: (string | string[])[];
-  features?: Trait[]; 
+  features?: Trait[];
+  spellcasting?: {
+    ability: keyof AbilityScores;
+    cantrips_known: number;
+    spells_known: number;
+  };
   sourceBook: string;
 }
 
@@ -81,4 +91,5 @@ export interface Character {
   equipment: string[];
   traits: Trait[]; // <- Alterado de string[] para Trait[]
   languages: string[];
+  spells: Spell[];
 }

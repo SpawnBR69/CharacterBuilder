@@ -9,7 +9,7 @@
         { "name": "Visão no Escuro", "description": "Abençoado com uma alma radiante, seus olhos são acostumados à escuridão divina. Você pode ver na penumbra a até 18 metros de você como se fosse luz plena, e na escuridão como se fosse penumbra." },
         { "name": "Resistência Celestial", "description": "Você tem resistência a dano necrótico e dano radiante." },
         { "name": "Mãos Curativas", "description": "Como uma ação, você pode tocar uma criatura e fazer com que ela recupere um número de pontos de vida igual ao seu nível. Depois de usar essa característica, você não pode usá-la novamente até completar um descanso longo." },
-        { "name": "Portador da Luz", "description": "Você conhece o truque luz. Carisma é a sua habilidade de conjuração para ele." }
+        { "name": "Portador da Luz", "description": "Você conhece o truque luz. Carisma é a sua habilidade de conjuração para ele.", "spells": { "known": ["Luz"] } }
     ],
     "sourceBook": "Guia de Volo para Monstros",
     "subraces": [
@@ -25,7 +25,7 @@
     "speed": 9,
     "languages": ["Comum", "Élfico", "Gigante"],
     "traits": [
-        { "name": "Magia Firbolg", "description": "Você pode conjurar as magias detectar magia e disfarçar-se com esta característica. A partir do 3º nível, você pode conjurar detectar magia sem gastar um espaço de magia. A partir do 5º nível, você pode conjurar disfarçar-se uma vez com esta característica e recuperar a capacidade de fazê-lo quando completar um descanso curto ou longo. Sabedoria é a sua habilidade de conjuração para essas magias." },
+        { "name": "Magia Firbolg", "description": "Você pode conjurar as magias detectar magia e disfarçar-se com esta característica. A partir do 3º nível, você pode conjurar detectar magia sem gastar um espaço de magia. A partir do 5º nível, você pode conjurar disfarçar-se uma vez com esta característica e recuperar a capacidade de fazê-lo quando completar um descanso curto ou longo. Sabedoria é a sua habilidade de conjuração para essas magias.", "spells": { "known": ["Detectar Magia", "Disfarçar-se"] } },
         { "name": "Passo Escondido", "description": "Como uma ação bônus, você pode magicamente se tornar invisível até o início do seu próximo turno ou até você atacar, fazer uma jogada de dano ou forçar alguém a fazer um teste de resistência. Depois de usar essa característica, você não pode usá-la novamente até completar um descanso curto ou longo." },
         { "name": "Construção Poderosa", "description": "Você conta como um tamanho maior ao determinar sua capacidade de carga e o peso que você pode empurrar, arrastar ou levantar." },
         { "name": "Fala das Bestas e Folhas", "description": "Você tem a capacidade de se comunicar de uma forma limitada com bestas e plantas. Eles podem entender o significado de suas palavras, embora você não tenha nenhuma habilidade especial para entendê-los em troca." }
@@ -54,7 +54,7 @@
     "languages": ["Comum (entendem, mas falam apenas por mimetismo)", "Auran (entendem, mas falam apenas por mimetismo)"],
     "traits": [
         { "name": "Perito em Falsificação", "description": "Você pode duplicar a caligrafia e o artesanato de outras criaturas. Você tem vantagem em todos os testes feitos para produzir falsificações ou duplicatas de objetos existentes." },
-        { "name": "Treinamento Kenku", "description": "Você tem proficiência em duas das seguintes perícias à sua escolha: Acrobacia, Enganação, Furtividade e Prestidigitação.","skillProficiencies": ["CHOICE:2:Acrobacia,Enganação,Furtividade,Prestidigitação"] },
+        { "name": "Treinamento Kenku", "description": "Você tem proficiência em duas das seguintes perícias à sua escolha: Acrobacia, Enganação, Furtividade e Prestidigitação.", "skillProficiencies": ["CHOICE:2:Acrobacia,Enganação,Furtividade,Prestidigitação"] },
         { "name": "Mimetismo", "description": "Você pode imitar sons que ouviu, incluindo vozes. Uma criatura que ouve os sons pode dizer que são imitações com um teste bem-sucedido de Sabedoria (Intuição) contra sua CD de Enganação." }
     ],
     "sourceBook": "Guia de Volo para Monstros"
@@ -96,7 +96,7 @@
     "languages": ["Comum", "Primordial (Aquan)"],
     "traits": [
         { "name": "Anfíbio", "description": "Você pode respirar ar e água." },
-        { "name": "Controle do Ar e da Água", "description": "Você pode conjurar névoa obscurecente. A partir do 3º nível, você pode conjurar rajada de vento com esta característica. A partir do 5º nível, você também pode conjurar muralha de água com ela. Depois de conjurar uma magia com esta característica, você não pode fazer isso de novo até completar um descanso longo. Carisma é sua habilidade de conjuração para essas magias." },
+        { "name": "Controle do Ar e da Água", "description": "Você pode conjurar névoa obscurecente. A partir do 3º nível, você pode conjurar rajada de vento com esta característica. A partir do 5º nível, você também pode conjurar muralha de água com ela. Depois de conjurar uma magia com esta característica, você não pode fazer isso de novo até completar um descanso longo. Carisma é sua habilidade de conjuração para essas magias.", "spells": { "known": ["Névoa Obscurecente", "Lufada de Vento", "Muralha de Água"] } },
         { "name": "Emissário das Profundezas", "description": "Bestas aquáticas têm uma afinidade extraordinária com seu povo. Você pode se comunicar com ideias simples com bestas que podem respirar água. Elas podem entender o significado de suas palavras, embora você não tenha nenhuma habilidade especial para entendê-las em troca." },
         { "name": "Guardião das Profundezas", "description": "Adaptado às profundezas ainda mais escuras e esmagadoras do oceano, você tem resistência a dano de frio e ignora quaisquer desvantagens causadas por um ambiente subaquático profundo." }
     ],
@@ -183,7 +183,7 @@
         { "name": "Visão no Escuro", "description": "Você pode ver na penumbra a até 18 metros de você como se fosse luz plena, e na escuridão como se fosse penumbra." },
         { "name": "Imunidade a Veneno", "description": "Você é imune a dano de veneno e à condição envenenado." },
         { "name": "Resistência à Magia", "description": "Você tem vantagem em testes de resistência contra magias e outros efeitos mágicos." },
-        { "name": "Magia Inata", "description": "Você conhece o truque toque venenoso. A partir do 3º nível, você pode conjurar a magia amizade animal um número ilimitado de vezes com esta característica, mas você pode visar apenas cobras com ela. A partir do 5º nível, você também pode conjurar a magia sugestão uma vez com esta característica e recuperar a capacidade de fazê-lo quando completar um descanso longo. Carisma é sua habilidade de conjuração para essas magias." }
+        { "name": "Magia Inata", "description": "Você conhece o truque toque venenoso. A partir do 3º nível, você pode conjurar a magia amizade animal um número ilimitado de vezes com esta característica, mas você pode visar apenas cobras com ela. A partir do 5º nível, você também pode conjurar a magia sugestão uma vez com esta característica e recuperar a capacidade de fazê-lo quando completar um descanso longo. Carisma é sua habilidade de conjuração para essas magias.", "spells": { "known": ["Rajada de Veneno", "Amizade Animal", "Sugestão"] } }
     ],
     "sourceBook": "Guia de Volo para Monstros (Raça Monstruosa)"
   }

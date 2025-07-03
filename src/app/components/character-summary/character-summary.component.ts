@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AbilityScores, Character, Skill } from '../../model/character.model';
+import { Spell } from '../../model/spell.model';
 
 @Component({
   selector: 'app-character-summary',
@@ -29,5 +30,19 @@ export class CharacterSummaryComponent {
     const modifier = this.getAbilityModifier(this.character.abilityScores[skill.ability]);
     const proficiencyBonus = skill.proficient ? this.character.proficiencyBonus : 0;
     return modifier + proficiencyBonus;
+  }
+
+  get spellsByLevel(): { level: number, spells: Spell[] }[] {
+    if (!this.character.spells?.length) return [];
+
+    const grouped = this.character.spells.reduce((acc, spell) => {
+      (acc[spell.level] = acc[spell.level] || []).push(spell);
+      return acc;
+    }, {} as { [level: number]: Spell[] });
+
+    return Object.keys(grouped).map(level => ({
+      level: +level,
+      spells: grouped[+level]
+    }));
   }
 }

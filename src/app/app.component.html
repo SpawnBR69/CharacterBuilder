@@ -66,9 +66,16 @@
                     [equipmentChoices]="equipmentChoices"
                     (equipmentChange)="onEquipmentChanged($event)">
                 </app-equipment-selection>
+                
+                <!-- Passo 6: Seleção de Magias -->
+                <app-spell-selection *ngSwitchCase="6"
+                    [innateSpells]="innateSpells"
+                    [choiceGroups]="spellChoiceGroups"
+                    (selectionChange)="onSpellSelectionChanged($event)">
+                </app-spell-selection>
 
-                <!-- Passo 6: Resumo -->
-                <app-character-summary *ngSwitchCase="6"
+                <!-- Passo 7: Resumo -->
+                <app-character-summary *ngSwitchCase="7" 
                     [character]="character"
                     (download)="downloadJson()"
                     (reset)="resetToInitialState()">
@@ -76,7 +83,7 @@
             </div>
 
             <!-- Navegação dos Passos -->
-            <p-card *ngIf="currentStep > 0 && currentStep < 6">
+            <p-card *ngIf="currentStep > 0 && currentStep < 7"> 
                 <ng-template pTemplate="footer">
                     <div class="flex justify-between">
                         <button pButton pRipple label="Anterior" icon="pi pi-arrow-left" (click)="prevStep()"

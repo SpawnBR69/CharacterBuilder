@@ -1,0 +1,33 @@
+<p-card>
+  <ng-template pTemplate="title">Passo 6: Escolha suas Magias</ng-template>
+
+  <div class="space-y-6">
+    <!-- Magias Inatas (de Raça) -->
+    <div *ngIf="innateSpells.length > 0" class="mb-4">
+      <h4 class="font-bold text-red-700 border-b pb-1 mb-2">Magias Inatas (Conhecidas Automaticamente)</h4>
+      <ul class="list-disc list-inside text-sm text-gray-700">
+        <li *ngFor="let spell of innateSpells">{{ spell.name }}</li>
+      </ul>
+    </div>
+
+    <!-- Grupos de Escolha de Magia -->
+    <div *ngFor="let group of choiceGroups; let i = index" class="mb-4">
+      <h4 class="font-bold text-red-700 border-b pb-1 mb-2">
+        {{ group.source }} ({{ selectionsByGroup[i].length || 0 }} / {{ group.count }})
+      </h4>
+      <p-multiSelect 
+        [options]="getOptionsForGroup(i)" 
+        [(ngModel)]="selectionsByGroup[i]"
+        (onChange)="emitSelection()"
+        [selectionLimit]="group.count"
+        [placeholder]="'Selecione ' + group.count + (group.type === 'TRICK' ? ' truque(s)' : ' magia(s)')"
+        optionLabel="name" 
+        styleClass="w-full">
+      </p-multiSelect>
+    </div>
+
+    <div *ngIf="innateSpells.length === 0 && choiceGroups.length === 0">
+        <p class="text-center text-gray-500">Sua classe e raça não concedem magias no nível 1.</p>
+    </div>
+  </div>
+</p-card>

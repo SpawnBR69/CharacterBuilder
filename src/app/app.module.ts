@@ -27,6 +27,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { TooltipModule } from 'primeng/tooltip';
 import { Observable } from 'rxjs';
 import { SpellService } from './service/spell.service';
+import { SpellSelectionComponent } from './components/spell-selection/spell-selection.component';
+import { MultiSelectModule } from 'primeng/multiselect';
 
 function initializeSpells(spellService: SpellService): () => Observable<any> {
   return () => spellService.loadSpells();
@@ -41,7 +43,8 @@ function initializeSpells(spellService: SpellService): () => Observable<any> {
     AbilityScoresComponent,
     BackgroundSelectionComponent,
     EquipmentSelectionComponent,
-    CharacterSummaryComponent
+    CharacterSummaryComponent,
+    SpellSelectionComponent
   ],
   imports: [
     BrowserModule,
@@ -57,6 +60,7 @@ function initializeSpells(spellService: SpellService): () => Observable<any> {
     RadioButtonModule,
     ProgressSpinnerModule,
     TooltipModule,
+    MultiSelectModule
   ],
   providers: [
     SpellService,

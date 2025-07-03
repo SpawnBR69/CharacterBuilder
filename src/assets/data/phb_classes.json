@@ -30,6 +30,11 @@
     "primaryAbility": ["Carisma"],
     "savingThrowProficiencies": ["dexterity", "charisma"],
     "armorAndWeaponProficiencies": ["Armaduras leves", "armas simples", "bestas de mão", "espadas longas", "rapieiras", "espadas curtas"],
+    "spellcasting": {
+      "ability": "charisma",
+      "cantrips_known": 2,
+      "spells_known": 4
+    },
     "startingEquipment": [
       ["(a) uma rapieira", "(b) uma espada longa", "(c) qualquer arma simples"],
       ["(a) um pacote de diplomata", "(b) um pacote de artista"],
@@ -55,6 +60,11 @@
     "primaryAbility": ["Carisma"],
     "savingThrowProficiencies": ["wisdom", "charisma"],
     "armorAndWeaponProficiencies": ["Armaduras leves", "armas simples"],
+    "spellcasting": {
+      "ability": "charisma",
+      "cantrips_known": 2,
+      "spells_known": 2
+    },
     "startingEquipment": [
       ["(a) uma besta leve e 20 virotes", "(b) qualquer arma simples"],
       ["(a) uma bolsa de componentes", "(b) um foco arcano"],
@@ -80,6 +90,11 @@
     "primaryAbility": ["Sabedoria"],
     "savingThrowProficiencies": ["wisdom", "charisma"],
     "armorAndWeaponProficiencies": ["Armaduras leves e médias", "escudos", "todas as armas simples"],
+    "spellcasting": {
+      "ability": "wisdom",
+      "cantrips_known": 3,
+      "spells_known": -1
+    },
     "startingEquipment": [
       ["(a) uma maça", "(b) um martelo de guerra (se proficiente)"],
       ["(a) brunea", "(b) corselete de couro", "(c) cota de malha (se proficiente)"],
@@ -90,7 +105,7 @@
     "features": [
       {
         "name": "Conjuração (Clérigo)",
-        "description": "Como um canal para o poder divino, você pode conjurar magias de clérigo, usando Sabedoria como sua habilidade de conjuração."
+        "description": "Como um canal para o poder divino, você pode conjurar magias de clérigo, usando Sabedoria como sua habilidade de conjuração. Você prepara a lista de magias de clérigo que estão disponíveis para você conjurar, escolhendo da lista de magias de clérigo. O número de magias é igual ao seu modificador de Sabedoria + seu nível de clérigo (mínimo de uma magia)."
       },
       {
         "name": "Domínio Divino",
@@ -106,6 +121,11 @@
     "primaryAbility": ["Sabedoria"],
     "savingThrowProficiencies": ["intelligence", "wisdom"],
     "armorAndWeaponProficiencies": ["Armaduras leves e médias (não-metálicas)", "escudos (não-metálicos)", "clavas", "adagas", "dardos", "azagaias", "maças", "bordões", "cimitarras", "fundas", "lanças"],
+    "spellcasting": {
+      "ability": "wisdom",
+      "cantrips_known": 2,
+      "spells_known": -1
+    },
     "startingEquipment": [
       ["(a) um escudo de madeira", "(b) qualquer arma simples"],
       ["(a) uma cimitarra", "(b) qualquer arma corpo a corpo simples"],
@@ -118,7 +138,7 @@
       },
       {
         "name": "Conjuração (Druida)",
-        "description": "Extraindo da essência divina da própria natureza, você pode conjurar magias de druida, usando Sabedoria como sua habilidade de conjuração."
+        "description": "Extraindo da essência divina da própria natureza, você pode conjurar magias de druida, usando Sabedoria como sua habilidade de conjuração. Você prepara a lista de magias de druida que estão disponíveis para você conjurar, escolhendo da lista de magias de druida. O número de magias é igual ao seu modificador de Sabedoria + seu nível de druida (mínimo de uma magia)."
       }
     ],
     "sourceBook": "Livro do Jogador"
@@ -130,6 +150,11 @@
     "primaryAbility": ["Carisma"],
     "savingThrowProficiencies": ["constitution", "charisma"],
     "armorAndWeaponProficiencies": ["Adagas", "dardos", "fundas", "bordões", "bestas leves"],
+    "spellcasting": {
+      "ability": "charisma",
+      "cantrips_known": 4,
+      "spells_known": 2
+    },
     "startingEquipment": [
       ["(a) uma besta leve e 20 virotes", "(b) qualquer arma simples"],
       ["(a) uma bolsa de componentes", "(b) um foco arcano"],
@@ -209,6 +234,11 @@
     "primaryAbility": ["Inteligência"],
     "savingThrowProficiencies": ["intelligence", "wisdom"],
     "armorAndWeaponProficiencies": ["Adagas", "dardos", "fundas", "bordões", "bestas leves"],
+    "spellcasting": {
+      "ability": "intelligence",
+      "cantrips_known": 3,
+      "spells_known": 6
+    },
     "startingEquipment": [
       ["(a) um bordão", "(b) uma adaga"],
       ["(a) uma bolsa de componentes", "(b) um foco arcano"],

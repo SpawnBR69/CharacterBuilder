@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CharacterCreationService } from './service/character-creation.service';
 import { Race, Class, Background, AbilityScores, Character, SubRace, Skill } from './model/character.model';
+import { SpellService } from './service/spell.service';
+import { Spell } from './model/spell.model';
 
 @Component({
   selector: 'app-root',
@@ -8,8 +10,7 @@ import { Race, Class, Background, AbilityScores, Character, SubRace, Skill } fro
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  isDataLoaded = false; // Flag para controlar o carregamento
-  // ... (outras propriedades permanecem as mesmas)
+  isDataLoaded = false;
   character: Partial<Character> = {};
   currentStep = 0;
   isStepValid = false;
@@ -27,15 +28,22 @@ export class AppComponent implements OnInit {
   chosenSkills: { [groupIndex: number]: string[] } = {};
   abilityScoreChoiceInfo: { count: number; amount: number; options: (keyof AbilityScores)[] } | null = null;
   chosenAbilityBonuses: (keyof AbilityScores)[] = [];
+  chosenSpells: Spell[] = [];
+  spellChoiceGroups: { source: string; type: 'TRICK' | 'LEVEL_1'; count: number; options: Spell[] }[] = [];
 
 
-  constructor(public characterService: CharacterCreationService) { }
+  constructor(public characterService: CharacterCreationService, private spellService: SpellService) { }
 
   ngOnInit() {
     this.characterService.loadAllData().subscribe(() => {
         this.isDataLoaded = true;
         this.resetToInitialState();
     });
+  }
+  updateAndSetSpellChoices() {
+    this.chosenSpells = []; // Reseta as magias escolhidas
+    this.innateSpells = this.recalculateInnateSpells();
+    this.spellChoiceGroups = this.recalculateSpellChoiceGroups();
   }
 
   resetToInitialState() {
@@ -64,10 +72,10 @@ export class AppComponent implements OnInit {
 
   // --- NAVEGAÇÃO ---
   nextStep() {
-    if (this.currentStep === 5) {
+    if (this.currentStep === 6) { // Agora a compilação é no passo 6
       this.compileCharacterData();
     }
-    if (this.currentStep < 6) {
+    if (this.currentStep < 7) { // O total de passos agora é 7
       this.currentStep++;
       this.updateStepValidity();
     }
@@ -82,6 +90,94 @@ export class AppComponent implements OnInit {
   
   // --- HANDLERS DE EVENTOS DOS FILHOS ---
 
+  innateSpells: Spell[] = [];
+
+ private recalculateInnateSpells(): Spell[] {
+    const spellNames = new Set<string>();
+    const allTraits = [...(this.selectedRace?.traits || []), ...(this.selectedSubrace?.traits || [])];
+    
+    allTraits.forEach(trait => {
+      trait.spells?.known.forEach(spellName => {
+        if (!spellName.startsWith('CHOICE:')) {
+          spellNames.add(spellName);
+        }
+      });
+    });
+
+    return this.spellService.getAllSpells().filter(s => spellNames.has(s.name));
+  }
+
+  private recalculateSpellChoiceGroups(): { source: string; type: 'TRICK' | 'LEVEL_1'; count: number; options: Spell[] }[] {
+    const groups: { source: string; type: 'TRICK' | 'LEVEL_1'; count: number; options: Spell[] }[] = [];
+    const allSpells = this.spellService.getAllSpells();
+
+    // Cache filtered spells to avoid repeated filtering
+    const allCantrips = allSpells.filter(s => s.level === 0);
+    const allLevel1Spells = allSpells.filter(s => s.level === 1);
+
+    // 1. Escolhas de Traços Raciais
+    const allTraits = [...(this.selectedRace?.traits || []), ...(this.selectedSubrace?.traits || [])];
+    allTraits.forEach(trait => {
+      trait.spells?.known.forEach(spellIdentifier => {
+        if (spellIdentifier.startsWith('CHOICE:')) {
+          const [, type, fromClass, countStr] = spellIdentifier.split(':');
+          const count = parseInt(countStr, 10);
+          
+          if (type === 'TRICK') {
+            groups.push({
+              source: `Traço: ${trait.name}`,
+              type: 'TRICK',
+              count: count,
+              options: allCantrips.filter(s => s.classes.includes(fromClass))
+            });
+          }
+        }
+      });
+    });
+
+    // 2. Escolhas de Classe
+    if (this.selectedClass?.spellcasting) {
+      const classInfo = this.selectedClass.spellcasting;
+      
+      if (classInfo.cantrips_known > 0) {
+        groups.push({
+          source: `Classe: ${this.selectedClass.name}`,
+          type: 'TRICK',
+          count: classInfo.cantrips_known,
+          options: allCantrips.filter(s => s.classes.includes(this.selectedClass!.name))
+        });
+      }
+      if (classInfo.spells_known > 0) {
+        groups.push({
+          source: `Classe: ${this.selectedClass.name}`,
+          type: 'LEVEL_1',
+          count: classInfo.spells_known,
+          options: allLevel1Spells.filter(s => s.classes.includes(this.selectedClass!.name))
+        });
+      }
+      // Lógica para Clérigo/Druida que PREPARAM magias
+      if (classInfo.spells_known === -1) {
+         const preparedCount = (this.getAbilityModifier(this.assignedScores![classInfo.ability]) || 0) + 1;
+         groups.push({
+          source: `Classe: ${this.selectedClass.name}`,
+          type: 'LEVEL_1',
+          count: preparedCount > 0 ? preparedCount : 1,
+          options: allLevel1Spells.filter(s => s.classes.includes(this.selectedClass!.name))
+        });
+      }
+    }
+    
+    return groups;
+  }
+
+  onSpellSelectionChanged(spells: Spell[]) {
+    this.chosenSpells = spells;
+    this.updateStepValidity();
+  }
+  
+  // Este método será usado no template
+  
+
   onNameChanged(name: string) {
     this.character.name = name;
     this.updateStepValidity();
@@ -90,6 +186,7 @@ export class AppComponent implements OnInit {
   onRaceChanged(race: Race) {
     this.selectedRace = race;
     this.selectedSubrace = undefined; // Reseta a sub-raça ao trocar de raça
+    this.updateAndSetSpellChoices();
     this.updateStepValidity();
     this.recalculateSkillChoices();
     this.recalculateAbilityScoreChoices();
@@ -129,18 +226,23 @@ export class AppComponent implements OnInit {
 
   onSubraceChanged(subrace: SubRace) {
     this.selectedSubrace = subrace;
+    this.updateAndSetSpellChoices();
     this.updateStepValidity();
     this.recalculateSkillChoices();
   }
 
   onClassChanged(newClass: Class) {
     this.selectedClass = newClass;
-    this.equipmentChoices = {}; // Reseta as escolhas de equipamento
+    this.equipmentChoices = {}; 
+    this.updateAndSetSpellChoices();
     this.updateStepValidity();
   }
   
   onScoresChanged(scores: AbilityScores) {
     this.assignedScores = scores;
+    if (this.selectedClass?.spellcasting?.spells_known === -1) {
+      this.updateAndSetSpellChoices(); // <-- Adicionar chamada
+    }
     this.updateStepValidity();
   }
 
@@ -184,7 +286,19 @@ export class AppComponent implements OnInit {
 
         // O passo é válido se o número de escolhas feitas for igual ao necessário
         this.isStepValid = madeChoiceCount === requiredChoiceCount;
-        break; // Equipamento é opcional
+        break;
+      case 6: // Validação do passo de magia
+        if (this.spellChoiceGroups.length === 0) {
+            this.isStepValid = true; // Se não há escolhas a fazer, o passo é válido
+            break;
+        }
+        
+        // Verifica se todas as escolhas foram feitas
+        const totalChoicesNeeded = this.spellChoiceGroups.reduce((acc, group) => acc + group.count, 0);
+        const totalChoicesMade = this.chosenSpells.length;
+
+        this.isStepValid = totalChoicesMade === totalChoicesNeeded;
+        break;
       default: this.isStepValid = false;
     }
   }
@@ -397,6 +511,12 @@ export class AppComponent implements OnInit {
     // Lógica de idiomas
     const finalLanguages = new Set<string>([...this.knownLanguages, ...this.chosenLanguages]);
     finalCharacter.languages = Array.from(finalLanguages);
+
+    const allKnownSpells = [...this.innateSpells, ...this.chosenSpells];
+    const uniqueSpells = Array.from(new Map(allKnownSpells.map(s => [s.name, s])).values());
+    
+    finalCharacter.spells = uniqueSpells
+      .sort((a, b) => a.level - b.level || a.name.localeCompare(b.name));
     
     this.character = finalCharacter;
   }
