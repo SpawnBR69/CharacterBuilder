@@ -9,7 +9,11 @@
 
     <div *ngIf="selectedBackground as bg" class="mt-4 p-4 border rounded-lg bg-gray-50 text-sm space-y-2">
         <p class="italic">{{ bg.description }}</p>
-        <p><strong class="font-semibold text-red-700">Perícias:</strong> {{ bg.skillProficiencies.join(', ') }}</p>
+        <p><strong class="font-semibold text-red-700">Perícias:</strong> 
+            <span *ngFor="let skill of bg.skillProficiencies; let last = last">
+                {{ getSkillDisplayName(skill) }}{{ last ? '' : ', ' }}
+            </span>
+        </p>
         <p *ngIf="bg.toolProficiencies"><strong class="font-semibold text-red-700">Ferramentas:</strong> {{ bg.toolProficiencies.join(', ') }}</p>
         <ng-container *ngIf="bg.languages && bg.languages.length > 0">
             <p>
@@ -56,7 +60,11 @@
     <!-- Perícias Fixas -->
     <div *ngIf="fixedSkillProficiencies.length > 0" class="mb-4">
       <p class="font-semibold text-gray-700">Proficiências Garantidas:</p>
-      <p class="text-sm text-gray-600">{{ fixedSkillProficiencies.join(', ') }}</p>
+      <p class="text-sm text-gray-600">
+        <span *ngFor="let skill of fixedSkillProficiencies; let last = last">
+            {{ getSkillDisplayName(skill) }}{{ last ? '' : ', ' }}
+        </span>
+      </p>
     </div>
 
     <!-- Grupos de Escolha de Perícia -->
@@ -70,6 +78,8 @@
             (onChange)="onSkillSelectionChange()"
             placeholder="-- Selecione uma perícia --"
             [showClear]="true"
+            optionLabel="label"
+            optionValue="value"
             styleClass="w-full">
           </p-dropdown>
         </div>

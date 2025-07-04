@@ -11,8 +11,8 @@
 
     <!-- Atributos e Modificadores -->
     <div class="grid grid-cols-3 md:grid-cols-6 gap-2 md:gap-4 text-center mb-6">
-        <div *ngFor="let ability of abilityKeys" class="p-2 border rounded-lg bg-gray-50 flex flex-col justify-center items-center h-28">
-            <div class="text-sm font-bold text-red-700 uppercase">{{ ability.slice(0, 3) }}</div>
+    <div *ngFor="let ability of abilityKeys" class="p-2 border rounded-lg bg-gray-50 flex flex-col justify-center items-center h-28">
+            <div class="text-sm font-bold text-red-700 uppercase">{{ getAbilityTranslation(ability).abbr }}</div>
             <div class="text-4xl font-bold">{{ getModifierString(getAbilityModifier(character.abilityScores![ability])) }}</div>
             <div class="text-md text-gray-600">{{ character.abilityScores![ability] }}</div>
         </div>
@@ -30,7 +30,7 @@
                             <input type="radio" [checked]="character.savingThrows![key].proficient" disabled class="w-4 h-4 border-2 border-gray-500 rounded-full checked:bg-gray-800 checked:border-gray-800">
                         </div>
                         <span class="text-left font-semibold">{{ getModifierString(character.savingThrows![key].value) }}</span>
-                        <span class="text-left text-gray-600 capitalize truncate">{{ key }}</span>
+                        <span class="text-left text-gray-600 capitalize truncate">{{ getAbilityTranslation(key).name }}</span>
                     </li>
                 </ul>
             </div>
@@ -45,7 +45,7 @@
                         </div>
                         <span class="w-10 text-left font-semibold">{{ getModifierString(getSkillModifierValue(skill.value)) }}</span>
                         <span class="text-gray-600">{{ skill.key }}</span>
-                        <span class="text-gray-400">({{ skill.value.ability.slice(0, 3) }})</span>
+                        <span class="text-gray-400">({{ getAbilityTranslation(skill.value.ability).abbr }})</span>
                     </li>
                 </ul>
             </div>

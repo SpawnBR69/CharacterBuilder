@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output, OnChanges, SimpleChanges } from '@angular/core';
 import { Background } from '../../model/character.model';
+import { TranslationService } from '../../service/translation.service';
 
 @Component({
   selector: 'app-background-selection',
@@ -25,6 +26,8 @@ export class BackgroundSelectionComponent implements OnChanges {
   selectedBonusLanguages: string[] = [];
   selectedBonusSkills: { [groupIndex: number]: string[] } = {};
 
+  constructor(private translationService: TranslationService) {}
+
   ngOnChanges(changes: SimpleChanges): void {
     // Reseta as escolhas se o número de opções mudar
     if (changes['languageChoicesCount']) {
@@ -43,6 +46,15 @@ export class BackgroundSelectionComponent implements OnChanges {
     // Filtra valores nulos e emite apenas as seleções válidas
     this.languagesChange.emit(this.selectedBonusLanguages.filter(lang => lang));
   }
+
+  getSkillDisplayName(skillName: string): string {
+    const abilityKey = this.translationService.getAbilityForSkill(skillName);
+    if (!abilityKey) {
+      return skillName; // Retorna só o nome se não encontrar a habilidade
+    }
+    const abilityAbbr = this.translationService.getAbilityTranslation(abilityKey).abbr;
+    return `${skillName} (${abilityAbbr})`;
+  }
   
   // Filtra as opções para cada dropdown, evitando duplicatas
   getOptionsForDropdown(index: number): string[] {
@@ -56,22 +68,26 @@ export class BackgroundSelectionComponent implements OnChanges {
     this.skillChoicesChange.emit(this.selectedBonusSkills);
   }
 
-  getSkillOptionsForGroup(groupIndex: number, dropdownIndex: number): string[] {
+  getSkillOptionsForGroup(groupIndex: number, dropdownIndex: number) {
     const group = this.skillChoiceGroups[groupIndex];
     if (!group) return [];
 
-    // Perícias já selecionadas NESTE grupo, exceto a do dropdown atual
     const selectedInThisGroup = (this.selectedBonusSkills[groupIndex] || [])
       .filter((_, i) => i !== dropdownIndex);
 
-    // Perícias selecionadas em OUTROS grupos
     const selectedInOtherGroups = Object.keys(this.selectedBonusSkills)
       .filter(key => parseInt(key, 10) !== groupIndex)
       .flatMap(key => this.selectedBonusSkills[parseInt(key, 10)]);
 
-    const allSelected = new Set([...selectedInThisGroup, ...selectedInOtherGroups]);
+    const allSelected = new Set([...selectedInThisGroup, ...selectedInOtherGroups, ...this.fixedSkillProficiencies]);
 
-    return group.options.filter(opt => !allSelected.has(opt));
+    const availableOptions = group.options.filter(opt => !allSelected.has(opt));
+
+    // Transforma a lista de strings em uma lista de objetos para o p-dropdown
+    return availableOptions.map(skillName => ({
+      label: this.getSkillDisplayName(skillName), // Ex: "Arcanismo (INT)"
+      value: skillName                         // Ex: "Arcanismo"
+    }));
   }
   
   formatLanguageDisplay(lang: string): string {

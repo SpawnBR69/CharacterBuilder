@@ -12,7 +12,9 @@
         <p><strong class="font-semibold text-red-700">Dado de Vida:</strong> d{{ sClass.hitDie }}</p>
         <p><strong class="font-semibold text-red-700">Habilidade Primária:</strong> {{ sClass.primaryAbility.join(', ') }}</p>
         <p><strong class="font-semibold text-red-700">Resistências:</strong> 
-            <span *ngFor="let prof of sClass.savingThrowProficiencies; let last = last">{{ prof | titlecase }}{{ last ? '' : ', ' }}</span>
+            <span *ngFor="let prof of sClass.savingThrowProficiencies; let last = last">
+                {{ getAbilityTranslation(prof).name }}{{ last ? '' : ', ' }}
+            </span>
         </p>
         <div>
             <strong class="font-semibold text-red-700">Proficiências:</strong>

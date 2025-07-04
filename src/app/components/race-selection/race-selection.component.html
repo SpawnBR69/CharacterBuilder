@@ -11,7 +11,9 @@
     <div *ngIf="selectedRace as race" class="mt-4 p-4 border rounded-lg bg-gray-50 text-sm space-y-2">
         <p class="italic">{{ race.description }}</p>
         <p><strong class="font-semibold text-red-700">Aumento de Atributo:</strong>
-            <span *ngFor="let inc of race.abilityScoreIncrease | keyvalue; let last = last">{{ inc.key | titlecase }} +{{ inc.value }}{{ last ? '' : ', ' }}</span>
+            <span *ngFor="let inc of race.abilityScoreIncrease | keyvalue; let last = last">
+                {{ getAbilityTranslation(inc.key).name }} +{{ inc.value }}{{ last ? '' : ', ' }}
+            </span>
         </p>
         <p><strong class="font-semibold text-red-700">Deslocamento:</strong> {{ race.speed }}m</p>
         <ng-container *ngIf="race.languages && race.languages.length > 0">
@@ -37,7 +39,9 @@
     <div *ngIf="selectedSubrace as subrace" class="mt-4 p-4 border rounded-lg bg-gray-50 text-sm space-y-2">
         <p class="italic">{{ subrace.description }}</p>
         <p *ngIf="subrace.abilityScoreIncrease"><strong class="font-semibold text-red-700">Aumento Adicional:</strong>
-            <span *ngFor="let inc of subrace.abilityScoreIncrease | keyvalue; let last = last">{{ inc.key | titlecase }} +{{ inc.value }}{{ last ? '' : ', ' }}</span>
+            <span *ngFor="let inc of subrace.abilityScoreIncrease | keyvalue; let last = last">
+                {{ getAbilityTranslation(inc.key).name }} +{{ inc.value }}{{ last ? '' : ', ' }}
+            </span>
         </p>
         <div *ngIf="subrace.traits?.length">
             <strong class="font-semibold text-red-700">Traços de Sub-raça:</strong>
@@ -57,7 +61,7 @@
                     (onChange)="onAbilitySelectionChange()"
                     placeholder="-- Atributo #{{index + 1}} --"
                     [showClear]="true"
-                    styleClass="w-full">
+                    optionLabel="name" optionValue="key" styleClass="w-full">
                 </p-dropdown>
             </div>
         </div>

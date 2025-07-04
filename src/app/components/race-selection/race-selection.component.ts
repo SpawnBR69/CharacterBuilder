@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Race, SubRace, AbilityScores } from '../../model/character.model';
 import { SimpleChanges } from '@angular/core';
+import { TranslationService } from '../../service/translation.service';
 
 @Component({
   selector: 'app-race-selection',
@@ -18,6 +19,8 @@ export class RaceSelectionComponent {
 
   selectedBonusAbilities: (keyof AbilityScores)[] = [];
 
+  constructor(private translationService: TranslationService) {}
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['abilityScoreChoiceInfo'] && this.abilityScoreChoiceInfo) {
       this.selectedBonusAbilities = new Array(this.abilityScoreChoiceInfo.count).fill(null);
@@ -28,12 +31,21 @@ export class RaceSelectionComponent {
     this.abilityScoreChoicesChange.emit(this.selectedBonusAbilities);
   }
 
-  getAbilityOptionsForDropdown(index: number): (keyof AbilityScores)[] {
+  getAbilityOptionsForDropdown(index: number) {
     if (!this.abilityScoreChoiceInfo) return [];
     
-    // Remove opções já selecionadas em outros dropdowns
     const selectedInOtherDropdowns = this.selectedBonusAbilities.filter((_, i) => i !== index);
-    return this.abilityScoreChoiceInfo.options.filter(opt => !selectedInOtherDropdowns.includes(opt));
+    const availableOptions = this.abilityScoreChoiceInfo.options.filter(opt => !selectedInOtherDropdowns.includes(opt));
+    
+    // Mapeia as chaves para o formato { name, key } para o p-dropdown
+    return availableOptions.map(key => ({
+      key: key,
+      name: this.getAbilityTranslation(key).name
+    }));
+  }
+
+  public getAbilityTranslation(ability: string) {
+    return this.translationService.getAbilityTranslation(ability as keyof AbilityScores);
   }
   
   counter(i: number) {

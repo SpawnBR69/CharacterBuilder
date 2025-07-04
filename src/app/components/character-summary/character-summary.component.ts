@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AbilityScores, Character, Skill } from '../../model/character.model';
 import { Spell } from '../../model/spell.model';
+import { TranslationService } from '../../service/translation.service';
 
 @Component({
   selector: 'app-character-summary',
@@ -11,8 +12,14 @@ export class CharacterSummaryComponent {
   @Output() download = new EventEmitter<void>();
   @Output() reset = new EventEmitter<void>();
 
+  constructor(private translationService: TranslationService) {}
+
   get abilityKeys(): (keyof AbilityScores)[] {
     return ['strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma'];
+  }
+
+  public getAbilityTranslation(ability: keyof AbilityScores) {
+    return this.translationService.getAbilityTranslation(ability);
   }
 
   getAbilityModifier(score: number | undefined): number {
