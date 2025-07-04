@@ -7,6 +7,10 @@ export interface Trait {
   spells?: {
     known: string[]; // Magias conhecidas automaticamente
   };
+  acCalculation?: {
+    base: number; // Ex: 10 para Bárbaro/Monge, 13 para Feiticeiro Dracônico
+    attributes: (keyof AbilityScores)[]; // Ex: ['dexterity', 'constitution']
+  };
 }
 
 export interface AbilityScores {
@@ -52,6 +56,10 @@ export interface Class {
   armorAndWeaponProficiencies: string[];
   startingEquipment: (string | string[])[];
   features?: Trait[];
+  skillChoices?: {
+    count: number;
+    options: string[];
+  };
   spellcasting?: {
     ability: keyof AbilityScores;
     cantrips_known: number;

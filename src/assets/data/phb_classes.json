@@ -6,6 +6,10 @@
     "primaryAbility": ["Força"],
     "savingThrowProficiencies": ["strength", "constitution"],
     "armorAndWeaponProficiencies": ["Armaduras leves e médias", "escudos", "armas simples e marciais"],
+    "skillChoices": {
+      "count": 2,
+      "options": ["Adestrar Animais", "Atletismo", "Intimidação", "Natureza", "Percepção", "Sobrevivência"]
+    },
     "startingEquipment": [
       ["(a) um machado grande", "(b) qualquer arma marcial corpo a corpo"],
       ["(a) duas machadinhas", "(b) qualquer arma simples"],
@@ -18,7 +22,11 @@
       },
       {
         "name": "Defesa sem Armadura (Bárbaro)",
-        "description": "Enquanto não estiver vestindo nenhuma armadura, sua Classe de Armadura é igual a 10 + seu modificador de Destreza + seu modificador de Constituição. Você pode usar um escudo e ainda obter este benefício."
+        "description": "Enquanto não estiver vestindo nenhuma armadura, sua Classe de Armadura é igual a 10 + seu modificador de Destreza + seu modificador de Constituição. Você pode usar um escudo e ainda obter este benefício.",
+        "acCalculation": {
+          "base": 10,
+          "attributes": ["dexterity", "constitution"]
+        }
       }
     ],
     "sourceBook": "Livro do Jogador"
@@ -30,6 +38,10 @@
     "primaryAbility": ["Carisma"],
     "savingThrowProficiencies": ["dexterity", "charisma"],
     "armorAndWeaponProficiencies": ["Armaduras leves", "armas simples", "bestas de mão", "espadas longas", "rapieiras", "espadas curtas"],
+    "skillChoices": {
+      "count": 3,
+      "options": ["Acrobacia", "Adestrar Animais", "Arcanismo", "Atletismo", "Enganação", "Furtividade", "História", "Intimidação", "Intuição", "Investigação", "Medicina", "Natureza", "Percepção", "Atuação", "Persuasão", "Prestidigitação", "Religião", "Sobrevivência"]
+    },
     "spellcasting": {
       "ability": "charisma",
       "cantrips_known": 2,
@@ -60,6 +72,10 @@
     "primaryAbility": ["Carisma"],
     "savingThrowProficiencies": ["wisdom", "charisma"],
     "armorAndWeaponProficiencies": ["Armaduras leves", "armas simples"],
+    "skillChoices": {
+        "count": 2,
+        "options": ["Arcanismo", "Enganação", "História", "Intimidação", "Investigação", "Natureza", "Religião"]
+    },
     "spellcasting": {
       "ability": "charisma",
       "cantrips_known": 2,
@@ -90,6 +106,10 @@
     "primaryAbility": ["Sabedoria"],
     "savingThrowProficiencies": ["wisdom", "charisma"],
     "armorAndWeaponProficiencies": ["Armaduras leves e médias", "escudos", "todas as armas simples"],
+    "skillChoices": {
+        "count": 2,
+        "options": ["História", "Intuição", "Medicina", "Persuasão", "Religião"]
+    },
     "spellcasting": {
       "ability": "wisdom",
       "cantrips_known": 3,
@@ -121,6 +141,10 @@
     "primaryAbility": ["Sabedoria"],
     "savingThrowProficiencies": ["intelligence", "wisdom"],
     "armorAndWeaponProficiencies": ["Armaduras leves e médias (não-metálicas)", "escudos (não-metálicos)", "clavas", "adagas", "dardos", "azagaias", "maças", "bordões", "cimitarras", "fundas", "lanças"],
+    "skillChoices": {
+        "count": 2,
+        "options": ["Arcanismo", "Adestrar Animais", "Intuição", "Medicina", "Natureza", "Percepção", "Religião", "Sobrevivência"]
+    },
     "spellcasting": {
       "ability": "wisdom",
       "cantrips_known": 2,
@@ -150,6 +174,10 @@
     "primaryAbility": ["Carisma"],
     "savingThrowProficiencies": ["constitution", "charisma"],
     "armorAndWeaponProficiencies": ["Adagas", "dardos", "fundas", "bordões", "bestas leves"],
+    "skillChoices": {
+        "count": 2,
+        "options": ["Arcanismo", "Enganação", "Intuição", "Intimidação", "Persuasão", "Religião"]
+    },
     "spellcasting": {
       "ability": "charisma",
       "cantrips_known": 4,
@@ -180,6 +208,10 @@
     "primaryAbility": ["Força", "Destreza"],
     "savingThrowProficiencies": ["strength", "constitution"],
     "armorAndWeaponProficiencies": ["Todas as armaduras", "escudos", "armas simples e marciais"],
+    "skillChoices": {
+        "count": 2,
+        "options": ["Acrobacia", "Adestrar Animais", "Atletismo", "História", "Intuição", "Intimidação", "Percepção", "Sobrevivência"]
+    },
     "startingEquipment": [
       ["(a) cota de malha", "(b) gibão de peles, arco longo e 20 flechas"],
       ["(a) uma arma marcial e um escudo", "(b) duas armas marciais"],
@@ -205,6 +237,10 @@
     "primaryAbility": ["Destreza"],
     "savingThrowProficiencies": ["dexterity", "intelligence"],
     "armorAndWeaponProficiencies": ["Armaduras leves", "armas simples", "bestas de mão", "espadas longas", "rapieiras", "espadas curtas"],
+    "skillChoices": {
+        "count": 4,
+        "options": ["Acrobacia", "Atletismo", "Enganação", "Furtividade", "Intuição", "Intimidação", "Investigação", "Percepção", "Atuação", "Persuasão", "Prestidigitação"]
+    },
     "startingEquipment": [
       ["(a) uma rapieira", "(b) uma espada curta"],
       ["(a) um arco curto e aljava com 20 flechas", "(b) uma espada curta"],
@@ -234,6 +270,10 @@
     "primaryAbility": ["Inteligência"],
     "savingThrowProficiencies": ["intelligence", "wisdom"],
     "armorAndWeaponProficiencies": ["Adagas", "dardos", "fundas", "bordões", "bestas leves"],
+    "skillChoices": {
+        "count": 2,
+        "options": ["Arcanismo", "História", "Intuição", "Investigação", "Medicina", "Religião"]
+    },
     "spellcasting": {
       "ability": "intelligence",
       "cantrips_known": 3,
@@ -264,6 +304,10 @@
     "primaryAbility": ["Destreza", "Sabedoria"],
     "savingThrowProficiencies": ["strength", "dexterity"],
     "armorAndWeaponProficiencies": ["Armas simples", "espadas curtas"],
+    "skillChoices": {
+        "count": 2,
+        "options": ["Acrobacia", "Atletismo", "Furtividade", "História", "Intuição", "Religião"]
+    },
     "startingEquipment": [
       ["(a) uma espada curta", "(b) qualquer arma simples"],
       ["(a) um pacote de masmorra", "(b) um pacote de explorador"],
@@ -272,7 +316,11 @@
     "features": [
       {
         "name": "Defesa sem Armadura (Monge)",
-        "description": "Enquanto não estiver vestindo armadura nem empunhando um escudo, sua Classe de Armadura é igual a 10 + seu modificador de Destreza + seu modificador de Sabedoria."
+        "description": "Enquanto não estiver vestindo armadura nem empunhando um escudo, sua Classe de Armadura é igual a 10 + seu modificador de Destreza + seu modificador de Sabedoria.",
+        "acCalculation": {
+          "base": 10,
+          "attributes": ["dexterity", "wisdom"]
+        }
       },
       {
         "name": "Artes Marciais",
@@ -288,6 +336,10 @@
     "primaryAbility": ["Força", "Carisma"],
     "savingThrowProficiencies": ["wisdom", "charisma"],
     "armorAndWeaponProficiencies": ["Todas as armaduras", "escudos", "armas simples e marciais"],
+    "skillChoices": {
+        "count": 2,
+        "options": ["Atletismo", "Intuição", "Intimidação", "Medicina", "Persuasão", "Religião"]
+    },
     "startingEquipment": [
       ["(a) uma arma marcial e um escudo", "(b) duas armas marciais"],
       ["(a) cinco azagaias", "(b) qualquer arma corpo a corpo simples"],
@@ -313,6 +365,10 @@
     "primaryAbility": ["Destreza", "Sabedoria"],
     "savingThrowProficiencies": ["strength", "dexterity"],
     "armorAndWeaponProficiencies": ["Armaduras leves e médias", "escudos", "armas simples e marciais"],
+    "skillChoices": {
+        "count": 3,
+        "options": ["Adestrar Animais", "Atletismo", "Furtividade", "Intuição", "Investigação", "Natureza", "Percepção", "Sobrevivência"]
+    },
     "startingEquipment": [
       ["(a) brunea", "(b) corselete de couro"],
       ["(a) duas espadas curtas", "(b) duas armas corpo a corpo simples"],

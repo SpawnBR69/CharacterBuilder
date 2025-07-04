@@ -235,6 +235,7 @@ export class AppComponent implements OnInit {
     this.selectedClass = newClass;
     this.equipmentChoices = {}; 
     this.updateAndSetSpellChoices();
+    this.recalculateSkillChoices();
     this.updateStepValidity();
   }
   
@@ -385,6 +386,7 @@ export class AppComponent implements OnInit {
       ...(this.selectedSubrace?.traits || [])
     ];
 
+    // Lógica existente para traços raciais...
     traits.forEach(trait => {
       trait.skillProficiencies?.forEach(prof => {
         if (prof.startsWith('CHOICE:')) {
@@ -393,14 +395,32 @@ export class AppComponent implements OnInit {
           const optionsStr = parts[2];
           const options = optionsStr === 'ALL' ? this.characterService.getAvailableSkills() : optionsStr.split(',');
           
+          // Filtra opções de traços contra perícias já conhecidas
+          const availableTraitOptions = options.filter(opt => !this.fixedSkillProficiencies.includes(opt));
+          
           choiceGroups.push({
-            source: trait.name,
+            source: `Traço: ${trait.name}`,
             count: count,
-            options: options.filter(opt => !this.fixedSkillProficiencies.includes(opt)) // Remove opções já conhecidas
+            options: availableTraitOptions
           });
         }
       });
     });
+
+    // ===== LÓGICA ATUALIZADA PARA PERÍCIAS DA CLASSE =====
+    if (this.selectedClass?.skillChoices) {
+      const classSkillOptions = this.selectedClass.skillChoices.options;
+
+      // Filtra as opções da classe contra as perícias que o personagem já possui de forma fixa
+      const availableClassSkills = classSkillOptions.filter(opt => !this.fixedSkillProficiencies.includes(opt));
+
+      choiceGroups.push({
+        source: `Classe: ${this.selectedClass.name}`,
+        count: this.selectedClass.skillChoices.count,
+        options: availableClassSkills // Usa a lista já filtrada
+      });
+    }
+    // ===============================================
 
     this.skillChoiceGroups = choiceGroups;
     this.chosenSkills = {}; // Reseta as escolhas ao recalcular
@@ -486,7 +506,30 @@ export class AppComponent implements OnInit {
       current: (finalCharacter.class?.hitDie || 0) + conModifier,
       temporary: 0
     };
-    finalCharacter.armorClass = 10 + dexModifier;
+    let finalArmorClass: number;
+
+    // 1. Procura por um traço que defina um cálculo especial de CA
+    const customACCalculationTrait = finalCharacter.traits.find(trait => trait.acCalculation);
+
+    if (customACCalculationTrait && customACCalculationTrait.acCalculation) {
+      // 2. Se um traço especial for encontrado, usa a fórmula dele
+      const calcData = customACCalculationTrait.acCalculation;
+      let totalModifier = 0;
+      // Soma os modificadores de todos os atributos listados no traço
+      calcData.attributes.forEach(attrKey => {
+        const modifier = this.getAbilityModifier(finalCharacter.abilityScores[attrKey]);
+        totalModifier += modifier;
+      });
+      // A CA final é a base do traço + a soma dos modificadores
+      finalArmorClass = calcData.base + totalModifier;
+
+    } else {
+      // 3. Se nenhum traço especial for encontrado, usa o cálculo padrão
+      //    (No futuro, aqui entraria a lógica de armadura equipada)
+      finalArmorClass = 10 + dexModifier;
+    }
+    
+    finalCharacter.armorClass = finalArmorClass;
     finalCharacter.initiative = dexModifier;
     
     // Equipment
