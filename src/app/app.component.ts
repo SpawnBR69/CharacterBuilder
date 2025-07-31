@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CharacterCreationService } from './service/character-creation.service';
-import { Race, Class, Background, AbilityScores, Character, SubRace, Skill } from './model/character.model';
+import { Race, Class, Background, AbilityScores, Character, SubRace, Skill, EquipmentChoiceOption } from './model/character.model';
 import { SpellService } from './service/spell.service';
 import { Spell } from './model/spell.model';
 
@@ -30,6 +30,8 @@ export class AppComponent implements OnInit {
   chosenAbilityBonuses: (keyof AbilityScores)[] = [];
   chosenSpells: Spell[] = [];
   spellChoiceGroups: { source: string; type: 'TRICK' | 'LEVEL_1'; count: number; options: Spell[] }[] = [];
+  equipmentChoiceGroups: any[] = [];
+  fixedEquipment: string[] = [];
 
 
   constructor(public characterService: CharacterCreationService, private spellService: SpellService) { }
@@ -92,7 +94,7 @@ export class AppComponent implements OnInit {
 
   innateSpells: Spell[] = [];
 
- private recalculateInnateSpells(): Spell[] {
+  private recalculateInnateSpells(): Spell[] {
     const spellNames = new Set<string>();
     const allTraits = [...(this.selectedRace?.traits || []), ...(this.selectedSubrace?.traits || [])];
     
@@ -175,8 +177,68 @@ export class AppComponent implements OnInit {
     this.updateStepValidity();
   }
   
-  // Este método será usado no template
-  
+  recalculateEquipmentChoices() {
+    const groups: any[] = [];
+    const fixed: string[] = [];
+    this.equipmentChoices = {}; // Reseta as escolhas feitas
+
+    if (!this.selectedClass) {
+        this.equipmentChoiceGroups = [];
+        this.fixedEquipment = [];
+        return;
+    }
+
+    if (!this.characterService || typeof this.characterService.getWeaponsByCategory !== 'function') {
+        console.error("Serviço de criação não está pronto.");
+        return;
+    }
+
+    this.selectedClass.startingEquipment.forEach((item, index) => {
+        // Se o item não for um array, é um equipamento fixo
+        if (typeof item === 'string') {
+            fixed.push(item);
+            return;
+        }
+
+        const choiceGroupId = `class-choice-${index}`;
+        // Encontra a primeira opção que é um objeto (sem se preocupar com o tipo exato ainda)
+        const potentialComplexChoice = item.find(opt => typeof opt === 'object' && opt !== null);
+
+        // Se encontrou um objeto, tratamos como uma escolha complexa/dropdown
+        if (potentialComplexChoice) {
+            const simpleOptions = item.filter((opt): opt is string => typeof opt === 'string');
+            
+            // Aqui está a correção principal:
+            // Verificamos novamente se é um objeto antes de acessar suas propriedades.
+            // O TypeScript é inteligente o suficiente para entender que, dentro deste 'if',
+            // a variável SÓ PODE ser o objeto, não uma string.
+            let dynamicWeaponOptions: string[] = [];
+            if (typeof potentialComplexChoice === 'object' && 'category' in potentialComplexChoice) {
+                // Nenhum erro aqui, pois o tipo foi estreitado com segurança
+                const weapons = this.characterService.getWeaponsByCategory(potentialComplexChoice.category);
+                dynamicWeaponOptions = weapons.map(w => w.name);
+            }
+
+            groups.push({
+                id: choiceGroupId,
+                label: `Escolha de Equipamento ${index + 1}`,
+                displayAs: 'dropdown',
+                options: [...simpleOptions, ...dynamicWeaponOptions]
+            });
+        } else {
+            // É uma escolha simples apenas com strings -> Radio buttons
+            groups.push({
+                id: choiceGroupId,
+                label: `Escolha de Equipamento ${index + 1}`,
+                displayAs: 'radio',
+                options: item as string[]
+            });
+        }
+    });
+
+    this.equipmentChoiceGroups = groups;
+    this.fixedEquipment = fixed;
+}
 
   onNameChanged(name: string) {
     this.character.name = name;
@@ -236,6 +298,7 @@ export class AppComponent implements OnInit {
     this.equipmentChoices = {}; 
     this.updateAndSetSpellChoices();
     this.recalculateSkillChoices();
+    this.recalculateEquipmentChoices();
     this.updateStepValidity();
   }
   

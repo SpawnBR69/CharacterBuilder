@@ -63,7 +63,9 @@
                 <app-equipment-selection *ngSwitchCase="5"
                     [selectedClass]="selectedClass"
                     [selectedBackground]="selectedBackground"
+                    [equipmentChoiceGroups]="equipmentChoiceGroups"
                     [equipmentChoices]="equipmentChoices"
+                    [fixedEquipment]="fixedEquipment"
                     (equipmentChange)="onEquipmentChanged($event)">
                 </app-equipment-selection>
                 

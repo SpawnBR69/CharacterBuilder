@@ -54,7 +54,7 @@ export interface Class {
   primaryAbility: string[];
   savingThrowProficiencies: (keyof AbilityScores)[];
   armorAndWeaponProficiencies: string[];
-  startingEquipment: (string | string[])[];
+  startingEquipment: (string | EquipmentChoiceOption[])[];
   features?: Trait[];
   skillChoices?: {
     count: number;
@@ -78,6 +78,11 @@ export interface Background {
   feature: Trait; // <- Alterado para usar a interface Trait
   sourceBook: string;
 }
+
+export type EquipmentChoiceOption = string | {
+  type: 'weapon';
+  category: 'simple_melee' | 'simple_ranged' | 'simple' | 'martial_melee' | 'martial_ranged' | 'martial';
+};
 
 export interface Character {
   name: string;

@@ -11,6 +11,7 @@ export class CharacterCreationService {
   private races: Race[] = [];
   private classes: Class[] = [];
   private backgrounds: Background[] = [];
+  private weapons: any = {};
 
   constructor(private http: HttpClient) {}
 
@@ -20,16 +21,19 @@ export class CharacterCreationService {
       races: ['phb_races.json', 'vgm_races.json'],
       classes: ['phb_classes.json'],
       backgrounds: ['phb_backgrounds.json'],
+      weapons: ['phb_weapons.json']
     };
 
     const raceRequests = bookSources.races.map(file => this.http.get<Race[]>(`assets/data/${file}`));
     const classRequests = bookSources.classes.map(file => this.http.get<Class[]>(`assets/data/${file}`));
     const backgroundRequests = bookSources.backgrounds.map(file => this.http.get<Background[]>(`assets/data/${file}`));
+    const weaponRequests = bookSources.weapons.map(file => this.http.get<any>(`assets/data/${file}`));
 
     return forkJoin({
       races: forkJoin(raceRequests),
       classes: forkJoin(classRequests),
       backgrounds: forkJoin(backgroundRequests),
+      weapons: forkJoin(weaponRequests)
     }).pipe(
       tap(results => {
         // Concatena os arrays de diferentes livros
@@ -41,9 +45,25 @@ export class CharacterCreationService {
         this.races.sort((a, b) => a.name.localeCompare(b.name));
         this.classes.sort((a, b) => a.name.localeCompare(b.name));
         this.backgrounds.sort((a, b) => a.name.localeCompare(b.name));
+        this.weapons = results.weapons[0] || {};
       }),
       map(() => void 0) // Transforma o resultado para void
     );
+  }
+
+  getWeaponsByCategory(category: string): any[] {
+    // Adicionada verificação de segurança
+    if (!this.weapons || Object.keys(this.weapons).length === 0) {
+      return [];
+    }
+
+    if (category === 'simple') {
+      return [...(this.weapons.simple_melee || []), ...(this.weapons.simple_ranged || [])];
+    }
+    if (category === 'martial') {
+      return [...(this.weapons.martial_melee || []), ...(this.weapons.martial_ranged || [])];
+    }
+    return this.weapons[category] || [];
   }
 
   // Métodos GET agora simplesmente retornam os dados pré-carregados

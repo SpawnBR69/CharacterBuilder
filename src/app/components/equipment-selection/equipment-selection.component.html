@@ -1,37 +1,47 @@
 <p-card>
     <ng-template pTemplate="title">Passo 5: Equipamento Inicial</ng-template>
 
-    <div *ngIf="selectedClass" class="space-y-4">
-        <div>
-            <h4 class="font-bold text-red-700">Equipamento de Classe</h4>
-            <p class="text-sm text-gray-600 mb-2">Faça suas escolhas de equipamento inicial.</p>
-            <div *ngFor="let item of selectedClass.startingEquipment; let i = index" class="mb-3 p-3 border-l-4 border-gray-200">
-                <!-- Se for uma escolha (array de strings) -->
-                <div *ngIf="isEquipmentChoice(item)">
-                    <div *ngFor="let option of item" class="field-radiobutton">
-                        <p-radioButton [name]="'class-choice-' + i" [value]="option" 
-                                       [(ngModel)]="equipmentChoices['class-choice-' + i]" 
-                                       (onClick)="onChoiceChange()"
-                                       [inputId]="'equip-' + i + '-' + option"></p-radioButton>
-                        <label [for]="'equip-' + i + '-' + option" class="ml-2">{{ option }}</label>
-                    </div>
+    <div *ngIf="selectedClass; else noClassSelected" class="space-y-4">
+
+        <div *ngFor="let group of equipmentChoiceGroups; let i = index" class="mb-4 p-3 border-l-4 border-gray-200">
+            <p class="font-semibold mb-2">{{ group.label }}</p>
+
+            <div *ngIf="group.displayAs === 'radio'">
+                <div *ngFor="let option of group.options" class="field-radiobutton">
+                    <p-radioButton [name]="group.id" [value]="option" [(ngModel)]="equipmentChoices[group.id]"
+                        (onClick)="emitChanges()" [inputId]="group.id + '-' + option"></p-radioButton>
+                    <label [for]="group.id + '-' + option" class="ml-2">{{ option }}</label>
                 </div>
-                <!-- Se for um item fixo (string) -->
-                <div *ngIf="!isEquipmentChoice(item)">
-                    <p>{{ item }}</p>
-                </div>
+            </div>
+
+            <div *ngIf="group.displayAs === 'dropdown'">
+                <p-dropdown [options]="group.options" [(ngModel)]="equipmentChoices[group.id]"
+                    (onChange)="emitChanges()" placeholder="-- Selecione uma arma --" [showClear]="true"
+                    styleClass="w-full">
+                </p-dropdown>
             </div>
         </div>
 
-        <div *ngIf="selectedBackground">
+        <div *ngIf="fixedEquipment.length > 0" class="mt-6">
+             <h4 class="font-bold text-red-700">Outros Equipamentos Iniciais</h4>
+             <ul class="list-disc list-inside mt-2 text-sm text-gray-700">
+                <li *ngFor="let item of fixedEquipment">{{ item }}</li>
+            </ul>
+        </div>
+
+
+        <div *ngIf="selectedBackground" class="mt-6">
             <h4 class="font-bold text-red-700">Equipamento de Antecedente</h4>
             <ul class="list-disc list-inside mt-2 text-sm text-gray-700">
                 <li *ngFor="let bgItem of selectedBackground.equipment">{{ bgItem }}</li>
             </ul>
         </div>
+
     </div>
 
-    <div *ngIf="!selectedClass" class="text-center text-gray-500">
-        <p>Volte e selecione uma classe para ver as opções de equipamento.</p>
-    </div>
+    <ng-template #noClassSelected>
+        <div class="text-center text-gray-500">
+            <p>Volte e selecione uma classe para ver as opções de equipamento.</p>
+        </div>
+    </ng-template>
 </p-card>

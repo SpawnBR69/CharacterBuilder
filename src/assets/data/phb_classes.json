@@ -11,8 +11,14 @@
       "options": ["Adestrar Animais", "Atletismo", "Intimidação", "Natureza", "Percepção", "Sobrevivência"]
     },
     "startingEquipment": [
-      ["(a) um machado grande", "(b) qualquer arma marcial corpo a corpo"],
-      ["(a) duas machadinhas", "(b) qualquer arma simples"],
+      [
+        "um machado grande",
+        { "type": "weapon", "category": "martial_melee" }
+      ],
+      [
+        "duas machadinhas",
+        { "type": "weapon", "category": "simple" }
+      ],
       "Um pacote de aventureiro e quatro azagaias"
     ],
     "features": [
@@ -48,9 +54,13 @@
       "spells_known": 4
     },
     "startingEquipment": [
-      ["(a) uma rapieira", "(b) uma espada longa", "(c) qualquer arma simples"],
-      ["(a) um pacote de diplomata", "(b) um pacote de artista"],
-      ["(a) um alaúde", "(b) qualquer outro instrumento musical"],
+      [
+        "uma rapieira",
+        "uma espada longa",
+        { "type": "weapon", "category": "simple" }
+      ],
+      ["um pacote de diplomata", "um pacote de artista"],
+      ["um alaúde", "qualquer outro instrumento musical"],
       "Corselete de couro e uma adaga"
     ],
     "features": [
@@ -82,9 +92,12 @@
       "spells_known": 2
     },
     "startingEquipment": [
-      ["(a) uma besta leve e 20 virotes", "(b) qualquer arma simples"],
-      ["(a) uma bolsa de componentes", "(b) um foco arcano"],
-      ["(a) um pacote de estudioso", "(b) um pacote de masmorra"],
+      [
+        "uma besta leve e 20 virotes",
+        { "type": "weapon", "category": "simple" }
+      ],
+      ["uma bolsa de componentes", "um foco arcano"],
+      ["um pacote de estudioso", "um pacote de masmorra"],
       "Corselete de couro, qualquer arma simples e duas adagas"
     ],
     "features": [
@@ -116,10 +129,13 @@
       "spells_known": -1
     },
     "startingEquipment": [
-      ["(a) uma maça", "(b) um martelo de guerra (se proficiente)"],
-      ["(a) brunea", "(b) corselete de couro", "(c) cota de malha (se proficiente)"],
-      ["(a) uma besta leve e 20 virotes", "(b) qualquer arma simples"],
-      ["(a) um pacote de sacerdote", "(b) um pacote de aventureiro"],
+      ["uma maça", "um martelo de guerra (se proficiente)"],
+      ["brunea", "corselete de couro", "cota de malha (se proficiente)"],
+      [
+        "uma besta leve e 20 virotes",
+        { "type": "weapon", "category": "simple" }
+      ],
+      ["um pacote de sacerdote", "um pacote de aventureiro"],
       "Um escudo e um símbolo sagrado"
     ],
     "features": [
@@ -151,8 +167,14 @@
       "spells_known": -1
     },
     "startingEquipment": [
-      ["(a) um escudo de madeira", "(b) qualquer arma simples"],
-      ["(a) uma cimitarra", "(b) qualquer arma corpo a corpo simples"],
+      [
+        "um escudo de madeira",
+        { "type": "weapon", "category": "simple" }
+      ],
+      [
+        "uma cimitarra",
+        { "type": "weapon", "category": "simple_melee" }
+      ],
       "Corselete de couro, um pacote de explorador e um foco druídico"
     ],
     "features": [
@@ -184,9 +206,12 @@
       "spells_known": 2
     },
     "startingEquipment": [
-      ["(a) uma besta leve e 20 virotes", "(b) qualquer arma simples"],
-      ["(a) uma bolsa de componentes", "(b) um foco arcano"],
-      ["(a) um pacote de masmorra", "(b) um pacote de explorador"],
+      [
+        "uma besta leve e 20 virotes",
+        { "type": "weapon", "category": "simple" }
+      ],
+      ["uma bolsa de componentes", "um foco arcano"],
+      ["um pacote de masmorra", "um pacote de explorador"],
       "Duas adagas"
     ],
     "features": [
@@ -197,6 +222,14 @@
       {
         "name": "Origem da Feitiçaria",
         "description": "Escolha uma origem de feitiçaria, que descreve a fonte do seu poder mágico: Linhagem Dracônica ou Magia Selvagem."
+      },
+      {
+        "name": "Resiliência Dracônica",
+        "description": "Sua CA base quando não está vestindo armadura é 13 + seu modificador de Destreza.",
+        "acCalculation": {
+          "base": 13,
+          "attributes": ["dexterity"]
+        }
       }
     ],
     "sourceBook": "Livro do Jogador"
@@ -213,10 +246,10 @@
         "options": ["Acrobacia", "Adestrar Animais", "Atletismo", "História", "Intuição", "Intimidação", "Percepção", "Sobrevivência"]
     },
     "startingEquipment": [
-      ["(a) cota de malha", "(b) gibão de peles, arco longo e 20 flechas"],
-      ["(a) uma arma marcial e um escudo", "(b) duas armas marciais"],
-      ["(a) uma besta leve e 20 virotes", "(b) duas machadinhas"],
-      ["(a) um pacote de masmorra", "(b) um pacote de explorador"]
+      ["cota de malha", "gibão de peles, arco longo e 20 flechas"],
+      ["uma arma marcial e um escudo", "duas armas marciais"],
+      ["uma besta leve e 20 virotes", "duas machadinhas"],
+      ["um pacote de masmorra", "um pacote de explorador"]
     ],
     "features": [
       {
@@ -242,9 +275,9 @@
         "options": ["Acrobacia", "Atletismo", "Enganação", "Furtividade", "Intuição", "Intimidação", "Investigação", "Percepção", "Atuação", "Persuasão", "Prestidigitação"]
     },
     "startingEquipment": [
-      ["(a) uma rapieira", "(b) uma espada curta"],
-      ["(a) um arco curto e aljava com 20 flechas", "(b) uma espada curta"],
-      ["(a) um pacote de assaltante", "(b) um pacote de masmorra", "(c) um pacote de explorador"],
+      ["uma rapieira", "uma espada curta"],
+      ["um arco curto e aljava com 20 flechas", "uma espada curta"],
+      ["um pacote de assaltante", "um pacote de masmorra", "um pacote de explorador"],
       "Corselete de couro, duas adagas e ferramentas de ladrão"
     ],
     "features": [
@@ -280,9 +313,9 @@
       "spells_known": 6
     },
     "startingEquipment": [
-      ["(a) um bordão", "(b) uma adaga"],
-      ["(a) uma bolsa de componentes", "(b) um foco arcano"],
-      ["(a) um pacote de estudioso", "(b) um pacote de explorador"],
+      ["um bordão", "uma adaga"],
+      ["uma bolsa de componentes", "um foco arcano"],
+      ["um pacote de estudioso", "um pacote de explorador"],
       "Um grimório"
     ],
     "features": [
@@ -309,8 +342,11 @@
         "options": ["Acrobacia", "Atletismo", "Furtividade", "História", "Intuição", "Religião"]
     },
     "startingEquipment": [
-      ["(a) uma espada curta", "(b) qualquer arma simples"],
-      ["(a) um pacote de masmorra", "(b) um pacote de explorador"],
+      [
+        "uma espada curta",
+        { "type": "weapon", "category": "simple" }
+      ],
+      ["um pacote de masmorra", "um pacote de explorador"],
       "10 dardos"
     ],
     "features": [
@@ -341,9 +377,12 @@
         "options": ["Atletismo", "Intuição", "Intimidação", "Medicina", "Persuasão", "Religião"]
     },
     "startingEquipment": [
-      ["(a) uma arma marcial e um escudo", "(b) duas armas marciais"],
-      ["(a) cinco azagaias", "(b) qualquer arma corpo a corpo simples"],
-      ["(a) um pacote de sacerdote", "(b) um pacote de aventureiro"],
+      ["uma arma marcial e um escudo", "duas armas marciais"],
+      [
+        "cinco azagaias",
+        { "type": "weapon", "category": "simple_melee" }
+      ],
+      ["um pacote de sacerdote", "um pacote de aventureiro"],
       "Cota de malha e um símbolo sagrado"
     ],
     "features": [
@@ -370,9 +409,9 @@
         "options": ["Adestrar Animais", "Atletismo", "Furtividade", "Intuição", "Investigação", "Natureza", "Percepção", "Sobrevivência"]
     },
     "startingEquipment": [
-      ["(a) brunea", "(b) corselete de couro"],
-      ["(a) duas espadas curtas", "(b) duas armas corpo a corpo simples"],
-      ["(a) um pacote de masmorra", "(b) um pacote de explorador"],
+      ["brunea", "corselete de couro"],
+      ["duas espadas curtas", "duas armas corpo a corpo simples"],
+      ["um pacote de masmorra", "um pacote de explorador"],
       "Um arco longo e uma aljava com 20 flechas"
     ],
     "features": [
