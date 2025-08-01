@@ -95,7 +95,20 @@
             <!-- Equipamento -->
             <div>
                 <h4 class="font-bold text-red-700 border-b pb-1 mb-2">Equipamento</h4>
-                <p class="text-sm text-gray-600">{{ character.equipment?.join(', ') }}</p>
+                <ul>
+                    <li *ngFor="let item of character.equipment">
+                        <span *ngIf="item.quantity > 1">{{ item.quantity }}x </span>
+                        
+                        {{ item.name }}
+
+                        <span *ngIf="item.isChoice" class="font-bold text-blue-600"> (Ação necessária)</span>
+
+                        <div *ngIf="item.details && !item.isChoice" class="text-sm text-gray-600 ml-4">
+                        <span *ngIf="item.details.damage" class="italic">Dano: {{ item.details.damage }}</span>
+                        <span *ngIf="item.details.properties" class="ml-2">| Propriedades: {{ item.details.properties }}</span>
+                        </div>
+                    </li>
+                </ul>
             </div>
 
             <!-- Idiomas -->

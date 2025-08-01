@@ -11,6 +11,8 @@ export class EquipmentSelectionComponent {
   @Input() equipmentChoices: { [key: string]: string } = {};
   @Input() equipmentChoiceGroups: any[] = [];
   @Input() fixedEquipment: string[] = [];
+  @Input() subChoiceGroups: any[] = [];
+  @Input() additionalFixedItems: string[] = [];
 
   @Output() equipmentChange = new EventEmitter<{ [key: string]: string }>();
 
@@ -28,6 +30,13 @@ export class EquipmentSelectionComponent {
    */
   isSimpleChoiceGroup(item: any): item is string[] {
     return Array.isArray(item) && item.every(option => typeof option === 'string');
+  }
+
+  onRadioClick(groupId: string, optionValue: string) {
+    // 1. Garante que o modelo local é atualizado com o valor correto
+    this.equipmentChoices[groupId] = optionValue;
+    // 2. Emite a mudança para o componente pai COM o modelo já atualizado
+    this.emitChanges();
   }
 
   emitChanges() {

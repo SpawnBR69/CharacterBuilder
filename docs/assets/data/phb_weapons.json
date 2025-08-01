@@ -1,0 +1,44 @@
+{
+  "simple_melee": [
+    { "name": "Adaga", "damage": "1d4 perfurante", "properties": "Acuidade, leve, arremesso (distância 6/18)" },
+    { "name": "Azagaia", "damage": "1d6 perfurante", "properties": "Arremesso (distância 9/36)" },
+    { "name": "Clava", "damage": "1d4 concussão", "properties": "Leve" },
+    { "name": "Foice Curta", "damage": "1d6 cortante", "properties": "Leve" },
+    { "name": "Lança", "damage": "1d6 perfurante", "properties": "Arremesso (distância 6/18), versátil (1d8)" },
+    { "name": "Maça", "damage": "1d6 concussão", "properties": "" },
+    { "name": "Machadinha", "damage": "1d6 cortante", "properties": "Leve, arremesso (distância 6/18)" },
+    { "name": "Martelo Leve", "damage": "1d4 concussão", "properties": "Leve, arremesso (distância 6/18)" },
+    { "name": "Bordão", "damage": "1d6 concussão", "properties": "Versátil (1d8)" }
+  ],
+  "simple_ranged": [
+    { "name": "Arco Curto", "damage": "1d6 perfurante", "properties": "Munição (distância 24/96), duas mãos" },
+    { "name": "Besta Leve", "damage": "1d8 perfurante", "properties": "Munição (distância 24/96), recarga, duas mãos" },
+    { "name": "Dardo", "damage": "1d4 perfurante", "properties": "Acuidade, arremesso (distância 6/18)" },
+    { "name": "Funda", "damage": "1d4 concussão", "properties": "Munição (distância 9/36)" }
+  ],
+  "martial_melee": [
+    { "name": "Alabarda", "damage": "1d10 cortante", "properties": "Pesada, alcance, duas mãos" },
+    { "name": "Cimitarra", "damage": "1d6 cortante", "properties": "Acuidade, leve" },
+    { "name": "Chicote", "damage": "1d4 cortante", "properties": "Acuidade, alcance" },
+    { "name": "Espada Curta", "damage": "1d6 perfurante", "properties": "Acuidade, leve" },
+    { "name": "Espada Grande", "damage": "2d6 cortante", "properties": "Pesada, duas mãos" },
+    { "name": "Espada Longa", "damage": "1d8 cortante", "properties": "Versátil (1d10)" },
+    { "name": "Glaive", "damage": "1d10 cortante", "properties": "Pesada, alcance, duas mãos" },
+    { "name": "Lança de Montaria", "damage": "1d12 perfurante", "properties": "Alcance, especial" },
+    { "name": "Machado de Batalha", "damage": "1d8 cortante", "properties": "Versátil (1d10)" },
+    { "name": "Machado Grande", "damage": "1d12 cortante", "properties": "Pesada, duas mãos" },
+    { "name": "Malho", "damage": "2d6 concussão", "properties": "Pesada, duas mãos" },
+    { "name": "Mangual", "damage": "1d8 concussão", "properties": "" },
+    { "name": "Martelo de Guerra", "damage": "1d8 concussão", "properties": "Versátil (1d10)" },
+    { "name": "Picareta de Guerra", "damage": "1d8 perfurante", "properties": "" },
+    { "name": "Rapieira", "damage": "1d8 perfurante", "properties": "Acuidade" },
+    { "name": "Tridente", "damage": "1d6 perfurante", "properties": "Arremesso (distância 6/18), versátil (1d8)" }
+  ],
+  "martial_ranged": [
+    { "name": "Arco Longo", "damage": "1d8 perfurante", "properties": "Munição (distância 45/180), pesada, duas mãos" },
+    { "name": "Besta de Mão", "damage": "1d6 perfurante", "properties": "Munição (distância 9/36), leve, recarga" },
+    { "name": "Besta Pesada", "damage": "1d10 perfurante", "properties": "Munição (distância 30/120), pesada, recarga, duas mãos" },
+    { "name": "Rede", "damage": "", "properties": "Especial, arremesso (distância 1.5/4.5)" },
+    { "name": "Zarabatana", "damage": "1 perfurante", "properties": "Munição (distância 7.5/30), recarga" }
+  ]
+}

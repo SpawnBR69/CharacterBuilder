@@ -8,8 +8,15 @@
 
             <div *ngIf="group.displayAs === 'radio'">
                 <div *ngFor="let option of group.options" class="field-radiobutton">
-                    <p-radioButton [name]="group.id" [value]="option" [(ngModel)]="equipmentChoices[group.id]"
-                        (onClick)="emitChanges()" [inputId]="group.id + '-' + option"></p-radioButton>
+                    
+                    <p-radioButton 
+                        [name]="group.id" 
+                        [value]="option" 
+                        [(ngModel)]="equipmentChoices[group.id]"
+                        (onClick)="onRadioClick(group.id, option)"  
+                        [inputId]="group.id + '-' + option">
+                    </p-radioButton>
+
                     <label [for]="group.id + '-' + option" class="ml-2">{{ option }}</label>
                 </div>
             </div>
@@ -20,6 +27,27 @@
                     styleClass="w-full">
                 </p-dropdown>
             </div>
+        </div>
+
+        <div *ngIf="subChoiceGroups.length > 0" class="mt-4 pt-4 border-t border-gray-300 space-y-4">
+            <h4 class="font-bold text-blue-700">Escolhas Adicionais</h4>
+            <div *ngFor="let group of subChoiceGroups; let i = index" class="mb-4 p-3 border-l-4 border-blue-200">
+                <p class="font-semibold mb-2">{{ group.label }}</p>
+
+                <div *ngIf="group.displayAs === 'dropdown'">
+                    <p-dropdown [options]="group.options" [(ngModel)]="equipmentChoices[group.id]"
+                        (onChange)="emitChanges()" placeholder="-- Selecione uma arma --" [showClear]="true"
+                        styleClass="w-full">
+                    </p-dropdown>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="additionalFixedItems.length > 0" class="mt-4">
+            <h4 class="font-bold text-green-700">Itens Adicionais da sua Escolha</h4>
+            <ul class="list-disc list-inside mt-2 text-sm text-gray-700">
+                <li *ngFor="let item of additionalFixedItems">{{ item }}</li>
+            </ul>
         </div>
 
         <div *ngIf="fixedEquipment.length > 0" class="mt-6">

@@ -84,6 +84,13 @@ export type EquipmentChoiceOption = string | {
   category: 'simple_melee' | 'simple_ranged' | 'simple' | 'martial_melee' | 'martial_ranged' | 'martial';
 };
 
+export interface EquipmentItem {
+  name: string;
+  quantity: number;
+  details?: any; // Para guardar o objeto completo da arma
+  isChoice?: boolean;
+}
+
 export interface Character {
   name: string;
   level: number;
@@ -101,7 +108,7 @@ export interface Character {
   initiative: number;
   hitPoints: { max: number; current: number; temporary: number };
 
-  equipment: string[];
+  equipment: EquipmentItem[];
   traits: Trait[]; // <- Alterado de string[] para Trait[]
   languages: string[];
   spells: Spell[];

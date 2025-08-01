@@ -12,6 +12,7 @@ export class CharacterCreationService {
   private classes: Class[] = [];
   private backgrounds: Background[] = [];
   private weapons: any = {};
+  private allWeapons: any[] = [];
 
   constructor(private http: HttpClient) {}
 
@@ -46,9 +47,20 @@ export class CharacterCreationService {
         this.classes.sort((a, b) => a.name.localeCompare(b.name));
         this.backgrounds.sort((a, b) => a.name.localeCompare(b.name));
         this.weapons = results.weapons[0] || {};
+        const weaponList = [];
+        for (const category in this.weapons) {
+            if (Array.isArray(this.weapons[category])) {
+                weaponList.push(...this.weapons[category]);
+            }
+        }
+        this.allWeapons = Array.from(new Map(weaponList.map(item => [item.name, item])).values());
       }),
       map(() => void 0) // Transforma o resultado para void
     );
+  }
+
+  public getAllWeapons(): any[] {
+    return this.allWeapons;
   }
 
   getWeaponsByCategory(category: string): any[] {

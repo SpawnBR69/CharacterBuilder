@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CharacterCreationService } from './service/character-creation.service';
-import { Race, Class, Background, AbilityScores, Character, SubRace, Skill, EquipmentChoiceOption } from './model/character.model';
+import { Race, Class, Background, AbilityScores, Character, SubRace, Skill, EquipmentChoiceOption, EquipmentItem } from './model/character.model';
 import { SpellService } from './service/spell.service';
 import { Spell } from './model/spell.model';
 
@@ -32,6 +32,8 @@ export class AppComponent implements OnInit {
   spellChoiceGroups: { source: string; type: 'TRICK' | 'LEVEL_1'; count: number; options: Spell[] }[] = [];
   equipmentChoiceGroups: any[] = [];
   fixedEquipment: string[] = [];
+  subChoiceGroups: any[] = [];
+  additionalFixedItems: string[] = [];
 
 
   constructor(public characterService: CharacterCreationService, private spellService: SpellService) { }
@@ -180,7 +182,7 @@ export class AppComponent implements OnInit {
   recalculateEquipmentChoices() {
     const groups: any[] = [];
     const fixed: string[] = [];
-    this.equipmentChoices = {}; // Reseta as escolhas feitas
+    this.equipmentChoices = {};
 
     if (!this.selectedClass) {
         this.equipmentChoiceGroups = [];
@@ -188,51 +190,74 @@ export class AppComponent implements OnInit {
         return;
     }
 
-    if (!this.characterService || typeof this.characterService.getWeaponsByCategory !== 'function') {
-        console.error("Serviço de criação não está pronto.");
-        return;
-    }
+    let dynamicChoiceCounter = 0;
 
     this.selectedClass.startingEquipment.forEach((item, index) => {
-        // Se o item não for um array, é um equipamento fixo
-        if (typeof item === 'string') {
-            fixed.push(item);
-            return;
-        }
+        if (Array.isArray(item)) {
+            const choiceGroupId = `class-choice-${index}`;
+            const containsComplexChoice = item.some(opt => typeof opt === 'object' && opt !== null);
 
-        const choiceGroupId = `class-choice-${index}`;
-        // Encontra a primeira opção que é um objeto (sem se preocupar com o tipo exato ainda)
-        const potentialComplexChoice = item.find(opt => typeof opt === 'object' && opt !== null);
+            if (containsComplexChoice) {
+                const simpleOptions = item.filter((opt): opt is string => typeof opt === 'string');
+                
+                // =================== INÍCIO DA CORREÇÃO ===================
+                // 1. Encontra o objeto sem a checagem de tipo problemática.
+                const weaponChoiceDefinition = item.find(opt => typeof opt === 'object' && opt !== null && 'category' in opt);
 
-        // Se encontrou um objeto, tratamos como uma escolha complexa/dropdown
-        if (potentialComplexChoice) {
-            const simpleOptions = item.filter((opt): opt is string => typeof opt === 'string');
-            
-            // Aqui está a correção principal:
-            // Verificamos novamente se é um objeto antes de acessar suas propriedades.
-            // O TypeScript é inteligente o suficiente para entender que, dentro deste 'if',
-            // a variável SÓ PODE ser o objeto, não uma string.
-            let dynamicWeaponOptions: string[] = [];
-            if (typeof potentialComplexChoice === 'object' && 'category' in potentialComplexChoice) {
-                // Nenhum erro aqui, pois o tipo foi estreitado com segurança
-                const weapons = this.characterService.getWeaponsByCategory(potentialComplexChoice.category);
-                dynamicWeaponOptions = weapons.map(w => w.name);
+                let dynamicWeaponOptions: string[] = [];
+                // 2. Usa um 'if' simples, que o TypeScript entende, para garantir que é um objeto antes de acessar '.category'.
+                if (weaponChoiceDefinition && typeof weaponChoiceDefinition === 'object') {
+                    const weapons = this.characterService.getWeaponsByCategory(weaponChoiceDefinition.category);
+                    dynamicWeaponOptions = weapons.map(w => w.name);
+                }
+                // ==================== FIM DA CORREÇÃO =====================
+
+                groups.push({
+                    id: choiceGroupId,
+                    label: `Escolha de Equipamento ${index + 1}`,
+                    displayAs: 'dropdown',
+                    options: [...simpleOptions, ...dynamicWeaponOptions]
+                });
+
+            } else {
+                groups.push({
+                    id: choiceGroupId,
+                    label: `Escolha de Equipamento ${index + 1}`,
+                    displayAs: 'radio',
+                    options: item as string[]
+                });
             }
+        }
+        else if (typeof item === 'string') {
+            let remainingString = item;
+            const choicePatterns = [
+                { pattern: /(uma|duas)\s+armas\s+marciais/i, category: 'martial', quantity: (match: string) => match.toLowerCase().includes('duas') ? 2 : 1 },
+                { pattern: /(uma|duas)\s+armas\s+corpo a corpo simples/i, category: 'simple_melee', quantity: (match: string) => match.toLowerCase().includes('duas') ? 2 : 1 },
+                { pattern: /qualquer\s+arma\s+simples/i, category: 'simple', quantity: () => 1 },
+            ];
 
-            groups.push({
-                id: choiceGroupId,
-                label: `Escolha de Equipamento ${index + 1}`,
-                displayAs: 'dropdown',
-                options: [...simpleOptions, ...dynamicWeaponOptions]
-            });
-        } else {
-            // É uma escolha simples apenas com strings -> Radio buttons
-            groups.push({
-                id: choiceGroupId,
-                label: `Escolha de Equipamento ${index + 1}`,
-                displayAs: 'radio',
-                options: item as string[]
-            });
+            let choiceFoundInString = false;
+            for (const p of choicePatterns) {
+                const match = remainingString.match(p.pattern);
+                if (match) {
+                    choiceFoundInString = true;
+                    const quantity = p.quantity(match[0]);
+                    for (let i = 0; i < quantity; i++) {
+                        const choiceId = `class-dynamic-choice-${dynamicChoiceCounter++}`;
+                        const weaponList = this.characterService.getWeaponsByCategory(p.category);
+                        groups.push({
+                            id: choiceId,
+                            label: `Escolha - Arma ${p.category.charAt(0).toUpperCase() + p.category.slice(1)} (${i + 1}/${quantity})`,
+                            displayAs: 'dropdown',
+                            options: weaponList.map(w => w.name)
+                        });
+                    }
+                    remainingString = remainingString.replace(p.pattern, '').trim();
+                }
+            }
+            if (remainingString.length > 0) {
+                fixed.push(remainingString.replace(/^(e|,)\s*/, ''));
+            }
         }
     });
 
@@ -296,6 +321,8 @@ export class AppComponent implements OnInit {
   onClassChanged(newClass: Class) {
     this.selectedClass = newClass;
     this.equipmentChoices = {}; 
+    this.subChoiceGroups = [];
+    this.additionalFixedItems = [];
     this.updateAndSetSpellChoices();
     this.recalculateSkillChoices();
     this.recalculateEquipmentChoices();
@@ -317,6 +344,39 @@ export class AppComponent implements OnInit {
 
   onEquipmentChanged(choices: { [key: string]: string }) {
     this.equipmentChoices = choices;
+    // Reseta os itens gerados dinamicamente a cada mudança
+    this.subChoiceGroups = [];
+    this.additionalFixedItems = [];
+    let dynamicChoiceCounter = 0;
+
+    const createDropdown = (category: string, label: string) => {
+        const choiceId = `sub-choice-${category}-${dynamicChoiceCounter++}`;
+        const weaponList = this.characterService.getWeaponsByCategory(category);
+        this.subChoiceGroups.push({
+            id: choiceId,
+            label: label,
+            displayAs: 'dropdown',
+            options: weaponList.map(w => w.name)
+        });
+    };
+
+    // Analisa o valor de cada escolha principal feita
+    Object.values(choices).forEach(value => {
+        if (!value) return;
+
+        // Caso: "duas armas marciais"
+        if (value.toLowerCase().includes('duas armas marciais')) {
+            createDropdown('martial', 'Escolha - Arma Marcial (1/2)');
+            createDropdown('martial', 'Escolha - Arma Marcial (2/2)');
+        }
+        // Caso: "uma arma marcial e um escudo"
+        else if (value.toLowerCase().includes('uma arma marcial e um escudo')) {
+            createDropdown('martial', 'Escolha - Arma Marcial');
+            this.additionalFixedItems.push('Escudo'); // Adiciona o item extra
+        }
+        // Adicione outros 'else if' para mais escolhas complexas aqui
+    });
+
     this.updateStepValidity();
   }
 
@@ -341,15 +401,17 @@ export class AppComponent implements OnInit {
           this.isStepValid = false;
           break;
         }
-        // Conta quantos grupos de escolha de equipamento a classe tem
-        const requiredChoiceCount = this.selectedClass.startingEquipment
-          .filter(item => Array.isArray(item)).length;
+
+        // =================== INÍCIO DA CORREÇÃO ===================
+        // A contagem de escolhas necessárias agora inclui os grupos iniciais E os sub-grupos dinâmicos.
+        const totalRequiredChoices = this.equipmentChoiceGroups.length + this.subChoiceGroups.length;
         
-        // Conta quantas escolhas foram feitas
+        // Conta quantas escolhas foram de fato feitas pelo usuário.
         const madeChoiceCount = Object.keys(this.equipmentChoices).filter(key => this.equipmentChoices[key]).length;
 
-        // O passo é válido se o número de escolhas feitas for igual ao necessário
-        this.isStepValid = madeChoiceCount === requiredChoiceCount;
+        // O passo só é válido se o número de escolhas feitas for igual ao total necessário.
+        this.isStepValid = madeChoiceCount === totalRequiredChoices;
+        // ==================== FIM DA CORREÇÃO =====================
         break;
       case 6: // Validação do passo de magia
         if (this.spellChoiceGroups.length === 0) {
@@ -596,23 +658,69 @@ export class AppComponent implements OnInit {
     finalCharacter.initiative = dexModifier;
     
     // Equipment
-    const finalEquipment: string[] = [];
-    if(finalCharacter.class?.startingEquipment) {
-        finalCharacter.class.startingEquipment.forEach((item, index) => {
-            if(Array.isArray(item)) {
-                const choiceKey = `class-choice-${index}`;
-                if (this.equipmentChoices[choiceKey]) {
-                    finalEquipment.push(this.equipmentChoices[choiceKey]);
+    const finalEquipmentList: string[] = [];
+
+    // 1. DEFINIMOS QUAIS STRINGS SÃO APENAS "GATILHOS" E DEVEM SER IGNORADAS
+    const choiceTriggerStrings = [
+        'duas armas marciais',
+        'uma arma marcial e um escudo',
+        'duas armas corpo a corpo simples',
+        'qualquer arma simples'
+        // Adicione aqui outras strings que geram escolhas dinâmicas
+    ];
+
+    // 2. MODIFICAMOS O LOOP PARA FILTRAR ESSAS STRINGS
+    Object.values(this.equipmentChoices).forEach(choice => {
+        if (choice && !choiceTriggerStrings.some(trigger => choice.toLowerCase().includes(trigger))) {
+            finalEquipmentList.push(choice);
+        }
+    });
+
+    // O resto do método continua igual...
+    // Coleta os itens fixos iniciais, os adicionais da escolha e os do antecedente
+    finalEquipmentList.push(...this.fixedEquipment);
+    finalEquipmentList.push(...this.additionalFixedItems);
+    if (finalCharacter.background?.equipment) {
+        finalEquipmentList.push(...finalCharacter.background.equipment);
+    }
+
+    // Agora, processamos a lista final para identificar detalhes das armas
+    const allWeapons = this.characterService.getAllWeapons();
+    const processedEquipment: EquipmentItem[] = [];
+    const numberWords: { [key: string]: number } = { 'uma': 1, 'um': 1, 'duas': 2, 'dois': 2, 'cinco': 5, 'dez': 10, 'vinte': 20 };
+
+    finalEquipmentList.forEach(itemString => {
+        itemString.split(/, | e /).forEach(part => {
+            part = part.trim();
+            if (!part) return;
+
+            let itemProcessed = false;
+            // Tenta encontrar uma arma e extrair quantidade
+            for (const weapon of allWeapons) {
+                const weaponPlural = weapon.name.endsWith('s') ? weapon.name : weapon.name + 's';
+                const regex = new RegExp(`(\\d+|${Object.keys(numberWords).join('|')})?\\s*(${weapon.name}|${weaponPlural})`, 'i');
+                const match = part.match(regex);
+
+                if (match) {
+                    let quantity = 1;
+                    const quantityMatch = match[1];
+                    if (quantityMatch) {
+                        quantity = numberWords[quantityMatch.toLowerCase()] || parseInt(quantityMatch, 10);
+                    }
+                    processedEquipment.push({ name: weapon.name, quantity: quantity, details: weapon });
+                    itemProcessed = true;
+                    break;
                 }
-            } else {
-                finalEquipment.push(item);
+            }
+
+            // Se não é uma arma, adiciona como item genérico
+            if (!itemProcessed) {
+                processedEquipment.push({ name: part, quantity: 1 });
             }
         });
-    }
-    if(finalCharacter.background?.equipment) {
-        finalEquipment.push(...finalCharacter.background.equipment);
-    }
-    finalCharacter.equipment = finalEquipment;
+    });
+
+    finalCharacter.equipment = processedEquipment;
 
     // Lógica de idiomas
     const finalLanguages = new Set<string>([...this.knownLanguages, ...this.chosenLanguages]);
