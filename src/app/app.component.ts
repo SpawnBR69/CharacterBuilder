@@ -687,7 +687,7 @@ export class AppComponent implements OnInit {
     // Agora, processamos a lista final para identificar detalhes das armas
     const allWeapons = this.characterService.getAllWeapons();
     const processedEquipment: EquipmentItem[] = [];
-    const numberWords: { [key: string]: number } = { 'uma': 1, 'um': 1, 'duas': 2, 'dois': 2, 'cinco': 5, 'dez': 10, 'vinte': 20 };
+    const numberWords: { [key: string]: number } = { 'uma': 1, 'um': 1, 'duas': 2, 'dois': 2, 'três' : 3, 'quatro' : 4, 'cinco': 5, 'dez': 10, 'vinte': 20 };
 
     finalEquipmentList.forEach(itemString => {
         itemString.split(/, | e /).forEach(part => {
